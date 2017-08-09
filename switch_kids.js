@@ -159,18 +159,27 @@ var us_a_b_b_a = $('<audio>').attr('src','sounds/us_A_b_b_A.mp3').attr("preload"
 var us_a_b_a = $('<audio>').attr('src','sounds/us_A_b_A.mp3').attr("preload", "auto");
 
 
+var col = "#ffffff";
+var col1 = "#EC7063",
+    col2 = "#AF7AC5",
+    col3 = "#5499C7",
+    col4 = "#48C9B0";
 
-var bird = new Ecosystem.Genus('bird', {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
-    
-var flower = new Ecosystem.Genus('flower', {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+var colors = shuffleArray([col1, col2, col3, col4]);
 
-var fish = new Ecosystem.Genus('fish', {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+var bird = new Ecosystem.Genus('bird', {col2:col, col3:col, col3:col, tar1:1, tar2:0 });
     
-var bug = new Ecosystem.Genus('bug', {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+var flower = new Ecosystem.Genus('flower', {col2:col, col3:col, col4: col,  tar1:1, tar2:0 });
+
+var fish = new Ecosystem.Genus('fish', {col2:col, col3:col, col4:col, tar1:1, tar2:0 });
+    
+var bug = new Ecosystem.Genus('bug', {col2:col, col3:col, col4:col, tar1:1, tar2:0 });
 
 var CatEx = randomElement(["bird", "flower", "fish", "bug"])
 
-var Concept_pre0 = [{category:CatEx, prop:0}, {category:CatEx, prop:1}]
+
+
+var Concept_pre0 = [{category:CatEx, prop:0, col1:col}, {category:CatEx, prop:1, col1:col1}]
 
 
 var Sound_pre0 = [us_a_d_b_a,
@@ -181,7 +190,7 @@ var Sound_pre0 = [us_a_d_b_a,
 //Preloading Task stim (0: left, 1: right)
 var rando=0;
 
-var col = "#ffffff";
+
 
 
 //Stimuli for discrimination
@@ -191,6 +200,13 @@ var col = "#ffffff";
 var category_discrim = shuffleArray(["bird", "flower", "fish", "bug"])
 //Concept stimuli
 
+var color ={
+    "bird":col1,
+    "flower":col2,
+    "fish":col3,
+    "bug":col4
+}
+
 
 var prop_sim = 0.3
 var prop_diff= 1
@@ -198,16 +214,16 @@ var prop_diff= 1
 var ConceptStim_discrim=[
     
                 //Trials differents
-                  [{category:category_discrim[0], prop:0},{category:category_discrim[0], prop:prop_sim}, 'diff'],
-                  [{category:category_discrim[1], prop:0},{category:category_discrim[1], prop:prop_diff}, 'diff'],
-                  [{category:category_discrim[2], prop:0},{category:category_discrim[2], prop:prop_sim}, 'diff'],
-                  [{category:category_discrim[3], prop:0},{category:category_discrim[3], prop:prop_diff}, 'diff'],
+                  [{category:category_discrim[0], prop:0, col1:col},{category:category_discrim[0], prop:0.99, col1:col}, 'diff'],
+                  [{category:category_discrim[1], prop:0, col1:col},{category:category_discrim[1], prop:1, col1:color[category_discrim[1]]}, 'diff'],
+                  [{category:category_discrim[2], prop:0, col1:col},{category:category_discrim[2], prop:0.99, col1:col}, 'diff'],
+                  [{category:category_discrim[3], prop:0, col1:col},{category:category_discrim[3], prop:1, col1:color[category_discrim[3]]}, 'diff'],
     
                 //Trials same
-                  [{category:category_discrim[0], prop:0},{category:category_discrim[0], prop:0}, 'same'],
-                  [{category:category_discrim[1], prop:0},{category:category_discrim[1], prop:0}, 'same'],
-                  [{category:category_discrim[2], prop:0},{category:category_discrim[2], prop:0}, 'same'],
-                  [{category:category_discrim[3], prop:0},{category:category_discrim[3], prop:0}, 'same']
+                  [{category:category_discrim[0], prop:0, col1:col},{category:category_discrim[0], prop:0, col1:col}, 'same'],
+                  [{category:category_discrim[1], prop:0, col1:col},{category:category_discrim[1], prop:0, col1:col}, 'same'],
+                  [{category:category_discrim[2], prop:0, col1:col},{category:category_discrim[2], prop:0, col1:col}, 'same'],
+                  [{category:category_discrim[3], prop:0, col1:col},{category:category_discrim[3], prop:0, col1:col}, 'same']
                   ]
     
 
@@ -218,13 +234,13 @@ var SoundLabels_discrim=[
     
                 //different sounds
 
-                ["in_a_d_dd_aa", "in_a_dd_d_aa", "diff", "in"],
-                ["ar_a_G_xx_a", "ar_a_xx_G_a", "diff", "ar2"],
+                ["ar_a_xx_G_a", "ar_a_G_xx_a", "diff", "ar2"],
+                ["us_A_b_d_A", "us_A_d_b_A", "diff", "us"],
     
                 //same sounds
 
-                ["in_a_d_d_aa", "in_a_dd_dd_aa", "same", "in"],
-                ["ar_a_G_G_a", "ar_a_xx_xx_a", "same", "ar2"]
+                ["ar_a_xx_G_a", "ar_a_G_xx_a", "same", "ar2"],
+                ["us_A_b_b_A", "us_A_d_d_A", "same", "us"]
     
                 ]
 
@@ -255,10 +271,10 @@ var category = shuffleArray(["bird", "flower", "fish", "bug"])
 
 var ConceptStim=[
                
-                  [{category:category[0], prop:0},{category:category[0], prop:prop_sim}, 'similar'],
-                  [{category:category[1], prop:0},{category:category[1], prop:prop_sim}, 'similar'],
-                  [{category:category[2], prop:0},{category:category[2], prop:prop_diff}, 'different'],
-                  [{category:category[3], prop:0},{category:category[3], prop:prop_diff}, 'different'],
+                  [{category:category[0], prop:0, col1:col},{category:category[0], prop:0.99, col1:col}, 'similar'],
+                  [{category:category[1], prop:0, col1:col},{category:category[1], prop:0.99, col1:col}, 'similar'],
+                  [{category:category[2], prop:0, col1:col},{category:category[2], prop:1, col1:color[category[2]]}, 'different'],
+                  [{category:category[3], prop:0, col1:col},{category:category[3], prop:1, col1:color[category[3]]}, 'different'],
     
                   ]
     
@@ -266,18 +282,19 @@ var ConceptStim=[
 //sound stimuli
 //I should pick in random some
 
+    
 var SoundLabels=[
-                ["in_a_d_dd_aa", "in_a_dd_d_aa", "similar"],
-                ["ar_a_G_xx_a", "ar_a_xx_G_a", "different"],
-                ["in_a_d_dd_aa", "in_a_dd_d_aa", "similar"],
-                ["ar_a_G_xx_a", "ar_a_xx_G_a", "different"],
+                ["ar_a_xx_G_a", "ar_a_G_xx_a", "similar"],
+                ["us_A_b_d_A", "us_A_d_b_A", "different"],
+                ["ar_a_xx_G_a", "ar_a_G_xx_a", "similar"],
+                ["us_A_b_d_A", "us_A_d_b_A", "different"]
                 ]
 
 var SoundLabels_test = [
-                ["in_a_d_aa", "in_a_dd_aa", "similar"],
-                ["ar_a_G_a", "ar_a_xx_a", "different"],
-                ["in_a_d_aa", "in_a_dd_aa", "similar"],
-                ["ar_a_G_a", "ar_a_xx_a", "different"],
+                ["ar_a_xx_a", "ar_a_G_a", "similar"],
+                ["us_A_b_A", "us_A_d_A", "different"],
+                ["ar_a_xx_a", "ar_a_G_a", "similar"],
+                ["us_A_b_A", "us_A_d_A", "different"]
                 ]
 
 
@@ -440,6 +457,8 @@ myTrial = {
     }
     
     myTrials.push(myTrial);
+
+
 
 var randTrials=shuffleArray([0,1,2,3,4,5,6,7])
 var ConceptRandom = shuffleArray([0,0,0,0,1,1,1,1])
@@ -620,6 +639,7 @@ for (i=0; i<SoundStim_discrim.length; i++){//iterate over blocks
 }
 
 
+
 myTrial = {
         condition: '',
         trial:'',
@@ -793,23 +813,22 @@ for (i=0; i<4; i++){//iterate over conditions
         
         });
     
+    //iterate over trials (here we have 2 trials)
+    /////////////////////
     
-    
+    for (p=0; p<2; p++){
+    //randomize left-right
     var ObjOrder_train = shuffleArray([[0,1],[0,1],[1,0],[1,0]])
     
-    var ObjOrder_test = shuffleArray([[0,1],[0,1],[1,0],[1,0]])
+    //Change: keep the same order in training to make it easier
+    var ObjOrder_train_fix = shuffleArray([[0,1],[0,1],[0,1],[0,1]])
     
-    var SndOrder_test = shuffleArray([0,0,1,1])
     
-    
+    //iterate over train repititions within a trial
     for (k=0; k<4; k++){
         
-        var j=ObjOrder_train[k],
-            l=ObjOrder_test[k],
-            t=SndOrder_test[k];
-        
-        //correct inswer
-        var correct= l[m]==t? 0: 1; 
+        var j=ObjOrder_train_fix[k]
+
       
     myTrial = {
         condition: c,
@@ -827,13 +846,29 @@ for (i=0; i<4; i++){//iterate over conditions
     }
     
     myTrials.push(myTrial);
+        
+        
+    }
     
+    var ObjOrder_test = shuffleArray([[0,1],[0,1],[1,0],[1,0]])
+    
+    var SndOrder_test = shuffleArray([0,0,1,1])
+    
+    //iterate over test questions within a trial 
+    for (k=0; k<4; k++){
+    
+    
+     var l=ObjOrder_test[k],
+         t=SndOrder_test[k];
+    
+     //correct answer
+        var correct= l[m]==t? 0: 1; 
     
         
-
+   //testing
     myTrial = {
         condition: c,
-        trial:k,
+        trial:p,
         trial_type: "Test",
         item:ConceptStim[c][0].category,
         concept_l:ConceptStim[c][l[0]],
@@ -851,7 +886,23 @@ for (i=0; i<4; i++){//iterate over conditions
         
     
    }
+        
+myTrials.push(myTrial={
+        trial_number: '',
+        trial_order:'',
+        trial_type: "newTrial",
+        item:'',
+        concept_l:'',
+        concept_r:'',
+        sound:'',
+        concept_val:'',
+        sound_val: '',
+        condition:''
+        
+        });
+    }
 }
+    
 
 
 /////////////////////////////////////
@@ -996,12 +1047,13 @@ else if (current_trial.trial_type == "discrim" || current_trial.trial_type == "d
       var category_l = current_concept_l.category;
       var prop1 = current_concept_l.prop;
     //var prop2 = 1 - prop1
-      var prop2 = 0.5
-      var col = "#ffffff"
+      var prop2 = 0.5;
+      var colo1 =  current_concept_l.col1;
+      var col = "#ffffff";
     
-      var categ_l = new Ecosystem.Genus(category_l, {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+      var categ_l = new Ecosystem.Genus(category_l, {col1:colo1, col2:colo1, col3:colo1, col4:colo1, tar1:1, tar2:0 });
         
-      categ_l.draw('word_left_d', {prop1:prop1, prop2: prop2,col1:col, col2:col,col3:col,col4:col,tar1:0, tar2:0, tar3:0}, 1)
+      categ_l.draw('word_left_d', {prop1:prop1, prop2: prop2, col1:colo1, col2:colo1,col3:colo1,col4:colo1,tar1:0, tar2:0, tar3:0}, 1)
       
         
       showCurrent(this);
@@ -1017,15 +1069,16 @@ else if (current_trial.trial_type == "discrim" || current_trial.trial_type == "d
         
           var category_r = current_concept_r.category;
           var prop1 = current_concept_r.prop;
-          var prop2 = 0.5
+          var prop2 = 0.5;
     //var prop2 = 1 - prop1
-          var col = "#ffffff"
+          var colo1 = current_concept_r.col1;
+          var col = "#ffffff";
     
-          var categ_r = new Ecosystem.Genus(category_r, {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+          var categ_r = new Ecosystem.Genus(category_r, {col1:colo1, col2:colo1, col3:colo1, col4:colo1, tar1:1, tar2:0 });
     
           categ_r.draw('word_right_d', { 
                                 prop1:prop1, prop2: prop2,
-                                col1:col, col2:col, col3:col, col4:col,
+                                col1:colo1, col2:colo1, col3:colo1, col4:colo1,
                                 tar1:0, tar2:0, tar3:0}, 0.5);
         
           // $("#pic_right").html(current_concept_r); 
@@ -1127,12 +1180,13 @@ else if (current_trial.trial_type == "discrim" || current_trial.trial_type == "d
       var category_l = current_concept_l.category;
       var prop1 = current_concept_l.prop;
     //var prop2 = 1 - prop1
-      var prop2 = 0.5
+      var prop2 = 0.5;
+      var colo1 = current_concept_l.col1;
       var col = "#ffffff"
     
-      var categ_l = new Ecosystem.Genus(category_l, {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+      var categ_l = new Ecosystem.Genus(category_l, {col1:colo1, col2:colo1, col3:colo1, tar1:1, tar2:0 });
         
-      categ_l.draw('word_left', {prop1:prop1, prop2: prop2,col1:col, col2:col,col3:col,col4:col,tar1:0, tar2:0, tar3:0}, 1)
+      categ_l.draw('word_left', {prop1:prop1, prop2: prop2,col1:colo1, col2:colo1,col3:colo1,col4:colo1,tar1:0, tar2:0, tar3:0}, 1)
       
        //$("#pic_alien").html($alien[1]);
         
@@ -1151,13 +1205,14 @@ else if (current_trial.trial_type == "discrim" || current_trial.trial_type == "d
           var prop1 = current_concept_r.prop;
           var prop2 = 0.5
     //var prop2 = 1 - prop1
+          var colo1 = current_concept_r.col1;
           var col = "#ffffff"
     
-          var categ_r = new Ecosystem.Genus(category_r, {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+          var categ_r = new Ecosystem.Genus(category_r, {col1:colo1, col2:colo1, col3:colo1, tar1:1, tar2:0 });
     
           categ_r.draw('word_right', { 
                                 prop1:prop1, prop2: prop2,
-                                col1:col, col2:col, col3:col, col4:col,
+                                col1:colo1, col2:colo1, col3:colo1, col4:colo1,
                                 tar1:0, tar2:0, tar3:0}, 0.5);
         
           // $("#pic_right").html(current_concept_r); 
@@ -1243,9 +1298,12 @@ else if (current_trial.trial_type == "discrim" || current_trial.trial_type == "d
     var category_l = current_concept_l.category;
     var category_r = current_concept_r.category;
         
-    var categ_l = new Ecosystem.Genus(category_l, {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+    var colo1_l = current_concept_l.col1;
+    var colo1_r = current_concept_r.col1;   
         
-    var categ_r = new Ecosystem.Genus(category_r, {col1:col, col2:col, col3:col, tar1:1, tar2:0 });
+    var categ_l = new Ecosystem.Genus(category_l, {col1:colo1_l, col2:colo1_l, col3:colo1_l, tar1:1, tar2:0 });
+        
+    var categ_r = new Ecosystem.Genus(category_r, {col1:colo1_r, col2:colo1_r, col3:colo1_r, tar1:1, tar2:0 });
         
     var prop1_l = current_concept_l.prop;
     var prop2_l = 0.5
@@ -1254,20 +1312,19 @@ else if (current_trial.trial_type == "discrim" || current_trial.trial_type == "d
     var prop1_r = current_concept_r.prop;
     var prop2_r = 0.5    
     //var prop2_r = 1 - prop1_r
-    
     var col = "#ffffff"
     
     categ_l.draw('word_l', { 
                                 prop1:prop1_l, prop2: prop2_l,
-                                col1:col, col2:col, col3:col,
-                                col4:col,
+                                col1:colo1_l, col2:colo1_l, col3:colo1_l,
+                                col4:colo1_l,
                                 tar1:0, tar2:0, tar3:0
                                 }, 0.5);
         
     categ_r.draw('word_r', { 
                                 prop1:prop1_r, prop2: prop2_r,
-                                col1:col, col2:col, col3:col,
-                                col4:col,
+                                col1:colo1_r, col2:colo1_r, col3:colo1_r,
+                                col4:colo1_r,
                                 tar1:0, tar2:0, tar3:0
                                 }, 0.5);
     

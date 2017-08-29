@@ -56,8 +56,6 @@ var MyInstruct = {
 
     "train_sound" :"Now you will be trained to trials on sound difference!",
     
-    "refresh" :"<font size=6><b>Refresh!</b></font>",
-    
     "PracticeObj":"<font size=6><b>Practice Object discrimination!</b></font>",
     
     "Obj":"<font size=6><b>Real Object discrimination!</b></font>",
@@ -277,33 +275,28 @@ var ConceptStim=[
                
                   [{category:category[0], prop:0, col1:col},{category:category[0], prop:0.5, col1:col}, 'similar'],
                   [{category:category[1], prop:0, col1:col},{category:category[1], prop:0.5, col1:col}, 'similar'],
-                  [{category:category[3], prop:0, col1:col},{category:category[3], prop:0.5, col1:col}, 'similar'],
                   [{category:category[2], prop:0, col1:col},{category:category[2], prop:1, col1:col}, 'different'],
                   [{category:category[3], prop:0, col1:col},{category:category[3], prop:1, col1:col}, 'different'],
-                  [{category:category[0], prop:0, col1:col},{category:category[0], prop:1, col1:col}, 'different']
+    
                   ]
     
 
 //sound stimuli
-//
+//I should pick in random some
 
     
 var SoundLabels=[
                 ["ar_a_xx_G_a", "ar_a_G_xx_a", "similar"],
                 ["us_A_b_d_A", "us_A_d_b_A", "different"],
-                ["neem_lif", "lif_neem", "maximal"],
                 ["ar_a_xx_G_a", "ar_a_G_xx_a", "similar"],
-                ["us_A_b_d_A", "us_A_d_b_A", "different"],
-                ["neem_lif", "lif_neem", "maximal"]
+                ["us_A_b_d_A", "us_A_d_b_A", "different"]
                 ]
 
 var SoundLabels_test = [
                 ["ar_a_xx_a", "ar_a_G_a", "similar"],
                 ["us_A_b_A", "us_A_d_A", "different"],
-                ["neem", "lif", "maximal"],
                 ["ar_a_xx_a", "ar_a_G_a", "similar"],
-                ["us_A_b_A", "us_A_d_A", "different"],
-                ["neem", "lif", "maximal"]
+                ["us_A_b_A", "us_A_d_A", "different"]
                 ]
 
 
@@ -793,19 +786,17 @@ myTrial = {
 
 
 //shuffle conditions
-cond = shuffleArray([0,1,2,3,4,5])
+cond = shuffleArray([0,1,2,3])
 
 //Randomize the object-Sound mapping 
 var map1 = randomElement([0,1]),
         map2 = randomElement([0,1]),
         map3 = randomElement([0,1]),
-        map4 = randomElement([0,1]),
-        map5 = randomElement([0,1]),
-        map6 = randomElement([0,1]);
+        map4 = randomElement([0,1]) ;
     
-    var mapping = [map1, map2, map3, map4, map5, map6]
+    var mapping = [map1, map2, map3, map4]
                              
-for (i=0; i<6; i++){//iterate over conditions 
+for (i=0; i<4; i++){//iterate over conditions 
     
     var c = cond[i],
         m = mapping[i]
@@ -877,7 +868,9 @@ for (i=0; i<6; i++){//iterate over conditions
     }
     
     myTrials.push(myTrial);
-
+    
+    
+    for (p=0; p<2; p++){
     
     var ObjOrder_test = shuffleArray([[0,1],[0,1],[1,0],[1,0]])
     
@@ -898,7 +891,7 @@ for (i=0; i<6; i++){//iterate over conditions
    //testing
     myTrial = {
         condition: c,
-        trial:1,
+        trial:p,
         trial_type: "Test",
         item:ConceptStim[c][0].category,
         concept_l:ConceptStim[c][l[0]],
@@ -916,16 +909,14 @@ for (i=0; i<6; i++){//iterate over conditions
         
     
    }
-       
-    
-    
-    //Second block
-    
+        
+
+    }
     
     myTrials.push(myTrial={
         trial_number: '',
         trial_order:'',
-        trial_type: "refresh",
+        trial_type: "newTrial",
         item:'',
         concept_l:'',
         concept_r:'',
@@ -935,98 +926,6 @@ for (i=0; i<6; i++){//iterate over conditions
         condition:''
         
         });
-    
-    //randomize left-right
-    var ObjOrder_train = shuffleArray([[0,1],[0,1],[1,0],[1,0]])
-    
-    //Change: keep the same order in training to make it easier
-    var ObjOrder_train_fix = shuffleArray([[0,1],[0,1],[0,1],[0,1]])
-    
-    
-    //iterate over train repititions within a trial
-    for (k=0; k<2; k++){
-        
-        var j=ObjOrder_train_fix[k]
-
-      
-    myTrial = {
-        condition: c,
-        trial:k,
-        trial_type: "Train",
-        item:ConceptStim[c][0].category,
-        concept_l:ConceptStim[c][j[0]],
-        concept_r:ConceptStim[c][j[1]],
-        sound:SoundStim[c][j[m]],
-        sameDiff:'',
-        correct:correct,
-        concept_val:ConceptStim[c][2],
-        sound_val:SoundStim[c][2],
-        experiment:'word'
-    }
-    
-    myTrials.push(myTrial);
-        
-        
-    }
-    
-    myTrial = {
-        condition: '',
-        trial:'',
-        trial_type: 'Testing',
-        item:'',
-        concept_l:'',
-        concept_r:'',
-        sound:'',
-        sameDiff:'',
-        correct:'',
-        sound_val:'',
-        concept_val:'',
-        experiment:''
-    }
-    
-    myTrials.push(myTrial);
-
-    
-    var ObjOrder_test = shuffleArray([[0,1],[0,1],[1,0],[1,0]])
-    
-    var SndOrder_test = shuffleArray([0,0,1,1])
-
-        
-    //iterate over test questions within a trial 
-    for (k=0; k<4; k++){
-    
-    
-     var l=ObjOrder_test[k],
-         t=SndOrder_test[k];
-    
-     //correct answer
-        var correct= l[m]==t? 0: 1; 
-    
-        
-   //testing
-    myTrial = {
-        condition: c,
-        trial:2,
-        trial_type: "Test",
-        item:ConceptStim[c][0].category,
-        concept_l:ConceptStim[c][l[0]],
-        concept_r:ConceptStim[c][l[1]],
-        sound:SoundStim_test[c][t],
-        sameDiff:'',
-        correct:correct,
-        concept_val:ConceptStim[c][2],
-        sound_val:SoundStim_test[c][2],
-        experiment:'word'
-    }
-    
-    myTrials.push(myTrial);
-        
-        
-    
-   }
-
-   
-    
 }
     
 

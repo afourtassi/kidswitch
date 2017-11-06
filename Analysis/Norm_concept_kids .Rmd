@@ -1,0 +1,63 @@
+---
+title: "WordRec Experiment"
+author: "A. Fourtassi & M. Frank"
+date: "January 13, 2017"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+---
+
+Libraries.
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(langcog)
+theme_set(theme_bw())
+```
+
+
+
+Data. 
+
+```{r}
+
+#Skip the pre task trials 
+#Filter subjects who had no technical problem
+#Select subjects who got more than 50% correct answers on the pre task trials
+
+d_norm <- read_delim("Norm_kids.txt", delim = " ") %>%
+  filter(type == "Train") #%>%
+  #filter(score > 0.5)
+  
+```
+
+Process norming data
+
+```{r}
+concept <- d_norm %>%
+  filter(condition == 'concept') %>%
+  group_by(distance) %>%
+  multi_boot_standard(col = "answer") #%>%
+  #rename(concept_dist = conceptOrd,
+      #   semDist=mean)
+
+
+```
+Norming plots
+
+```{r}
+plot_concept  <- ggplot(concept, aes(x = distance, y= mean)) +
+  geom_pointrange(aes(ymin = summary_ci_lower, ymax = summary_ci_upper), 
+                  position = position_dodge(width = .03), size=0.5) +
+ 
+ xlab("distance") +ylab("% different")+ theme_bw()
+
+plot_concept
+
+
+
+```

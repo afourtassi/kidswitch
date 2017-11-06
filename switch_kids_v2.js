@@ -45,6 +45,14 @@ function shuffleArray(a) {
 }
 
 
+var code = '';
+
+$( "#nextButton_brief" ).click(function() {
+    code=$('#txt_code').val();
+  
+});
+
+
 
 ////////////////////////////////////////////////
 //Instructions for the Task and preTask training
@@ -343,27 +351,30 @@ var catch_test = [
                     ]
 
 
-var category = shuffleArray([bird, tree, fish, bug])
-//Concept stimuli
+var category = [bird, tree, fish, bug]
+var category_name = ["bird", "tree", "fish", "bug"]
 
+
+var catRand = shuffleArray([0,1,2,3])
 //define similar and different proportion
 
+var visDist = 0.35
 
 var concept_cluster1 = [
-    [{category:category[0], prop:0, col1:col},{category:category[0], prop:0.3, col1:col}, 'similar'],
-    [{category:category[1], prop:0, col1:col},{category:category[1], prop:1, col1:col}, 'different']
+    [{category:category[catRand[0]], prop:0, col1:col},{category:category[catRand[0]], prop:visDist, col1:col}, 'similar', category_name[catRand[0]]],
+    [{category:category[catRand[1]], prop:0, col1:col},{category:category[catRand[1]], prop:1, col1:col}, 'different', category_name[catRand[1]]]
 ]
 
 var concept_cluster2 =[
-    [{category:category[2], prop:0, col1:col},{category:category[2], prop:1, col1:col}, 'different'],
-    [{category:category[3], prop:0, col1:col},{category:category[3], prop:0.3, col1:col}, 'similar']
+    [{category:category[catRand[2]], prop:0, col1:col},{category:category[catRand[2]], prop:1, col1:col}, 'different', category_name[catRand[2]]],
+    [{category:category[catRand[3]], prop:0, col1:col},{category:category[catRand[3]], prop:visDist, col1:col}, 'similar', category_name[catRand[3]]]
 ]
 
 
 var concept_catch = [
     {category:flower, prop:0, col1:col},
     {category:flower, prop:1, col1:col},
-    'catch'
+    'catch', 'flower'
 ]
 
 //Now the main thing:
@@ -654,7 +665,7 @@ for (i=0; i<concept_all.length; i++){//iterate over all conditions
         condition: i,
         trial:k,
         trial_type: "Train",
-        item:concept_all[i][0].category,
+        item:'',
         concept_l:concept_all[i][0],
         concept_r:concept_all[i][1],
         sound:sound_train_all[i][m],
@@ -713,7 +724,7 @@ for (i=0; i<concept_all.length; i++){//iterate over all conditions
         condition: i,
         trial:1,//this should be called block instead
         trial_type: "Test",
-        item_object:concept_all[i][0].category,
+        item_object:concept_all[i][3],
         item_sound:sound_test_all[i][3],
         concept_l:concept_all[i][o[0]],
         concept_r:concept_all[i][o[1]],
@@ -757,7 +768,7 @@ for (i=0; i<concept_all.length; i++){//iterate over all conditions
         condition: i,
         trial:k,
         trial_type: "Train",
-        item:concept_all[i][0].category,
+        item:'',
         concept_l:concept_all[i][0],
         concept_r:concept_all[i][1],
         sound:sound_train_all[i][m],
@@ -812,7 +823,7 @@ for (i=0; i<concept_all.length; i++){//iterate over all conditions
         condition: i,
         trial:2,
         trial_type: "Test",
-        item_object:concept_all[i][0].category,
+        item_object:concept_all[i][3],
         item_sound:sound_test_all[i][3],
         concept_l:concept_all[i][o[0]],
         concept_r:concept_all[i][o[1]],
@@ -847,6 +858,7 @@ var experiment = {
     age:[],
     gender:[],
     native:[],
+    code:[],
     problem:[],
     ifproblem:[],
     comment:[]
@@ -936,6 +948,8 @@ var experiment = {
             experiment.brief.age.push(document.getElementById("age").value);
             experiment.brief.gender.push(document.getElementById("gender").value);
             experiment.brief.native.push(document.getElementById("native").value);
+                
+            experiment.brief.code.push(code);
 
                 
             });

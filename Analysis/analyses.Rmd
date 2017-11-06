@@ -1,0 +1,144 @@
+---
+title: "Word Learning Experiment"
+author: "A. Fourtassi & M. Frank"
+date: "November 6, 2017"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+---
+
+Libraries.
+
+```{r}
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(langcog)
+library(dplyr)
+library(plyr)
+library(dplyr)
+library(pwr)
+theme_set(theme_bw())
+```
+
+
+Here I filter the unsused info, which was collected in the pilot experiment but it is no more included in the final experiment.
+
+Moreover, unlike the pilot Exp, the final Exp contains a catch condition. The catch condition is obvious, and will be used to exclude participants who did not pay attention or/did not understand the task
+```{r}
+
+d_real <- read_delim("pilot3_kids.txt", delim = " ") %>%
+  filter(sound_dist != 'similar') %>%
+  filter(age == 4) 
+
+d_real$sound_dist <- mapvalues(d_real$sound_dist, from = c("different", "maximal"), to = c("similar", "different"))
+  
+```
+
+Population:
+```{r}
+# 4 to 5 years old recruted at Bing nursery school at Standord University
+```
+
+Sample size:
+
+```{r}
+# N = 60
+#See power analysis below
+```
+
+Data. 
+
+```{r}
+
+d_word <- d_real %>%
+  filter(type == "Test") 
+  #filter(sound_dist != 'similar')
+```
+
+
+Below, for the pilot data, exlusion is based on one of the experimental condition (i.e., sounds diff and meaning diff). In the final experiment, exlusion will be based on the catch condition, which is also maximal (i.e., sounds diff and meaning diff).
+
+```{r}
+data <- d_word %>%
+  mutate(iscorrect=ifelse(answer==correct, 1, 0)) %>%
+  group_by(ID, sound_dist, concept_dist) %>%
+  multi_boot_standard(col = "iscorrect")
+
+data_excl <- data %>%
+  filter(sound_dist == 'different' & concept_dist == 'different') %>%
+  ungroup() %>%
+  select(ID, mean) %>%
+  dplyr::rename(score = mean)
+  #select(ID, score)
+  
+data_good <- d_word %>%
+  left_join(data_excl) %>%
+  filter(score >0.5)
+
+```
+
+Now analyse and plot data
+
+```{r}
+#Average
+
+data_new <- data_good %>%
+  mutate(iscorrect=ifelse(answer==correct, 1, 0)) %>%
+  group_by(sound_dist, concept_dist) %>%
+  multi_boot_standard(col = "iscorrect") 
+
+```
+
+```{r }
+
+data_new$concept_dist <- factor(data_new$concept_dist, levels = c("similar", "different"))
+data_new$sound_dist <- factor(data_new$sound_dist, levels = c("similar", "different"))
+
+
+ggplot(data_new, 
+       aes(x = sound_dist, y = mean, group = factor(concept_dist), col = factor(concept_dist))) +
+
+  geom_pointrange(aes(ymin = summary_ci_lower, ymax = summary_ci_upper), 
+                  position = position_dodge(width = .1)) + 
+  
+  geom_hline(yintercept = .50, linetype="dashed") + 
+  geom_line() +
+  xlab("Sound condition") +ylab("Accuracy")+
+  #scale_colour_manual(values = c("red", "blue"), name="Vis Dist")+
+  scale_colour_discrete(name="Meaning condition")+
+  
+  #scale_y_continuous(limits = c(0.45, 0.9))+
+theme(legend.title = element_text(size=8)) #+ facet_grid(. ~ ID)
+
+```
+
+Power analysis
+
+```{r}
+
+#Effect size estimates are based on pilot data above
+
+#First we want to detect a difference in accuracy between the maximal trial (around .85) and the lower accuracy trials (sounds different but meanings similar, or vice versa), which are both around 0.65
+
+p.out1 <- pwr.2p.test(h = ES.h(p1 = 0.85, p2 = 0.65),
+                     sig.level = 0.05, 
+                     power = 0.80, 
+                     alternative = "greater")
+plot(p.out1)
+
+#Second we want points at 0.65 to be different from chance
+
+p.out2 <- pwr.p.test(h = ES.h(p1 = 0.65, p2 = 0.5),
+                     sig.level = 0.05, 
+                     power = 0.80, 
+                     alternative = "greater")
+
+plot(p.out2)
+
+
+# A reasonable final sample size is 60 participants 
+
+```
+

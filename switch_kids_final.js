@@ -358,7 +358,7 @@ var category_name = ["bird", "tree", "fish", "bug"]
 var catRand = shuffleArray([0,1,2,3])
 //define similar and different proportion
 
-var visDist = 0.35
+var visDist = 0.3
 
 var concept_cluster1 = [
     [{category:category[catRand[0]], prop:0, col1:col},{category:category[catRand[0]], prop:visDist, col1:col}, 'similar', category_name[catRand[0]]],

@@ -214,12 +214,12 @@ turk = turk || {};
 // htmlify(rawData)
 
 
-      $.post("https://langcog.stanford.edu/cgi-bin/Switch_pilot/Switch.php",{expHTML: JSON.stringify(rawData)}, "json");
+      $.post("https://langcog.stanford.edu/cgi-bin/Switch_real/Switch.php",{expHTML: JSON.stringify(rawData)}, "json");
 
       return;
     }
 
-    $.post("https://langcog.stanford.edu/cgi-bin/Switch_pilot/Switch.php",{expHTML: JSON.stringify(rawData)}, "json");
+    $.post("https://langcog.stanford.edu/cgi-bin/Switch_real/Switch.php",{expHTML: JSON.stringify(rawData)}, "json");
     // // Otherwise, submit the form
     // form.action = "https://langcog.stanford.edu/cgi-bin/SC_noisy/parenting_proj.php";
     // form.method = "POST";

@@ -80,7 +80,7 @@ var MyInstruct = {
     
     "Testing":"<font size=6><b>Now testing will begin!</b></font>",
     
-    "WordTest":"<font size=6><b>Now Test! </font></b><br><br><font size=4> Next time the test will appear immediately after object presenttion!</font>",
+    "WordTest":"<font size=6><b>Now Test! </font></b>",
     
     "train_object" :"<font size=6><b>Now you will be trained to trials on object difference!</b></font>",
     
@@ -200,34 +200,34 @@ var rando=0;
 
 var sound_similar =[
     ["aba_ada", "ada_aba", "aba", "ada"],
-    ["asa_asha", "asha_asa", "asa", "asha"],
+    //["asa_asha", "asha_asa", "asa", "asha"],
     ["aka_ama", "ama_aka", "aka", "ama"]
 ]
 
 var sound_different=[
     
                 ["neem_lif", "lif_neem", "neem", "lif"],
-                ["zem_doof", "doof_zem", "zem", "doof"],
-                ["nak_veep", "veep_nak", "nak", "veep"]
+                ["zem_doof", "doof_zem", "zem", "doof"]
 ]
 
 var sound_similar_rand = shuffleArray(sound_similar)
 var sound_different_rand = shuffleArray(sound_different) 
 
-var sound_training = sound_similar[0]
+//var sound_training = sound_different[0]
+var sound_training = ["nak_veep", "veep_nak", "nak", "veep"]
 
-var sound_catch = sound_different[0]
+var sound_catch = ["nak_veep", "veep_nak", "nak", "veep"]
 
 var sound_cluster1 = [
-    [sound_similar[1], 'similar'],
-    [sound_different[1], 'different']
+    [sound_similar[0], 'similar'],
+    [sound_different[0], 'different']
 ]
 
 
 
 var sound_cluster2 = [
-    [sound_similar[2],'similar'],
-    [sound_different[2], 'different']
+    [sound_similar[1],'similar'],
+    [sound_different[1], 'different']
 ]
 
 //First the training
@@ -235,7 +235,9 @@ var simTrain1= $('<audio>').attr('src','sounds/'+sound_training[0]+'.mp3').attr(
 
 var simTrain2 = $('<audio>').attr('src','sounds/'+sound_training[1]+'.mp3').attr("preload", "auto");
 
-var simTest = $('<audio>').attr('src','sounds/'+sound_training[2]+'.mp3').attr("preload", "auto");
+var simTest1 = $('<audio>').attr('src','sounds/'+sound_training[2]+'.mp3').attr("preload", "auto");
+
+var simTest2 = $('<audio>').attr('src','sounds/'+sound_training[3]+'.mp3').attr("preload", "auto");
 
 //Now the main thing:
 
@@ -523,7 +525,7 @@ myTrial = {
         item_sound:'',
         concept_l:Concept_pre0[0],
         concept_r:Concept_pre0[1],
-        sound:simTest,
+        sound:simTest1,
         sameDiff:'',
         correct:'',
         concept_val:'',
@@ -565,7 +567,22 @@ myTrial = {
     
     myTrials.push(myTrial);
 
-
+myTrial = {
+        condition: '',
+        trial:'',
+        trial_type: 'WordTest',
+        item:'',
+        concept_l:'',
+        concept_r:'',
+        sound:'',
+        sameDiff:'',
+        correct:'',
+        sound_val:'',
+        concept_val:'',
+        experiment:''
+    }
+    
+    myTrials.push(myTrial);
 
 myTrial = {
         condition: 'joint',
@@ -575,7 +592,7 @@ myTrial = {
         item_sound:'',
         concept_l:Concept_pre0[1],
         concept_r:Concept_pre0[0],
-        sound:simTest,
+        sound:simTest2,
         sameDiff:'',
         correct:'',
         concept_val:'',
@@ -585,6 +602,138 @@ myTrial = {
     
     myTrials.push(myTrial);
 
+
+myTrials.push(myTrial={
+        trial_number: '',
+        trial_order:'',
+        trial_type: "newTrial",
+        item:'',
+        concept_l:'',
+        concept_r:'',
+        sound:'',
+        concept_val:'',
+        sound_val: '',
+        condition:''
+        
+        });
+
+myTrial = {
+        condition: 'joint',
+        trial:'',
+        trial_type: "Train_pre",
+        item:'',
+        concept_l:Concept_pre0[0],
+        concept_r:Concept_pre0[1],
+        sound:simTrain1,
+        sameDiff:'',
+        correct:'',
+        concept_val:'',
+        sound_val:'',
+        experiment:'word'
+    }
+    
+    myTrials.push(myTrial);
+
+myTrial = {
+        condition: '',
+        trial:'',
+        trial_type: 'WordTest',
+        item:'',
+        concept_l:'',
+        concept_r:'',
+        sound:'',
+        sameDiff:'',
+        correct:'',
+        sound_val:'',
+        concept_val:'',
+        experiment:''
+    }
+    
+    myTrials.push(myTrial);
+
+myTrial = {
+        condition: 'joint',
+        trial:'',
+        trial_type: "Test_pre",
+        item_object:'',
+        item_sound:'',
+        concept_l:Concept_pre0[1],
+        concept_r:Concept_pre0[0],
+        sound:simTest1,
+        sameDiff:'',
+        correct:'',
+        concept_val:'',
+        sound_val:'',
+        experiment:'word'
+    }
+    
+    myTrials.push(myTrial);
+
+myTrials.push(myTrial={
+        trial_number: '',
+        trial_order:'',
+        trial_type: "newTrial",
+        item:'',
+        concept_l:'',
+        concept_r:'',
+        sound:'',
+        concept_val:'',
+        sound_val: '',
+        condition:''
+        
+        });
+
+myTrial = {
+        condition: 'joint',
+        trial:'',
+        trial_type: "Train_pre",
+        item:'',
+        concept_l:Concept_pre0[0],
+        concept_r:Concept_pre0[1],
+        sound:simTrain1,
+        sameDiff:'',
+        correct:'',
+        concept_val:'',
+        sound_val:'',
+        experiment:'word'
+    }
+    
+    myTrials.push(myTrial);
+
+myTrial = {
+        condition: '',
+        trial:'',
+        trial_type: 'WordTest',
+        item:'',
+        concept_l:'',
+        concept_r:'',
+        sound:'',
+        sameDiff:'',
+        correct:'',
+        sound_val:'',
+        concept_val:'',
+        experiment:''
+    }
+    
+    myTrials.push(myTrial);
+
+myTrial = {
+        condition: 'joint',
+        trial:'',
+        trial_type: "Test_pre",
+        item_object:'',
+        item_sound:'',
+        concept_l:Concept_pre0[0],
+        concept_r:Concept_pre0[1],
+        sound:simTest2,
+        sameDiff:'',
+        correct:'',
+        concept_val:'',
+        sound_val:'',
+        experiment:'word'
+    }
+    
+    myTrials.push(myTrial);
 
 
 myTrial = {

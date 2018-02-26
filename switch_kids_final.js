@@ -335,6 +335,9 @@ for(i=0; i< sound_cluster2.length; i++) {
 //Catch trial
 //////////////
 
+//I need to use the same order as in the pre-Task trials
+//so as not to confuse the children 
+
 var catch_learn = [ 
                      [$('<audio>').attr('src','sounds/'+sound_catch[0]+'.mp3').attr("preload", "auto"),
                       $('<audio>').attr('src','sounds/'+sound_catch[1]+'.mp3').attr("preload", "auto"),
@@ -760,7 +763,9 @@ cond = shuffleArray([0,1,2,3,4])
 //Randomize the object-Sound mapping 
 var map1 = randomElement([0,1]),
         map2 = randomElement([0,1]),
-        map3 = randomElement([0,1]),
+        //catch is trial N=3, here keep the same ordering as in preTrial
+        //map3 = randomElement([0,1]),
+        map3 = 0,
         map4 = randomElement([0,1]),
         map5 = randomElement([0,1]);
     

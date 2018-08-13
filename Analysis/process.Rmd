@@ -1,0 +1,130 @@
+---
+title: "WordRec Experiment"
+date: "January 13, 2017"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+---
+
+Libraries.
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(langcog)
+theme_set(theme_bw())
+```
+
+
+Data. 
+
+```{r}
+
+
+d_word_summer <- read_delim("data_summer_2.txt", delim = " ") %>%
+  filter(type == "Test") %>%
+  filter(age != 6) %>%
+  filter(code != 'test',
+         !is.na(code)) %>%
+  filter(grepl('soph', code))
+
+d_all <- d_word_summer %>%
+  mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
+  
+
+
+```
+
+Process data:
+
+```{r}
+
+data <- d_all %>%
+  group_by(ID, sound_dist, concept_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect))
+  #multi_boot_standard(col = "iscorrect")
+
+#Catch
+data_excl <- data %>%
+  filter(sound_dist == 'catch') %>%
+  ungroup() %>%
+  select(ID, mean) %>%
+  dplyr::rename(score = mean)
+
+data_catch <- d_all %>%
+  left_join(data_excl) %>%
+  filter(score > 0.5) %>%
+  filter(sound_dist != 'catch')
+
+#Exclude items 
+#item_excl <- (data %>%
+#  filter(sound_dist != 'catch') %>%
+#  filter(mean < 0.25) %>%
+#  ungroup() %>%
+#  distinct(ID))$ID 
+
+
+
+#data_reverse <- d_word %>%
+# filter(!(ID %in% item_excl))
+
+#data_catch_reverse <- d_word %>%
+#  left_join(data_excl) %>%
+#  filter(score >= 0.5) %>%
+#  filter(!(ID %in% item_excl))
+
+#data_final <- data_good %>%
+#  mutate(age2 = ifelse(grepl('4',age), 4, 5))
+
+
+```
+
+Summary 
+```{r }
+#{r fig.width=2, fig.height=5}
+
+
+sum_catch <- data_catch %>%
+  group_by(sound_dist, concept_dist) %>%
+  #group_by(sound_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect),
+                   sd = sd(iscorrect),
+                   n = n()) %>%
+  mutate(se = sd / sqrt(n),
+         lower = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  select(-sd, -n, -se) 
+
+
+
+ggplot(sum_catch, 
+      aes(x = sound_dist, y = mean, col = factor(concept_dist))) +
+  #geom_point()+
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                 position = position_dodge(width = .1)) + 
+  #geom_line(lty = 2) + 
+  geom_hline(yintercept = 0.50) +
+  xlab("Aud distance") +ylab("% Accurate")+
+  scale_colour_discrete(name="Vis Dist")+
+theme(legend.title = element_text(size=8)) 
+
+
+#Model
+data_model <- data_catch %>%
+  mutate(s_dist=ifelse(sound_dist=="similar", 0, 1),
+         c_dist=ifelse(concept_dist=="similar", 0, 1))  
+
+model <- glmer(iscorrect ~ s_dist + c_dist + 
+                 (1 | ID) + 
+                 (1 | item_object) + 
+                 (1 | item_sound), 
+               data = data_model, family = binomial())
+
+summary(model)
+
+
+
+```

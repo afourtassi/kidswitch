@@ -1,0 +1,156 @@
+<!-- ## Code -->
+<html>
+<head>
+	<title>Conceptual similarity experiment </title>
+	<!-- Include the [jQuery library](http://jquery.com/), which helps you manipulate HTML elements from JS. -->
+	<script src="jquery-1.11.2.min.js"></script>
+	<!-- [mmturkey]: http://github.com/longouyang/mmturkey -->
+	<script src="mmturkey-0.6.js"></script>
+	<link rel="stylesheet" href="style.css" />
+    <link href="lib/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="lib/colorpicker/colorpicker.css" type="text/css" />
+    <link rel="stylesheet" media="screen" type="text/css" href="lib/colorpicker/layout.css" />
+
+</head>
+<body>
+
+<script type='text/javascript' src='lib/jquery-2.0.3.min.js'></script>
+<script type='text/javascript' src='lib/jquery-ui.js'></script>
+<script type="text/javascript" src="lib/colorpicker/colorpicker.js"></script>
+<script type="text/javascript" src="lib/eye.js"></script>
+<script type="text/javascript" src="lib/colorpicker/colorpicker.js"></script>
+<script type='text/javascript' src='lib/raphael.js'></script>
+<script type='text/javascript' src='ecosystem.js'></script>
+<script type="text/javascript" src="lib/eye.js"></script>
+<script type="text/javascript" src="lib/utils.js"></script>
+<script type="text/javascript" src="lib/colorpicker/layout.js?ver=1.0.2"></script>
+    
+    
+<!-- The instructions slide. -->
+<div class="slide" id="instructions">
+  <div style="width: 500px; margin: 0 auto; text-align: center; background-color: #8C1516; padding: 20px 15px 10px 10px">
+    <img src="images/stanford.png" height="46" width="360" alt="Stanford University">
+  </div>
+		<p id='logo-text'>Stanford Language and Cognition Lab</p>
+	<p class="block-text">
+        This experiment tests judgements of object similarity (it lasts less than 2 minutes in total).<br><br> Warning: if you are using Internet Explorer, some aspects of the experiment might not function properly! 
+        </p>
+
+
+	<!-- Button to start the experiment. <code>this.blur()</code> removes the focus from the button, if the user pressed the button by using the keyboard, rather than the mouse. -->
+	<button type="button" onclick="this.blur(); experiment.next()">Start</button>
+	<!-- Legal blurb that we're required to show. -->
+
+     <p class="block-text"><br> <b> Note: you won't be able to preview this HIT before accepting it because it's so short. </b></p>
+
+  <p class="block-text" id="legal">By answering the following questions, you are participating in a study being performed by cognitive scientists in the Stanford Department of Psychology. If you have questions about this research, please contact us at <a href="mailto://languagecoglab@gmail.com.">languagecoglab@gmail.com</a>. You must be  at least 18 years old to participate. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you. Note however that we have recently been made aware that your public Amazon.com profile can be accessed via your worker ID if you do not choose to opt out. If you would like to opt out of this feature, you may follow instructions available <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=16465241">here</a>.</p>
+</div>
+<!-- The "stage" slide - where the bulk of the experiment will be displayed. Again, note the use of <code>{{}}</code>. -->
+    
+<div class="slide" id="stage_sound" style="display:table;">
+    <table id="sound" width="80%" border="0" cellspacing="20" cellpadding="0" align="center">
+<tr>
+
+<td align="center">
+  
+        <p id="sound_instruction">{{}}</p>
+
+    </td>
+        
+</tr>
+</table>
+</div>
+    
+<div class="slide" id="stage_concept" style="display:table;">
+
+    <table id="hello" width="80%" border="0" cellspacing="20" cellpadding="0" align="center">
+<tr>
+
+<td align="center">
+    <div id="object_test">
+
+    </div>
+    </td>
+        
+</tr>
+</table>
+
+        
+<!-- Likert radio buttons -->
+<table align = "center"><tr>
+<td align="center">
+    
+      
+<tr>
+        <td><div id="obj_0"></div></td>
+        <td><p id="sound_ext0">{{}}</p></td>
+        <td><input id ="likert1" type="radio" name="judgment" value = "1">
+          <label for="likert1">1</label></td>
+        <td><input id ="likert2" type="radio" name="judgment" value = "2">
+            <label for="likert2">2</label></td>
+        <td><input id ="likert3" type="radio" name="judgment" value = "3">
+              <label for="likert3">3</label></td>
+        <td><input id ="likert4" type="radio" name="judgment" value = "4">
+                <label for="likert4">4</label></td>
+        <td><input id ="likert5" type="radio" name="judgment" value = "5">
+                  <label for="likert5">5</label></td>
+        <td><input id ="likert6" type="radio" name="judgment" value = "6">
+                    <label for="likert6">6</label></td>
+        <td><input id ="likert7" type="radio" name="judgment" value = "7">
+                    <label for="likert7">7</label></td>
+        
+        <td>&nbsp;&nbsp;</td>
+        <td><p id="sound_ext1">{{}}</p></td>
+        <td><div id="obj_1"></div></td>
+      </tr>
+
+    </tr>
+    </table>
+    
+    <table align="center"><tr>
+      <td align="center">
+        <button type="button" id="nextButton_Att" onClick=" experiment.log_response()"> next</button>
+      </td> 
+      <tr><td align="center">
+        <div id="testMessage_att"> </div>
+      </td></tr>
+</table>
+
+</div>
+    
+    
+ 
+<!-- Instruction for practice. -->
+
+<div class="slide" id="instructions2">
+
+  <br>
+
+    <p class="block-text" id="instruct_dyn"> {{}}</p>
+
+  <table align="center">
+
+      <tr>
+    <td align="center">
+      <button type="button" id="nextButton_choice" onClick="this.blur(); experiment.next()"> Continue</button>
+    </td>
+      </tr>
+
+  </table>
+
+</div>
+    
+
+    
+<!-- The finish slide. -->
+<div class="slide" id="finished">
+	You're finished - thanks for participating! Submitting to Mechanical Turk...
+</div>
+
+<!-- Include the <a href="experiment.html">JavaScript file for the experiment</a>. As written, that script immediately executes commands, so we include it here at the end of the HTML file to ensure that resources referenced by the script actually exist. For instance, one of the immediately executed commands is <code>showSlide("instructions")</code>. If we loaded experiment.js, say, in the <code>head</code> section, <code>showSlide("instructions")</code> would fail because the <code>instructions</code> slide doesn't exist yet. It is possible to load the script in <code>head</code> but you have to ensure that any immediately executed commands, if they rely on potentially uninitialized HTML elements, are _delayed_ until the page is ready, using either [window.onload][onload] or jQuery's more robust [$(document).ready()][domReady]  -->
+<!-- [onload]: https://developer.mozilla.org/en/DOM/window.onload -->
+<!-- [domReady]: http://api.jquery.com/ready/ -->
+<script src="experiment1.js"></script>
+
+</body>
+</html>

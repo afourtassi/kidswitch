@@ -106,7 +106,7 @@ myTrials.push(myTrial={
         });
 
 //Pre-trials
-for (i=0; i < prac_ind.length-6; i++){
+for (i=0; i < prac_ind.length; i++){
     myTrial = {
         trial_number: i+1,
         trial_type: "obj_prac",
@@ -123,9 +123,9 @@ myTrials.push(myTrial={
         });
 
 
-for(k=0; k < 1; k++){
+for(k=0; k < 3; k++){
     var rand_ind = shuffleArray(myIndices)
-    for (i=0; i < rand_ind.length-6; i++){
+    for (i=0; i < rand_ind.length; i++){
         myTrial = {
             trial_number: i+1,
             trial_type: "obj_real",
@@ -198,7 +198,7 @@ myTrials.push(myTrial={
 
 var indices_s = [0,1,2,3,4,5,6]
     
-for (k=0; k < 1; k++) {
+for (k=0; k < 3; k++) {
     
 var rand_ind_s = shuffleArray(indices_s)
 

@@ -52,7 +52,7 @@ var MyInstruct = {
     
     "sound_inst_prac" : "You will now start a practice session. The purpose of this session is to get you familiarized with the sounds and the range of similarities you will encounter later. We encourage you to develop a consistent way of using the ratings. Moreover, try to use the entire 1-7 scale and spread your judgements out evenly as much as possible.",
     
-    "real_inst" :"Now you will start the real session!"
+    "real_inst" :"</br></br></br></br></br>Now you will start the real session!"
     
     
     

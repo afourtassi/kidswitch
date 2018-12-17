@@ -38,12 +38,25 @@ function randomElement(array) {
   return array[randomInteger(array.length)];
 }
 
+var $task = new $('<img>').attr('src','images/task.png').height(300).width(400);
+
+
 
 var MyInstruct = {
   
-    "pre1" :"This is a similarity judgement task. You will be shown pictures of pairs of objects and you should rate the similarity of the two objects on a scale from 1 (very similar) to 9 (very different).<br><br> You will now start a practice session. The purpose of this session is to get you familiarized with the objects and the range of similarities you will encounter later.   We encourage you to develop a consistent way of using the ratings. Moreover, try to use the entire 1-9 scale and spread your judgements out evenly as much as possible.",
+    "obj_inst" :"In this part of the survey, you will rate the similarity between some objects.  As shown in the illustration below, in each trial you will see a test object in the center, and 2 reference objects on each side of the scale. Your task is to determine the degree to which the test object resembles the reference objects by a selecting a value from 1 to 7.",
     
-    "pre2" :"Now you will start the real session!"
+    "obj_inst_prac" : "You will now start a practice session. The purpose of this session is to get you familiarized with the objects and the range of similarities you will encounter later.   We encourage you to develop a consistent way of using the ratings. Moreover, try to use the entire 1-7 scale and spread your judgements out evenly as much as possible.",
+    
+    "sound_inst" :"In this second and last part of the survey, you will rate the similarity between pairs of random sounds.  In each trial you, will hear two sounds (e.g., 'lif' vs. 'neem') and your task is to determine the degree to which the these sounds are similar or different by a selecting a value from 1 to 7. </br></br> Note that some sounds are not in English, and that we are interested in your <i>subjective</i> similarity rating.",
+    
+    "sound_inst_prac" : "You will now start a practice session. The purpose of this session is to get you familiarized with the sounds and the range of similarities you will encounter later. We encourage you to develop a consistent way of using the ratings. Moreover, try to use the entire 1-7 scale and spread your judgements out evenly as much as possible.",
+    
+    "real_inst" :"Now you will start the real session!"
+    
+    
+    
+    
     
 }
 var col = "#ffffff";
@@ -83,19 +96,20 @@ var myTrials=[];
 //Instructions 1
 myTrials.push(myTrial={
         trial_number: 0,
-        trial_type: "pre1",
-        concept_l:"",
-        concept_r:"",
-        conName_l:"",
-        conName_r:"",
-        concept_dist:""
+        trial_type: "obj_inst",
+
+        });
+
+myTrials.push(myTrial={
+        trial_number: 0,
+        trial_type: "obj_inst_prac",
         });
 
 //Pre-trials
 for (i=0; i < prac_ind.length-6; i++){
     myTrial = {
         trial_number: i+1,
-        trial_type: "real",
+        trial_type: "obj_prac",
         category:prac_ind[i][0],
         distance:prac_ind[i][1]
     }
@@ -105,7 +119,7 @@ for (i=0; i < prac_ind.length-6; i++){
 //Instructions 2
 myTrials.push(myTrial={
         trial_number: 0,
-        trial_type: "pre2",
+        trial_type: "real_inst",
         });
 
 
@@ -114,7 +128,7 @@ for(k=0; k < 1; k++){
     for (i=0; i < rand_ind.length-6; i++){
         myTrial = {
             trial_number: i+1,
-            trial_type: "real",
+            trial_type: "obj_real",
             category:rand_ind[i][0],
             distance:rand_ind[i][1]
         }
@@ -151,12 +165,14 @@ for(i=0; i<sounds.length; i++) {
 //Instructions 1
 myTrials.push(myTrial={
         trial_number: 0,
-        trial_type: "pre1",
-        concept_l:"",
-        concept_r:"",
-        conName_l:"",
-        conName_r:"",
-        concept_dist:""
+        trial_type: "sound_inst",
+
+        });
+
+myTrials.push(myTrial={
+        trial_number: 0,
+        trial_type: "sound_inst_prac",
+
         });
 
 //Pre-trials
@@ -172,16 +188,13 @@ for (i=0; i < sound_trials.length; i++){
     myTrials.push(myTrial);
 }
 
-//Instructions 1
+
 myTrials.push(myTrial={
         trial_number: 0,
-        trial_type: "pre1",
-        concept_l:"",
-        concept_r:"",
-        conName_l:"",
-        conName_r:"",
-        concept_dist:""
+        trial_type: "real_inst",
+
         });
+
 
 var indices_s = [0,1,2,3,4,5,6]
     
@@ -201,6 +214,12 @@ for (i=0; i < indices_s.length; i++){
     myTrials.push(myTrial);
 }
 }
+
+myTrials.push(myTrial={
+        trial_number: '',
+        trial_type: "briefing",
+  
+        });
 /////////////////////////////////////
 //THIS IS WHERE THE EXPERIMENT STARTS
 ////////////////////////////////////
@@ -212,7 +231,15 @@ showSlide("instructions");
 
 var experiment = {
     
-  //Objet to be submitted:
+  //Objets to be submitted:
+    
+  brief:{
+    native:[],
+    second:[],
+    problem:[],
+    ifproblem:[],
+    comment:[]
+  },
   data :{
     tri_number:[],
     tri_type:[],
@@ -279,20 +306,31 @@ var experiment = {
     // Get the current trial - <code>shift()</code> removes the first element of the array and returns it.
     var current_trial = experiment.trials.shift();
       
-    if (current_trial.trial_type == "pre1" || "pre2")
+    if (current_trial.trial_type == "sound_inst" || "obj_inst_prac" || "sound_inst_prac" || "real_inst")
         {
             showSlide("instructions2");
    $("#instruct_dyn").html(MyInstruct[current_trial.trial_type])
+   
+   $('#pic_task').empty();
+        }
+      
+    if (current_trial.trial_type == "obj_inst" )
+        {
+            showSlide("instructions2");
+            $("#instruct_dyn").html(MyInstruct[current_trial.trial_type])
+            
+            $("#pic_task").html($task);
         }
       
       
-    if (current_trial.trial_type == "prac" || current_trial.trial_type == "real" ) 
+      
+    if (current_trial.trial_type == "obj_prac" || current_trial.trial_type == "obj_real" ) 
     {   
         var current_category = category[current_trial.category];
         var current_name = category_name[current_trial.category];
         var current_distance = concept_dist[current_trial.distance];
  
-      showSlide("stage_concept");
+      showSlide("stage");
         
     $('#object_test').empty(); 
     $('#obj_0').empty();
@@ -333,7 +371,7 @@ var experiment = {
         
     current_sound.one('ended', function() {
  
-    showSlide("stage_concept");
+    showSlide("stage");
     $('#object_test').empty(); 
     $('#obj_0').empty();
     $('#obj_1').empty(); 
@@ -348,9 +386,26 @@ var experiment = {
     });
         
     
-
-
     }
+      
+      else if (current_trial.trial_type == "briefing")
+        {
+            showSlide("briefing");
+            
+            $( "#nextButton_brief" ).click(function() {
+            experiment.brief.native.push(document.getElementById("native").value);
+                
+            experiment.brief.second.push(document.getElementById("second").value);
+            experiment.brief.problem.push(document.getElementById("problem").value);
+            experiment.brief.ifproblem.push(document.getElementById("ifproblem").value);
+                
+            experiment.brief.comment.push(document.getElementById("comment").value);
+
+                
+            });
+        
+        }
+
 
     }
   

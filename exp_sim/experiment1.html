@@ -33,7 +33,9 @@
   </div>
 		<p id='logo-text'>Stanford Language and Cognition Lab</p>
 	<p class="block-text">
-        This experiment tests judgements of object similarity (it lasts less than 2 minutes in total).<br><br> Warning: if you are using Internet Explorer, some aspects of the experiment might not function properly! 
+        In this survey This experiment tests judgements of object similarity (it lasts less about XXX minutes in total). The experiment involves audio sequences. Please make sure that no music is played in the background. Put your headphones on or make sure you are in a quiet environment.
+        
+        <br><br> Warning: if you are using Internet Explorer, some aspects of the experiment might not function properly! 
         </p>
 
 
@@ -61,7 +63,7 @@
 </table>
 </div>
     
-<div class="slide" id="stage_concept" style="display:table;">
+<div class="slide" id="stage" style="display:table;">
 
     <table id="hello" width="80%" border="0" cellspacing="20" cellpadding="0" align="center">
 <tr>
@@ -132,6 +134,13 @@
 
       <tr>
     <td align="center">
+      <div id="task">
+            <p id="pic_task" align="center"></p>
+     </div>
+    </td>
+      </tr>
+      <tr>
+    <td align="center">
       <button type="button" id="nextButton_choice" onClick="this.blur(); experiment.next()"> Continue</button>
     </td>
       </tr>
@@ -141,6 +150,54 @@
 </div>
     
 
+    
+    <!-- Briefing-->   
+<div class="slide" id="briefing">
+    <br><p><center>You have finished the experiment. Thank you for your participation!<br> Before submitting the data, please answer the following questions. <br>The answers are totally confidential and will not affect the approval of your HIT!</center></p>
+
+    
+    <p><b>Is English your native (fisrt) language?</b></p>
+                  <p>
+                    <select name="native" id="native" form="demographics">
+                      <option value="">Choose an answer</option>
+                      <option value="yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </p>
+
+    <p><b>Were you exposed to one of these languages in your early childhood: Arabic or Hindi? (whether or not you ended up speaking the language)  </b></p>
+                  <p>
+                    <select name="second" id="second" form="demographics">
+                      <option value="">Choose an answer</option>
+                      <option value="yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </p>
+    
+    <p><b>Did you experience any technical problem with the experiment at any point?</b></p>
+                  <p>
+                    <select name="problem" id="problem" form="demographics">
+                      <option value="">Choose a response</option>
+                      <option value="No">No problem</option>
+                      <option value="Yes">Yes I had a problem</option>
+                
+                    </select>
+                  </p>
+    
+     <p><b>If you answered Yes to the previous question, can you explain what kind of technical problem did you have?</b></p>
+          <p>
+           <textarea type="text" id="ifproblem" style="width:100%" name="problemExp"></textarea>
+          </p>
+    
+    <p><b>[Optional] Do you have any comment about the experiment? (too long? too complicated?,...) </b></p>
+          <p>
+           <textarea type="text" id="comment" style="width:100%" name="comment"></textarea>
+          </p>
+    
+
+      <center><button type="button" id="nextButton_brief" onClick=" this.blur(); experiment.next()"> Submit the results!</button></center>
+</div>  
+    
     
 <!-- The finish slide. -->
 <div class="slide" id="finished">

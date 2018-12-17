@@ -196,7 +196,7 @@ myTrials.push(myTrial={
         });
 
 
-var indices_s = [0,1,2,3,4,5,6]
+var indices_s = [0,1,2,3,4,5,6,7]
     
 for (k=0; k < 3; k++) {
     

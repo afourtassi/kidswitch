@@ -15,81 +15,163 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(langcog)
-theme_set(theme_bw())
+library(ggthemes)
+library(lme4)
+library(purrr)
+theme_set(theme_few())
 ```
 
 
-Data. 
+Processing for IRB
+
+```{r}
+d1 <- read_delim("data_real1.txt", delim = " ")  %>%
+  filter(code != 'test',
+         !is.na(code)) %>%
+  distinct(ID, gender, age, code)
+
+d2 <- read_delim("data_real2.txt", delim = " ") %>%
+  filter(code != 'test',
+         !is.na(code)) %>%
+  distinct(ID, gender, age, code)
+
+d3 <- read_delim("data_winter.txt", delim = " ") %>%
+  filter(code != 'test',
+         !is.na(code)) %>%
+  distinct(ID, gender, age, code)
+
+d_all <- d1 %>%
+  bind_rows(d2) %>%
+  bind_rows(d3) %>%
+  rowwise() %>%
+  mutate(date = strsplit(code, split = "-")[[1]][2]) %>%
+  select(-code, -ID)
+
+d_final <- cbind(subjects = rownames(d_all), d_all)  %>%
+  mutate(ID= paste('child_', subjects, sep="")) %>%
+  select(ID, gender, age, date)
+
+write.csv(d_final, file = "data_IRB_fourtassi.csv")
+
+
+```
+
+Adult data. 
 
 ```{r}
 
+d_adult <- read_delim("adult_pilot_3.txt", delim = " ")  %>%
+  filter(type == "Test") %>%
+  mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
 
-d_word_summer <- read_delim("data_summer_2.txt", delim = " ") %>%
+d_adult_score <- d_adult %>%
+  group_by(ID, sound_dist, concept_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect))
+
+d_adult_excl <- d_adult_score %>%
+  filter(sound_dist == 'catch') %>%
+  ungroup() %>%
+  select(ID, mean) %>%
+  dplyr::rename(score = mean)
+  #select(ID, score)
+  
+d_adult_good <- d_adult %>%
+  left_join(d_adult_excl) %>%
+  filter(score >0.7) %>%
+  filter(sound_dist != 'catch')
+
+feather::write_feather(d_adult_good, "../saved_data/data_adult.feather")
+```
+
+Children data
+
+```{r}
+d_child <- read_delim("data_summer_all.txt", delim = " ") %>%
   filter(type == "Test") %>%
   filter(age != 6) %>%
   filter(code != 'test',
          !is.na(code)) %>%
-  filter(grepl('soph', code))
-
-d_all <- d_word_summer %>%
+  filter(grepl('soph', code))%>%
   mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
-  
 
-
-```
-
-Process data:
-
-```{r}
-
-data <- d_all %>%
+d_child_score <- d_child %>%
   group_by(ID, sound_dist, concept_dist) %>%
   dplyr::summarise(mean = mean(iscorrect))
-  #multi_boot_standard(col = "iscorrect")
 
 #Catch
-data_excl <- data %>%
+d_child_excl <- d_child_score %>%
   filter(sound_dist == 'catch') %>%
   ungroup() %>%
   select(ID, mean) %>%
   dplyr::rename(score = mean)
 
-data_catch <- d_all %>%
-  left_join(data_excl) %>%
+d_child_good <- d_child %>%
+  left_join(d_child_excl) %>%
   filter(score > 0.5) %>%
   filter(sound_dist != 'catch')
 
-#Exclude items 
-#item_excl <- (data %>%
-#  filter(sound_dist != 'catch') %>%
-#  filter(mean < 0.25) %>%
-#  ungroup() %>%
-#  distinct(ID))$ID 
+feather::write_feather(d_child_good, "../saved_data/data_child.feather")
+  
+```
 
 
+Similarity data
 
-#data_reverse <- d_word %>%
-# filter(!(ID %in% item_excl))
+```{r}
 
-#data_catch_reverse <- d_word %>%
-#  left_join(data_excl) %>%
-#  filter(score >= 0.5) %>%
-#  filter(!(ID %in% item_excl))
+d_sim <- read_delim("sim_results.txt", delim = " ")  %>%
+  filter(condition != "obj_prac" & condition != "sound_prac") %>%
+  filter(problem == 'No')
 
-#data_final <- data_good %>%
-#  mutate(age2 = ifelse(grepl('4',age), 4, 5))
+d_sim_summary <- d_sim %>%
+  group_by(condition, distance) %>%
+  summarise(mean = mean(answer),
+                   sd = sd(answer),
+                   n = n()) %>%
+  mutate(se = sd / sqrt(n),
+         lower = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  select(-sd, -n, -se) 
+
+d_sim_transform <-  d_sim_summary %>%
+  mutate(scale1 = (mean-1)/6) %>%
+  mutate(myscale =ifelse(condition=='sound_real', scale1/0.926, scale1)) 
+
+
+#d_sim_summary$distance <- factor(sum_child$concept_dist, levels = c("similar", "different"))
+#sum_child$sound_dist <- factor(sum_child$sound_dist, levels = c("similar", "different"))
+
+ggplot(d_sim_summary, 
+      aes(x = distance, y = mean)) +
+  #geom_point()+
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                 position = position_dodge(width = .1)) + 
+  xlab("Distance") +ylab("rating")+
+  theme_few()+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      ) + facet_grid(.~condition) 
 
 
 ```
 
-Summary 
-```{r }
-#{r fig.width=2, fig.height=5}
+Summary
 
+```{r}
 
-sum_catch <- data_catch %>%
+sum_adult <- d_adult_good %>%
   group_by(sound_dist, concept_dist) %>%
-  #group_by(sound_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect),
+                   sd = sd(iscorrect),
+                   n = n()) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  select(-sd, -n, -se) 
+
+sum_child <- d_child_good %>%
+  group_by(sound_dist, concept_dist) %>%
   dplyr::summarise(mean = mean(iscorrect),
                    sd = sd(iscorrect),
                    n = n()) %>%
@@ -100,31 +182,366 @@ sum_catch <- data_catch %>%
 
 
 
-ggplot(sum_catch, 
-      aes(x = sound_dist, y = mean, col = factor(concept_dist))) +
+```
+
+Plots
+```{r fig.width=3, fig.height=1.7}
+
+sum_child$concept_dist <- factor(sum_child$concept_dist, levels = c("similar", "different"))
+sum_child$sound_dist <- factor(sum_child$sound_dist, levels = c("similar", "different"))
+
+plot_child <- ggplot(sum_child, 
+      aes(x = sound_dist, y = mean, group = factor(concept_dist), col = factor(concept_dist))) +
   #geom_point()+
   geom_pointrange(aes(ymin = lower, ymax = upper), 
                  position = position_dodge(width = .1)) + 
-  #geom_line(lty = 2) + 
-  geom_hline(yintercept = 0.50) +
-  xlab("Aud distance") +ylab("% Accurate")+
-  scale_colour_discrete(name="Vis Dist")+
-theme(legend.title = element_text(size=8)) 
+  geom_line() + 
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("Auditory similary") +ylab("Accuracy")+
+  scale_colour_discrete(name="Visual similarity")+
+  theme_few()+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      ) #+ facet_grid(.~block) 
+
+plot_child
+
+sum_adult$concept_dist <- factor(sum_adult$concept_dist, levels = c("similar", "different"))
+sum_adult$sound_dist <- factor(sum_adult$sound_dist, levels = c("similar", "different"))
+
+plot_adult <- ggplot(sum_adult, 
+       aes(x = sound_dist, y = mean, group = factor(concept_dist), col = factor(concept_dist))) +
+
+  geom_pointrange(aes(ymin = lower.ci, ymax = upper.ci), 
+                  position = position_dodge(width = .1)) + 
+  
+  geom_hline(yintercept = .50, linetype="dashed") + 
+  geom_line() +
+  xlab("Auditory similary") +ylab("Accuracy")+
+  #scale_colour_manual(values = c("red", "blue"), name="Vis Dist")+
+  scale_colour_discrete(name="Visual similarity")+
+  
+  #scale_y_continuous(limits = c(0.45, 0.9))+
+  theme_few()+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      ) #+ facet_grid(. ~ block)+
+
+#theme(plot.title = element_text(size = 12, face = "bold"),
+#    legend.title=element_text(size=10), 
+#    legend.text=element_text(size=9))
+plot_adult
+
+```
 
 
-#Model
-data_model <- data_catch %>%
-  mutate(s_dist=ifelse(sound_dist=="similar", 0, 1),
-         c_dist=ifelse(concept_dist=="similar", 0, 1))  
+Models
+```{r}
 
-model <- glmer(iscorrect ~ s_dist + c_dist + 
-                 (1 | ID) + 
+
+#Code and center levels
+data_ch <- d_child_good %>%
+  mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
+         c_dist=ifelse(concept_dist=="similar", -1, 1))  
+
+data_ad <- d_adult_good %>%
+  mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
+         c_dist=ifelse(concept_dist=="similar", -1, 1)) 
+
+#Maximal (does not converge)
+model_ch <- glmer(iscorrect ~ s_dist * c_dist + 
+                 (s_dist * c_dist  | ID) + 
+                 (c_dist | item_object) + 
+                 (s_dist | item_sound), 
+               data = data_ch, family = binomial(),
+               glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+model_ad <- glmer(iscorrect ~ s_dist * c_dist + 
+                 (s_dist * c_dist  | ID) + 
+                 (c_dist | sound) + 
+                 (s_dist | concept), 
+               data = data_ad, family = binomial(),
+               glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+#1) Simplify random structure till the model converges 
+
+#Drop interaction from random slope per subject (Stil does not converge)
+model1 <- glmer(iscorrect ~ s_dist * c_dist + 
+                 (s_dist + c_dist  | ID) + 
+                 (1 + c_dist| item_object) + 
+                 (1 + s_dist| item_sound), 
+               data = data_model, family = binomial())
+
+#Drop random slope per stimuli  (hooray! This one converges now)
+model2 <- glmer(iscorrect ~ s_dist * c_dist + 
+                 (s_dist + c_dist  | ID) + 
+                 (1 | item_object) + 
+                 (1 | item_sound), 
+               data = data_model, family = binomial(),
+              glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+model00 <- mixed(iscorrect ~ s_dist * c_dist + 
+                 (s_dist + c_dist  | ID) + 
+                 (1 | item_object) + 
+                 (1 | item_sound), 
+                 method = "LRT",
+               data = data_model, family = binomial(),
+              glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+
+
+#2) Use likelihood ration to prune fixed effects 
+
+
+#drop interaction term from fixed effect (This works! less degrees of freedom and similar explanatory power)
+
+model3 <- glmer(iscorrect ~ s_dist + c_dist + 
+                 (s_dist + c_dist  | ID) + 
                  (1 | item_object) + 
                  (1 | item_sound), 
                data = data_model, family = binomial())
 
-summary(model)
+
+anova(model2, model5)
+
+```
+
+
+```{r fig.width=2.5, fig.height=1.2}
+hi <- get_speaker_statistics()
+
+hello <- hi %>%
+  #filter(speaker_role=="Target_Child") %>%
+  mutate(age = round(target_child_age/12)) %>%
+  filter(age <11) %>%
+  mutate(role = ifelse(speaker_role=='Target_Child', 'child', 'adult')) %>%
+  group_by(age, role, target_child_sex) %>%
+  summarise(utt = sum(num_utterances)) %>%
+  filter(target_child_sex == 'male' | target_child_sex == 'female') %>%
+  rename(gender = target_child_sex) %>%
+  mutate(gender2 = ifelse(gender=='male', 'male children', 'female children'))
+
+ggplot(hello, 
+      aes(x = age, y = utt, col = factor(role))) +
+  geom_point()+
+  geom_line(aes(lty=factor(role))) + 
+  scale_x_continuous(breaks=c(1,2,3,4, 5, 6, 7,8,9, 10)) +
+  #scale_y_continuous(name="number of utterances", labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  xlab("Age (years)") +ylab("Number of utterances")+
+  guides(col=guide_legend(title="Speaker"), lty=guide_legend(title="Speaker"))+
+  facet_grid(.~gender2)
+  
+  #geom_hline(yintercept = 0.50) +
+  #xlab("Aud distance") +ylab("% Accurate")+
+  #scale_colour_discrete(name="Vis Dist")+
+#theme(legend.title = element_text(size=8)) 
+
+hello <- hi %>%
+  #filter(speaker_role=="Target_Child") %>%
+  mutate(age = round(target_child_age/12)) %>%
+  filter(age <11) %>%
+  mutate(role = ifelse(speaker_role=='Target_Child', 'child', 'adult')) %>%
+  group_by(age, role, ) %>%
+  summarise(utt = sum(num_utterances)) #%>%
+  #filter(target_child_sex == 'male' | target_child_sex == 'female')
+
+```
+
+
+Simualte the probability space
+
+
+```{r}
+#Process the data to prepare for the fit
+data_fit_adult <- sum_adult %>%
+  rename(lower  = lower.ci,
+         upper = upper.ci) %>%
+  mutate(group = 'adults',
+         s_dist = ifelse(sound_dist =='different',  0.66, 0.23),
+         c_dist = ifelse(concept_dist =='different', 0.40, 0.19)) 
+
+data_fit_child <- sum_child %>% 
+   mutate(group = 'children',
+         s_dist = ifelse(sound_dist =='different',  1, 0.66),
+         c_dist = ifelse(concept_dist =='different', 1, 0.40)) 
+
+data_fit <- data_fit_adult %>%
+  bind_rows(data_fit_child)
+```
+
+Now I need to predict accuracy as function of sound and meaning similarity 
+```{r}
+
+#This the analytical solution of the posterior + luce rule
+combine_cues <- function(s, o, Vr) {
+  s1 = 0
+  o1 = 0
+  no_acc <- exp(-(s1-s)^2/(2*Vr)) + exp(-(o1-o)^2/(2*Vr))
+  acc <- 1 + exp(-((s1-s)^2+(o1-o)^2)/(2*Vr)) 
+  acc_norm <- acc/(acc+no_acc)
+  
+  return(acc_norm)
+}
+
+combine_cues_2 <- function(s, o, Vr_s, Vr_o) {
+  s1 = 0
+  o1 = 0
+  no_acc <- exp(-(s1-s)^2/(2*Vr_s)) + exp(-(o1-o)^2/(2*Vr_o))
+  acc <- 1 + exp(-((s1-s)^2/(2*Vr_s)+(o1-o)^2/(2*Vr_o))) 
+  acc_norm <- acc/(acc+no_acc)
+  
+  return(acc_norm)
+}
+
+fit_adults <- nls(mean ~ combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='adults'), start=list(Vr=0.01), lower=c(0), algorithm="port")
+
+fit_adults_2 <- nls(mean ~ combine_cues_2(s_dist, c_dist, Vr_s, Vr_o), data=subset(data_fit, group=='adults'), start=list(Vr_s=0.04, Vr_o=0.04), lower=c(0,0), algorithm="port")
+
+Vr_ad <- coef(fit_adults)
+Vr_s_ad <- coef(fit_adults_2)[1]
+Vr_o_ad <- coef(fit_adults_2)[2]
+
+fit_children <- nls(mean ~ combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='children'), start=list(Vr=0.3), lower=c(0), algorithm="port")
+
+fit_children_2 <- nls(mean ~ combine_cues_2(s_dist, c_dist, Vr_s, Vr_o), data=subset(data_fit, group=='children'), start=list(Vr_s=0.3, Vr_o=0.3), lower=c(0,0), algorithm="port")
+
+Vr_ch <- coef(fit_children)
+Vr_s_ch <- coef(fit_children_2)[1]
+Vr_o_ch <- coef(fit_children_2)[2]
+
+model_data <- data_fit %>%
+  mutate(prediction = ifelse(group=='adults', 
+                             combine_cues(s_dist, c_dist, Vr_ad),
+                             combine_cues(s_dist, c_dist, Vr_ch)
+                             )) %>%
+  mutate(prediction_2 = ifelse(group=='adults', 
+                             combine_cues_2(s_dist, c_dist, Vr_s_ad, Vr_o_ad),
+                             combine_cues_2(s_dist, c_dist, Vr_s_ch, Vr_o_ch)
+                             )) %>%
+  rename(human = mean) 
+
+model_data_plot <-  model_data %>%
+  gather(key, value, human, prediction, prediction_2) %>%
+  mutate(ci.upper = ifelse(key=='human', upper, value),
+         ci.lower = ifelse(key=='human', lower, value))
+  
+feather::write_feather(model_data_plot, "../saved_data/data_human_model.feather")
+
+```
+
+Simulations
+```{r}
+
+simulation1 <- function(s,o,Vr) {
+  s1 = 0
+  o1 = 0
+  no_acc <- exp(-(s1-s)^2/(2*Vr)) + exp(-(o1-o)^2/(2*Vr))
+  acc <- 1 + exp(-((s1-s)^2+(o1-o)^2)/(2*Vr)) 
+  acc_norm <- acc/(acc+no_acc)
+  
+  return(acc_norm)
+}
+
+
+
+s <- seq(0,1,0.01)
+
+simulation_data <- data.frame(x=s, y=simulation1(s, o=0.25, Vr=(0.15)^2), sigma = '0.15', object_distance = '0.25') %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=0.5, Vr=(0.15)^2), sigma = '0.15', object_distance = '0.5')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=1, Vr=(0.15)^2), sigma = '0.15', object_distance = '1')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=0.25, Vr=(0.3)^2), sigma = '0.3', object_distance = '0.25')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=0.5, Vr=(0.3)^2), sigma = '0.3', object_distance = '0.5')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=1, Vr=(0.3)^2), sigma = '0.3', object_distance = '1')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=0.25, Vr=(0.6)^2), sigma = '0.6', object_distance = '0.25')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=0.5, Vr=(0.6)^2), sigma = '0.6', object_distance = '0.5')) %>%
+  bind_rows(data.frame(x=s, y=simulation1(s, o=1, Vr=(0.6)^2), sigma = '0.6', object_distance = '1')) 
+
+feather::write_feather(simulation_data, "../saved_data/simulations.feather")
+
+
+ggplot(simulation_data, aes(x=x, y=y, col=sigma)) + 
+  geom_line() + 
+  theme_few()+
+  theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11),
+      aspect.ratio = 0.7
+      )+
+  ylim(c(0.4,1))+
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("sound distance") + ylab("Prob. accurate") +
+  facet_grid(.~object_distance) 
+
 
 
 
 ```
+
+
+
+```{r}
+
+
+model_data_plot$group <- factor(model_data_plot$group, levels = c("children", "adults"))
+
+ggplot(model_data_plot, 
+#ggplot(subset(model_data_plot, group=='children'),
+      aes(x = sound_dist, y = value, group = factor(concept_dist), col = factor(concept_dist))) +
+  #geom_point()+
+  geom_pointrange(aes(ymin = ci.lower, ymax = ci.upper), 
+                 position = position_dodge(width = .1),
+                 size=0.2) + 
+  geom_line() + 
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("Auditory similary") +ylab("Accuracy")+
+  scale_colour_discrete(name="Visual similarity")+
+  theme_few()+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      ) + facet_grid(group~key, scales="free_y") +
+  theme(aspect.ratio = 0.7)
+
+
+```
+
+plots 
+```{r}
+
+Gdist <- function(s0, Vr, x){
+  
+  return((1/sqrt(2*pi*Vr))*exp(-(s0-x)^2/(2*Vr)))
+} 
+
+s = seq(-1,1.5,0.01)
+y = Gdist(0,1,x)
+
+illustration <- data.frame(x=s, y=Gdist(s0=0, Vr=0.1, s), x.pos = "0", type='within') %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=0.5, Vr=0.1, s), x.pos = "0.5", type='within')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.3, s), x.pos = "1", variance='within')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.3, s), x.pos = "1", variance='within')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=0.5, Vr=0.1, s), x.pos = "0.5", type='between')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.3, s), x.pos = "1", variance='between')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.3, s), x.pos = "1", variance='between')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.3, s), x.pos = "1", variance='between'))
+
+ggplot(illustration, aes(x=x, y=y, col=x.pos)) + 
+  geom_line() + 
+  theme_few()+
+  theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11),
+      aspect.ratio = 0.7
+      )+
+  #xlim(c(-1,1))+
+  #ylim(c(0,1))+
+  #geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("position") + ylab("Prob") #+
+  #facet_grid(.~object_distance) 
+
+
+```
+

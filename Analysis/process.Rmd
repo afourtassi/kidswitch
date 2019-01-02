@@ -102,7 +102,8 @@ d_sim_summary <- d_sim %>%
 d_sim_transform <-  d_sim_summary %>%
   mutate(normalized =ifelse(condition=='sound_real', mean/0.926, mean)) %>% #Here I only normalize sounds, objects are already normalized
   filter(distance != "iden") %>%
-  mutate(mydist = ifelse(distance=="0.6", 1, myscale))%>% # Here I create a ligne for different which were not explicitly asked from participants because it was used as a prototype, thus dist=1
+  mutate(stimuli = ifelse(condition =='obj_real','objects','sounds')) %>%
+  mutate(normalized_all = ifelse(distance=="0.6", 1, normalized))%>% # Here I create a ligne for "different", which were not explicitly asked from participants because it was used as a prototype, thus dist=1
   mutate(labels = ifelse(distance=='0.1','similar', 
                          ifelse(distance=='0.3','intermediate', 
                                 ifelse(distance=='sim','similar',
@@ -110,21 +111,27 @@ d_sim_transform <-  d_sim_summary %>%
                                                
  
 
-#d_sim_summary$distance <- factor(sum_child$concept_dist, levels = c("similar", "different"))
+d_sim_transform$labels <- factor(d_sim_transform$labels, levels = c("similar","intermediate","different"))
 #sum_child$sound_dist <- factor(sum_child$sound_dist, levels = c("similar", "different"))
 
+
+feather::write_feather(d_sim_transform, "../saved_data/d_sim_transform.feather")  
+
 ggplot(d_sim_transform, 
-      aes(x = labels, y = mydist, col=condition)) +
-  geom_point()+
+      aes(x = labels, y = normalized_all, group = factor(stimuli), col=factor(stimuli))) +
+  geom_point(size=2)+
+  geom_line()+
   #geom_pointrange(aes(ymin = lower, ymax = upper), 
      #            position = position_dodge(width = .1)) + 
-  xlab("Distance") +ylab("rating")+
+  scale_colour_discrete(name="Stimuli")+
   theme_few()+
 theme(legend.title = element_text(size=11),
       legend.text=element_text(size=11),
-      axis.text = element_text(size = 11)
+      axis.text = element_text(size = 11),
+      aspect.ratio = 0.7
       ) +
-  ylim(c(0,1.1)) 
+  ylim(c(0,1.1)) +
+  xlab("Stimuli group")+ ylab("Perceptual distance (experimental)") 
 
 
 ```

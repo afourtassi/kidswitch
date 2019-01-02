@@ -60,27 +60,26 @@
 \maketitle
 
 \begin{abstract}
-Children tend to produce words earlier when they are connected to a
-variety of other words along both the phonological and semantic
-dimensions. Though this connectivity effect has been extensively
-documented, little is known about the underlying developmental
-mechanism. One view suggests that learning is primarily driven by a
-network growth model where highly connected words in the child's early
-lexicon attract similar words. Another view suggests that learning is
-driven by highly connected words in the external learning environment
-instead of highly connected words in the early internal lexicon. The
-present study tests both scenarios systematically in both the
-phonological and semantic domains, and across 8 languages. We show that
-external connectivity in the learning environment drives growth in both
-the semantic and the phonological networks, and that this pattern is
-consistent cross-linguistically. The findings suggest a word learning
-mechanism where children harness their statistical learning abilities to
-(indirectly) detect and learn highly connected words in the learning
-environment.
+Stager and Werker (1997) first showed that chidlren's early ability to
+distinguish similar sounds do not automatically translate into word
+learning skills. Early explanations proposed that children may not be
+able to encode subtile phonetic contrasts when learning novel word
+meanings, thus suggesting a binary/discontinuous pattern of development.
+However, later work has revealed (e.g., through using simpler testing
+methods) that children do encode such contrasts, thus favoring a rather
+probabilitic/continuous pattern of development. The present study
+proposes a precise probabisitic model describing how development may
+processd in a continuous fashion. The purpose of the model is to account
+for previousely documented facts while providing new predictions. We
+collected data from both preschool children and adults, and we show that
+the model can explain various patterns of learning both within the same
+age and across development. More generally, our work highlight the role
+of computational modeling in advancing our understanding of development
+through both organizing exsinting knowledge and generating new
+principled hypotheses.
 
 \textbf{Keywords:}
-semantic network, phonological network, network growth, mechanism of
-word learning
+word learning, cogniive development, computational modeling
 \end{abstract}
 
 \section{Introduction}\label{introduction}
@@ -130,6 +129,13 @@ hand, adults show patterns of learning similar to those shown by
 between words increases (Pajak, Creel, \& Levy, 2016; White, Yee,
 Blumstein, \& Morgan, 2013).
 
+Here talk about the continuous hypothesis a bit later here. after
+introducing the experimental evidecne.
+
+Also talk more about the major assumption of model, what is contiuous
+about him? and what is the source of this hypothsis (swingley, Yoshida,
+\ldots{})
+
 In the light of these evidence, the purpose of the current work is to
 propose a precise probabilsitc model of the Stager and Werker's task
 where developmment is understood to proceed in a continuous fashion
@@ -176,11 +182,14 @@ object \(o\) activated the concept \(C\) in the speaker's mind. The
 concept prompted the cooresponding label \(L\). Finally, the label was
 physically instantiated by the sound \(s\).
 
-Because of the noisy nature of the representations, the observer can
-only determine the hidden variables (i.e., the concept \(C\) and the
-label \(L\)) in a probabilistic fashion. For simplicity, we assume that
-the probability of membership of objects and sounds to concepts and
-labels, respectively, are normally distributed:
+A similar probabilsitic structure was used by Lewis \& Frank (2013) to
+model concept learning, and by Hofer \& Levy (2017) to model spoken word
+learning. However, the first study assumed that the sounds are heard
+unambiguousely, and the second assumed the concepts are observed
+unambiguously. In our model, we made the more reaistic assumption of
+ambiguity at the level of both the sounds and the objects. For
+simplicity, we assume that the probability of membership of objects and
+sounds to concepts and labels, respectively, are normally distributed:
 
 \[ p(o | C) \sim  \mathcal{N}(\mu_C, \sigma^2_C) \]
 \[ p(s| L) \sim  \mathcal{N}(\mu_L, \sigma^2_L) \] We assume there to be
@@ -287,7 +296,7 @@ predictions:
   accurate responses increases as a function of \(\Delta s\). This
   pattern accounts for the fact that similar sounds are generally more
   challenging to learn than different sounds for both chidlren (Stager
-  \& Werker, 1997) and adults ({\textbf{???}}).
+  \& Werker, 1997) and adults (Pajak et al., 2016).
 \item
   For fixed values of \(\Delta s\) and \(\Delta o\), accuracy increases
   when the representational noise (characterized with \(\sigma\))
@@ -300,9 +309,10 @@ predictions:
   with the visual distance between the semantic referents \(\Delta o\).
   This is a new predcition that our model makes. Previous work studied
   the effect of several bottom-up and top-down properties in
-  disambiguating similar sounding words (see review in the
-  introduction), But no previous study tested the effect of the visual
-  distance between the semantic referents.
+  disambiguating similar sounding words (Dautriche et al., 2015; Fennell
+  \& Waxman, 2010; Rost \& McMurray, 2009; Thiessen, 2007), but no
+  previous study tested the effect of the visual distance between the
+  semantic referents.
 \end{enumerate}
 
 To sum, we introduced a model that accounts for some qualitative
@@ -487,24 +497,72 @@ prediction of our model.
 \end{table}
 
 Figures XX (middle and right graphs) show the predictions of the models.
-Both model 1 and model 2 fit reseanaby well the the experimental data in
-both children and adults. They both correcly predict the relative
-recognition accuacy accross conditions: the pair of words that differ on
-both the object and sound levels were the easiest to learn, followed by
-the pairs of words that differ on only one level, then the pair of words
-that are similar on both levels.
+Both model 1 and model 2 fit reseanaby well the experimental data in
+both children and adults. In particular, they both correcly predict the
+relative recognition accuacy accross conditions: the pair of words that
+differ on both the object and sound levels were the easiest to learn,
+followed by the pairs of words that differ on only one level, then the
+pair of words that are similar on both levels.
 
-For Model 1, we obtained a noise parameter of \(\sigma =\) 0.63 {[}0.53,
+For Model 1, the fitted noise parameter was \(\sigma =\) 0.63 {[}0.53,
 0.73{]} for preschoolers, and \(\sigma =\) 0.16 {[}0.12, 0.19{]} for
 adults. It explained the majority of the variance (\(R^2=\) 0.94). For
 model 2, children had a sound specific noise of \(\sigma_S =\) 0.9
 {[}0.68, 1.11{]}, and a concept specific noise of \(\sigma_C =\) 0.29
-{[}0.1, 0.49{]}. Adults had a concept specific noise of \(\sigma_C =\)
-0.14 {[}0.05, 0.23{]}, and a sound specific noise of \(\sigma_S =\) 0.16
-{[}0.05, 0.28{]}. The model explain almost all the variance (\(R^2=\)
-0.96).
+{[}0.1, 0.49{]}. Adults had a sound specific noise of \(\sigma_S =\)
+0.16 {[}0.05, 0.28{]}. The model explain almost all the variance
+(\(R^2=\) 0.96), and a concept specific noise of \(\sigma_C =\) 0.14
+{[}0.05, 0.23{]}. Note that, despite the fact that Model 1 used only one
+degree of freedom, it captures the data variance almost as well as Model
+2 which used two degrees of freedom.
 
 \section{General Discussion}\label{general-discussion}
+
+Here maybe be more precise about what the model does (providing a
+summary in prose of the main results )
+
+Subsequent studies have shown that To account for this phenomenon, we
+proposed a model where words and their semantic referents are both
+encoded in a probabilistic fashion. A pair of words may be encoded
+simultaneousely, but successful recognition depends both on the
+perceptual distance between the words and on the degree of uncertainty
+of their encoding. These predictions explained learning patterns both
+within and across developmental stages, respectively.
+
+Besides accounting for previous findings, our model made a new
+prediction: learning similar words is not only modulated by to
+similarity of their phonological forms, but also by the visual
+similarity of their semantic referents. More generally, since visual
+similarity is an early organizing feature in the semantic domain (e.g.,
+Wojcik \& Saffran, 2013), our finding suggest that children may
+prioritize the acqusition of words that are quite distant in the
+semantic space. This suggestion is supported by recent findings based on
+the investigation of early vocabulary growth (Engelthaler \& Hills,
+2017; Sizemore, Karuza, Giusti, \& Bassett, 2018). That said, further
+work is needed to explore the effect on word learning of other semantic
+dimensions that could be encoded by children (e.g.,
+conceptual/functional features).
+
+Our model can be seen as an ideal observer (Anderson, 1990) in the sense
+that it provides a precise charaterization of the task, and shows how
+information can used optimally to perform this task. In our case, the
+input is categorized with uncertainty, thus the model performs an
+optimal probabilistic (Bayesian) inference, combining cues from both the
+sound and the semantic referents. Crucially, we assume the degree of
+this uncertainty to vary across development. Thus, although children and
+adults appear to behave differently, they are both near-optimal with
+resprect to their own encoding's uncertainty. Note that our model is
+agnostic as to the precise source of this uncertainty: part of it maybe
+due to ambiguous phonological boundaries ({\textbf{???}}), and another
+part could be due to various task demands ({\textbf{???}}).
+
+To conclude, this study proposed a model of novel word is compatible
+with the hypothesis according to which development is not so much about
+a qualitative cognitive change as much as it is about the quantitative
+refinement of similar skills acrss the lifespan (Pajak et al., 2016;
+Swingley, 2007; Yoshida et al., 2009).
+
+Discuss Hofer \& Levy, 2017, and Fourtassi \& Frank, 2017
 
 \vspace{1em}
 
@@ -521,6 +579,10 @@ Foundation, NSF \#1528526, and NSF \#1659585.
 \setlength{\parindent}{-0.1in} \setlength{\leftskip}{0.125in} \noindent
 
 \hypertarget{refs}{}
+\hypertarget{ref-anderson1990}{}
+Anderson, J. R. (1990). \emph{The adaptive character of thought}.
+Hillsdale, NJ: Erlbaum.
+
 \hypertarget{ref-barr2013}{}
 Barr, D., Levy, R., Scheepers, C., \& Tily, H. (2013). Random effects
 structure for confirmatory hypothesis testing: Keep it maximal.
@@ -537,6 +599,11 @@ Dutoit, T., Pagel, V., Pierret, N., Bataille, F., \& Van der Vrecken, O.
 synthesizers free of use for non commercial purposes. In
 \emph{Proceedings of ICSLP} (Vol. 3). IEEE.
 
+\hypertarget{ref-engelthaler2017}{}
+Engelthaler, T., \& Hills, T. T. (2017). Feature biases in early word
+learning: Network distinctiveness predicts age of acquisition.
+\emph{Cognitive Science}, \emph{41}.
+
 \hypertarget{ref-fennell2010}{}
 Fennell, C., \& Waxman, S. (2010). What paradox? Referential cues allow
 for infant use of phonetic detail in word learning. \emph{Child
@@ -546,6 +613,11 @@ Development}, \emph{81}.
 Hofer, M., \& Levy, R. (2017). Modeling Sources of Uncertainty in Spoken
 Word Learning. In \emph{Proceedings of the 39th Annual Meeting of the
 Cognitive Science Society}.
+
+\hypertarget{ref-lewis2013}{}
+Lewis, M., \& Frank, M. (2013). An integrated model of concept learning
+and word-concept mapping. In \emph{Proceedings of the annual meeting of
+the cognitive science society} (Vol. 35).
 
 \hypertarget{ref-pajak2016}{}
 Pajak, B., Creel, S., \& Levy, R. (2016). Difficulty in learning
@@ -557,6 +629,11 @@ and Cognition}, \emph{42}(9).
 Rost, G. C., \& McMurray, B. (2009). Speaker variability augments
 phonological processing in early word learning. \emph{Developmental
 Science}, \emph{12}.
+
+\hypertarget{ref-sizemore2018}{}
+Sizemore, A. E., Karuza, E. A., Giusti, C., \& Bassett, D. S. (2018).
+Knowledge gaps in the early growth of semantic feature networks.
+\emph{Nature Human Behaviour}, \emph{2}(9).
 
 \hypertarget{ref-stager1997}{}
 Stager, C., \& Werker, J. (1997). Infants listen for more phonetic
@@ -586,6 +663,11 @@ vocabulary size. \emph{Infancy}, \emph{3}.
 White, K., Yee, E., Blumstein, S., \& Morgan, J. (2013). Adults show
 less sensitivity to phonetic detail in unfamiliar words, too.
 \emph{Journal of Memory and Language}, \emph{68}(4).
+
+\hypertarget{ref-wojcik2013}{}
+Wojcik, E., \& Saffran, J. (2013). The ontogeny of lexical networks:
+Toddlers encode the relationships among referents when learning novel
+words. \emph{Psychological Science}, \emph{24}(10).
 
 \hypertarget{ref-yoshida2009}{}
 Yoshida, K., Fennell, C., Swingley, D., \& Werker, J. (2009).

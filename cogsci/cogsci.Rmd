@@ -15,10 +15,10 @@ author-information: >
 
 abstract:
 
-    "Children tend to produce words earlier when they are connected to a variety of other words along both the phonological and semantic dimensions. Though this connectivity effect has been extensively documented, little is known about the underlying developmental mechanism.  One view suggests that learning is primarily driven by a network growth model where highly connected words in the child's early lexicon attract similar words. Another view suggests that learning is driven  by highly connected words in the external learning environment instead of highly connected words in the early internal lexicon. The present study tests both scenarios systematically in both the phonological and semantic domains, and across 8 languages. We show that external connectivity in the learning environment drives growth in both the semantic and the phonological networks, and that this pattern is consistent cross-linguistically. The findings suggest a word learning mechanism where children harness their statistical learning abilities to (indirectly) detect and learn highly connected words in the learning environment."
+    "Stager and Werker (1997) first showed that chidlren's early ability to distinguish similar sounds do not automatically translate into word learning skills. Early explanations proposed that children may not be able to encode subtile phonetic contrasts when learning novel word meanings, thus suggesting a binary/discontinuous pattern of development. However, later work has revealed (e.g., through using simpler testing methods) that children do encode such contrasts, thus favoring a rather probabilitic/continuous pattern of development. The present study proposes a precise probabisitic model describing how development may processd in a continuous fashion. The purpose of the model is to account for previousely documented facts while providing new predictions.  We collected data from both preschool children and adults, and we show that the model can explain various patterns of learning both within the same age and across development. More generally, our work highlight the role of computational modeling in advancing our understanding of development through both organizing exsinting knowledge and generating new principled hypotheses."
     
 keywords:
-    "semantic network, phonological network, network growth, mechanism of word learning"
+    "word learning, cogniive development, computational modeling"
     
 output: cogsci2016::cogsci_paper
 ---
@@ -75,6 +75,10 @@ Regardless of the exact explanation, it is generally accepted that by around 17 
 
 Experimental evidence suggest a probabilsitic/continuous, rather than a binary/discontinuous develomental scenario. On the one hand, 14-month-olds who typically fail in the original task succeed both when an easier testing method is used [@yoshida2009], and when uncertainty is mitigated via disambiguating cues [@thiessen2007; @dautriche2015]. On the other hand, adults show patterns of learning similar to those shown by 14-month-olds when the task is more challenging and when similarity between words increases [@white2013; @pajak2016].
 
+Here talk about the continuous hypothesis a bit later here. after introducing the experimental evidecne.
+
+Also talk more about the major assumption of model, what is contiuous about him? and what is the source of this hypothsis (swingley, Yoshida, ...)
+
 In the light of these evidence, the purpose of the current work is to propose a precise probabilsitc model of the Stager and Werker's task where developmment is understood to proceed in a continuous fashion across the lifespan. We use this model to both provide a unifying account for documented experimental findings, and to make new predicitions that have not been tested before. Using new data collected from both preschool children and adults, we show that the model can explain various patterns of learning both within the same age and across development. 
  
 <!-- The paper is organized as follows. First we present the model and explain how it can be used to make precise predictions about learning and development in the context of Stager and Werker's task. -->
@@ -99,7 +103,7 @@ grid::grid.raster(img)
 
 Our model consists of a set of variables describing the general process of spoken word recognition in a referential situation. These variables are related in a way that refelects the simple generative scenario represented graphically in Figure\ \@ref(fig:model). When a speaker utters a sound in the presence of an object, the observer assumes that the object $o$ activated the concept $C$ in the speaker's mind. The concept prompted the cooresponding label $L$. Finally, the label was physically instantiated by the sound $s$. 
 
-Because of the noisy nature of the representations, the observer can only determine the hidden variables (i.e., the concept $C$ and the label $L$) in a probabilistic fashion. For simplicity, we assume that the probability of membership of objects and sounds to concepts and labels, respectively, are normally distributed:
+A similar probabilsitic structure was used by @lewis2013 to model concept learning, and by @hofer2017 to model spoken word learning. However, the first study assumed that the sounds are heard unambiguousely, and the second assumed the concepts are observed unambiguously. In our model, we made the more reaistic assumption of ambiguity at the level of both the sounds and the objects. For simplicity, we assume that the probability of membership of objects and sounds to concepts and labels, respectively, are normally distributed:
 
 $$ p(o | C) \sim  \mathcal{N}(\mu_C, \sigma^2_C) $$
 $$ p(s| L) \sim  \mathcal{N}(\mu_L, \sigma^2_L) $$
@@ -178,11 +182,11 @@ plot_simulation
 
 The simulations explain previousely documented facts, and make new predictions:
 
-1) For fixed values of $\Delta o$ and  $\sigma$, the probability of accurate responses increases as a function of $\Delta s$. This pattern accounts for the fact that similar sounds are generally more challenging to learn than different sounds for both chidlren [@stager1997] and adults [@paja2016]. 
+1) For fixed values of $\Delta o$ and  $\sigma$, the probability of accurate responses increases as a function of $\Delta s$. This pattern accounts for the fact that similar sounds are generally more challenging to learn than different sounds for both chidlren [@stager1997] and adults [@pajak2016]. 
 
 2) For fixed values of $\Delta s$ and $\Delta o$, accuracy increases when the representational noise (characterized with $\sigma$) decreases. This fact may explain development, i.e., youger children have noisier representations [@swingley2007; @yoshida2009], which leads to lower word recognition accuracy, especially for similar sounding words.
 
-3) For fixed values of $\Delta s$ and $\sigma$, accuracy increases with the visual distance between the semantic referents $\Delta o$. This is a new predcition that our model makes. Previous work studied the effect of several bottom-up and top-down properties in disambiguating similar sounding words (see review in the introduction), But no previous study tested the effect of the visual distance between the semantic referents.
+3) For fixed values of $\Delta s$ and $\sigma$, accuracy increases with the visual distance between the semantic referents $\Delta o$. This is a new predcition that our model makes. Previous work studied the effect of several bottom-up and top-down properties in disambiguating similar sounding words [@rost2009; @thiessen2007; @dautriche2015; @fennell2010], but no previous study tested the effect of the visual distance between the semantic referents.
 
 To sum, we introduced a model that accounts for some qualitative learning patterns observed in previous studies, and makes a new prediction. In the experiment below, we test whether the model makes accurate *quantitative* predictions by fitting it to new experimental data collected from preschool chidlren and adults.
 
@@ -434,11 +438,41 @@ mod2_val <- feather::read_feather("../saved_data/values_mod2.feather") %>%
 
 ```
 
-Figures XX (middle and right graphs) show the predictions of the models. Both model 1 and model 2 fit reseanaby well the the experimental data in both children and adults. They both correcly predict the relative recognition accuacy accross conditions: the pair of words that differ on both the object and sound levels were the easiest to learn, followed by the pairs of words that differ on only one level, then the pair of words that are similar on both levels. 
+Figures XX (middle and right graphs) show the predictions of the models. Both model 1 and model 2 fit reseanaby well the experimental data in both children and adults. In particular, they both correcly predict the relative recognition accuacy accross conditions: the pair of words that differ on both the object and sound levels were the easiest to learn, followed by the pairs of words that differ on only one level, then the pair of words that are similar on both levels. 
 
-For Model 1, we obtained a noise parameter of $\sigma =$ `r round(mod1_val$val[which(mod1_val$group=="children")],2)` [`r round(mod1_val$lower[which(mod1_val$group=="children")],2)`, `r round(mod1_val$upper[which(mod1_val$group=="children")],2)`] for preschoolers, and $\sigma =$ `r round(mod1_val$val[which(mod1_val$group=="adults")],2)` [`r round(mod1_val$lower[which(mod1_val$group=="adults")],2)`, `r round(mod1_val$upper[which(mod1_val$group=="adults")],2)`] for adults. It explained the majority of the variance ($R^2=$ `r R2_model1`). For model 2, children had a sound specific noise of $\sigma_S =$ `r round(mod2_val$val[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)`], and a concept specific noise of $\sigma_C =$ `r round(mod2_val$val[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)`]. Adults had a concept specific noise of $\sigma_C =$ `r round(mod2_val$val[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)`], and a sound specific noise of $\sigma_S =$ `r round(mod2_val$val[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)`]. The model explain almost all the variance ($R^2=$ `r R2_model2`). 
+For Model 1, the fitted noise parameter was $\sigma =$ `r round(mod1_val$val[which(mod1_val$group=="children")],2)` [`r round(mod1_val$lower[which(mod1_val$group=="children")],2)`, `r round(mod1_val$upper[which(mod1_val$group=="children")],2)`] for preschoolers, and $\sigma =$ `r round(mod1_val$val[which(mod1_val$group=="adults")],2)` [`r round(mod1_val$lower[which(mod1_val$group=="adults")],2)`, `r round(mod1_val$upper[which(mod1_val$group=="adults")],2)`] for adults. It explained the majority of the variance ($R^2=$ `r R2_model1`). For model 2, children had a sound specific noise of $\sigma_S =$ `r round(mod2_val$val[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)`], and a concept specific noise of $\sigma_C =$ `r round(mod2_val$val[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)`]. Adults had a sound specific noise of $\sigma_S =$ `r round(mod2_val$val[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)`]. The model explain almost all the variance ($R^2=$ `r R2_model2`), and a concept specific noise of $\sigma_C =$ `r round(mod2_val$val[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)`]. Note that, despite the fact that Model 1 used only one degree of freedom, it captures the data variance almost as well as Model 2 which used two degrees of freedom.
 
 # General Discussion
+
+Here maybe be more precise about what the model does (providing a summary in prose of the main results )
+
+Subsequent studies have shown that   To account for this phenomenon, we proposed a model where words and their semantic referents are both encoded in a probabilistic fashion.  A pair of words may be encoded simultaneousely, but successful recognition depends both on the perceptual distance between the words and on the degree of uncertainty of their encoding. These predictions explained learning patterns both within and across developmental stages, respectively. 
+
+Besides accounting for previous findings, our model made a new prediction: learning similar words is not only modulated by to similarity of their phonological forms, but also by the visual similarity of their semantic referents. More generally, since visual similarity is an early organizing feature in the semantic domain [e.g.,@wojcik2013], our finding suggest that children may prioritize the acqusition of words that are quite distant in the semantic space.  This suggestion is supported by recent findings based on the investigation of early vocabulary growth [@engelthaler2017; @sizemore2018]. That said, further work is needed to explore the effect on word learning of other semantic dimensions that could be encoded by children (e.g., conceptual/functional features).
+
+<!--Not only does our model predict that both phonological and semantic relatedness matter in learning novel words, it also provides
+a precise account of *how* these two dimensions interact to predict learning. In fact,-->
+Our model can be seen as an ideal observer [@anderson1990] in the sense that it provides a precise charaterization of the task, and shows how information can used optimally to perform this task. In our case, the input is categorized with uncertainty, thus the model performs an optimal probabilistic (Bayesian) inference, combining cues from both the sound and the semantic referents. Crucially, we assume the degree of this uncertainty to vary across development. Thus, although children and adults appear to behave differently, they are both near-optimal with resprect to their own encoding's uncertainty. Note that our model is agnostic as to the precise source of this uncertainty: part of it maybe due to ambiguous phonological boundaries [@rost], and another part could be due to various task demands [@hofer]. 
+
+To conclude, this study proposed a model of novel word is compatible with the hypothesis according to which development is not so much about a qualitative cognitive change as much as it is about the quantitative refinement of similar skills acrss the lifespan [@yoshida2009; @swingley2007; @pajak2016]. 
+
+
+
+
+
+
+
+
+<!--Previous work studied the effect of several bottom-up and top-down properties in disambiguating similar sounding words [@rost2009; @thiessen2007; @dautriche2015; @fennell2010], But our study is, to our knowledge, the first to test the effect of the visual distance between the semantic referents. -->
+
+
+<!--In the semantic domain, children learn the semantic relationship among newly learned words spontaneousely (Wojcik & Saffran, 2013), and they prioritize the acquisition of words that are distinct in the semantic space (Engelthaler & Hills, 2017). 
+
+That said, previous experimental work has studied the effect of phonological and semantic similarity separately. Some studied the mechanism of word learning using a toy lexicon where only the phonological similarity varied (e.g., Stager and Werker, 1997), and others studied the learning of a toy lexicon where only the semantic similarity varied (e.g., Wojcik & Saffran, 2013).  However, children  acquire a lexicon which is more richly structured than these special cases. In particular, as reviewed abvove, the end-state lexicon involves variability along both the phonological and semantic domains. Thus, to have a deeper understanding of word acquisition in the real world, it is crucial to study how learners acquire a lexicon that simulates this bi-dimensional variation. 
+
+One could imagine two learning scenarios. On the first one, children’s learning, at least in some challenging situations, is primarily determined by one dimension (Sloutsky & Napolitano, 2003; Colavita et al. 1975). For example, it is possible that similar sounding words are confusable and hard to learn regardless of their semantic similarity. Vice-versa, similar meanings might be challenging to learn regardless of the phonological similarity of their forms. On the second scenario, learners combine cues from both dimensions to optimize their learning (Fourtassi and Frank, 2018; Ernst & Banks, 2002). Thus, confusability that may arise from high similarity along one dimension can be mitigated via higher distance from the other dimension. In this study, we explore these hypothesis, bla bla -->
+
+Discuss Hofer & Levy, 2017, and Fourtassi & Frank, 2017
 
 
 \vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering All data and code for these analyses are available at\ \url{https://github.com/afourtassi/networks}}} \vspace{1em}

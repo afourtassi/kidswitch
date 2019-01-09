@@ -171,7 +171,7 @@ both within the same age and across development.
 
 }
 
-\caption{\label{fig:illus} An illustration of the probabilsitic account using simulated data. Words are category distributions over the perceptual space, encoded with different degrees of uncertainty. Accuracy experesses the extent to which a given sound instance indicates a unique underlying category. The values vary between 0.5 (total overlap between the distributions) and 1 (no overalp). Accuracy is low when the perceptual distance between labels is small relative to the category variance. Accuracy increases when the perceptual distance is enhanced (through disambiguation), or when the variance decreases (e.g., through development).}\label{fig:illus}
+\caption{\label{fig:illus} An illustration of the probabilsitic account of similar word learning using simulated data. Words are category distributions over the perceptual space, encoded with different degrees of uncertainty. Accuracy experesses the extent to which a given sound instance indicates a unique underlying category. The values vary between 0.5 (total overlap between the distributions) and 1 (no overalp). Accuracy is low when the perceptual distance between labels is small relative to the category variance. Accuracy increases when the perceptual distance is enhanced (through disambiguation), or when the variance decreases (e.g., through development).}\label{fig:illus}
 \end{figure}
 \end{CodeChunk}
 
@@ -443,7 +443,7 @@ introduction and examples, children were tested in a sequence of five
 conditions: the four experimental conditions plus the catch condition.
 In each condition, participants saw a first block of four exposure
 trials followed by four testing trials, and a second block of two
-exposure trials (for memory refreshment) follwoed by an additional four
+exposure trials (for memory refreshment) followed by an additional four
 testing trials.
 
 In the exposure trials, children saw two objects associated with their
@@ -460,14 +460,16 @@ The object-sound pairings were randomized across participants, as was
 the order of the conditions (except for the catch condition which was
 always placed in the middle of the testing sequence). We also randomized
 the on-screen position (left vs.~right) of the two pictures on each
-testing trial. The procedure for preschoolers and adults were identical
-except that preschoolers were accompagnied by an experimenter and used a
-tablet, whereas adults used their local computers to complete the
-experiment online.
+testing trial.
+
+The procedure adults were identical except to that of preschool
+children, except that preschoolers were accompagnied by an experimenter
+and used a tablet, whereas adults used their local computers to complete
+the experiment online.
 
 \subsubsection{Model fitting}\label{model-fitting}
 
-We fit the analystical expression (equation 2) to the participants'
+We fit the probability function (equation 2) to the participants'
 responses in each age group. The values of \(\Delta s\) and \(\Delta o\)
 were set based on data from the similarity judgment task (described in
 the stimuli sub-section). We used two models: \textbf{model 1} fit only
@@ -477,14 +479,14 @@ parameters were derived using weighted least-squares estimates.
 
 \subsection{Results}\label{results}
 
-First we analyzed the experimental results shown in Figure (XX, left),
-using a mixed-effects logistic regression with sound and object
-distances as fixed effects, and with a maximal random effects strcuture
-(Barr, Levy, Scheepers, \& Tily, 2013). Results are shown in Table XX.
-We found a main effect of sound distance on the accuray of learning in
-both children and adults, thus replicating previous findings. We also
-found a main effect of object distance, thus confirming the new
-prediction of our model.
+We first analyzed the experimental results shown in Figure
+(\ref{fig:data_all}, left), using a mixed-effects logistic regression
+with sound and object distances as fixed effects, and with a maximal
+random effects strcuture (Barr, Levy, Scheepers, \& Tily, 2013). Results
+are shown in Table 1. We found a main effect of sound distance on the
+accuray of learning in both children and adults, thus replicating
+previous findings. We also found a main effect of object distance, thus
+confirming the new prediction of our model.
 
 \begin{table}[!htbp] \centering 
   \caption{Estimates of predictor coefficients (and their standard errors) by age group in the regression model} 
@@ -502,38 +504,37 @@ prediction of our model.
 \end{tabular} 
 \end{table}
 
-Figures XX (middle and right graphs) show the predictions of the models.
-Both model 1 and model 2 fit reseanaby well the experimental data in
-both children and adults. In particular, they both correcly predict the
-relative recognition accuacy accross conditions: the pair of words that
-differ on both the object and sound levels were the easiest to learn,
-followed by the pairs of words that differ on only one level, then the
-pair of words that are similar on both levels.
+Figures (\ref{fig:data_all}, middle and right graphs) show the
+predictions of the models. Both model 1 and model 2 fit reseanaby well
+the experimental data in both children and adults. In particular, they
+both correcly predict the relative recognition accuacy accross
+conditions: the pair of words that differ on both the object and sound
+levels were the easiest to learn, followed by the pairs of words that
+differ on only one level, then the pair of words that are similar on
+both levels. Note, however, that both model predict a
 
-For Model 1, the fitted noise parameter was \(\sigma =\) 0.63 {[}0.53,
-0.73{]} for preschoolers, and \(\sigma =\) 0.16 {[}0.12, 0.19{]} for
-adults. It explained the majority of the variance (\(R^2=\) 0.94). For
-model 2, children had a sound specific noise of \(\sigma_S =\) 0.9
-{[}0.68, 1.11{]}, and a concept specific noise of \(\sigma_C =\) 0.29
-{[}0.1, 0.49{]}. Adults had a sound specific noise of \(\sigma_S =\)
-0.16 {[}0.05, 0.28{]}. The model explain almost all the variance
-(\(R^2=\) 0.96), and a concept specific noise of \(\sigma_C =\) 0.14
-{[}0.05, 0.23{]}. Note that, despite the fact that Model 1 used only one
-degree of freedom, it captures the data variance almost as well as Model
-2 which used two degrees of freedom.
+For Model 1, the fitted uncertainty parameter was \(\sigma =\) 0.63
+{[}0.53, 0.73{]}\footnote{95 \% Confidence intervals.} for preschoolers,
+and \(\sigma =\) 0.16 {[}0.12, 0.19{]} for adults. The model explained
+the majority of the variance (\(R^2=\) 0.94). For model 2, children had
+a label-specific uncertainty of \(\sigma_S =\) 0.9 {[}0.68, 1.11{]}, and
+a concept-specific uncertainty of \(\sigma_C =\) 0.29 {[}0.1, 0.49{]}.
+Adults had a sound specific noise of \(\sigma_S =\) 0.16 {[}0.05,
+0.28{]}, and a concept-specific noise of \(\sigma_C =\) 0.14 {[}0.05,
+0.23{]}. The model explained almost all the variance (\(R^2=\) 0.96).
+Interestingly, despite the fact that Model 1 used only one degree of
+freedom, it captures the data variance almost as well as Model 2 (which
+used two degrees of freedom).
 
 \section{General Discussion}\label{general-discussion}
 
-Here maybe be more precise about what the model does (providing a
-summary in prose of the main results )
-
-Subsequent studies have shown that To account for this phenomenon, we
-proposed a model where words and their semantic referents are both
-encoded in a probabilistic fashion. A pair of words may be encoded
-simultaneousely, but successful recognition depends both on the
-perceptual distance between the words and on the degree of uncertainty
-of their encoding. These predictions explained learning patterns both
-within and across developmental stages, respectively.
+\ldots{}To account for this phenomenon, we proposed a model where words
+and their semantic referents are both encoded in a probabilistic
+fashion. A pair of words may be encoded simultaneousely, but successful
+recognition depends both on the perceptual distance between the words
+and on the degree of uncertainty of their encoding. These predictions
+explained learning patterns both within and across developmental stages,
+respectively.
 
 Besides accounting for previous findings, our model made a new
 prediction: learning similar words is not only modulated by to

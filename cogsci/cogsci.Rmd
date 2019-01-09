@@ -1,5 +1,5 @@
 ---
-title: "Word Learning as Network Growth: A Cross-linguistic Analysis"
+title: "Continuous Development in Learning Similar-sounding Words"
    
 bibliography: library.bib
 csl: apa6.csl
@@ -10,6 +10,7 @@ header-includes:
 
 author-information: > 
     \author{{\large \bf Abdellah Fourtassi} \\ \texttt{afourtas@stanford.edu} \\ Department of Psychology \\ Stanford University
+    \And {\large \bf Sophie Regan} \\ \texttt{sregan20@stanford.edu} \\ Department of Psychology \\ Stanford University
     \And {\large \bf Michael C. Frank} \\ \texttt{mcfrank@stanford.edu} \\ Department of Psychology \\ Stanford University}
 
 abstract:

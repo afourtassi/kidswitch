@@ -60,25 +60,26 @@
 \maketitle
 
 \begin{abstract}
-Stager and Werker (1997) first showed that chidlren's early ability to
+Stager and Werker (1997) first showed that children's early ability to
 distinguish similar sounds do not automatically translate into word
 learning skills. Early explanations proposed that children may not be
-able to encode subtile phonetic contrasts when learning novel word
+able to encode subtle phonetic contrasts when learning novel word
 meanings, thus suggesting a discontinuous/stage-like pattern of
 development. However, later work has revealed (e.g., through using
 simpler testing methods) that children do encode such contrasts, thus
 favoring a rather a continuous pattern of development. The present study
-proposes a precise probabisitic model describing how development may
-processd in a continuous fashion. The purpose of the model is to account
-for previousely documented facts while providing new predictions. We
-collected data from both preschool children and adults, and we show that
-the model can explain various patterns of learning both within the same
-age and across development. Our work highlight the role of computational
-modeling in advancing our understanding of development through both
-organizing exsinting knowledge and generating new principled hypotheses.
+proposes a precise probabilistic model describing how development may
+proceed in a continuous fashion across the lifespan. The purpose of the
+model is to account for previously documented facts while providing new
+predictions. We collected data from both preschool children and adults,
+and we showed that the model can explain various patterns of learning
+both within the same age and across development. Our work highlights the
+role of computational modeling in advancing our understanding of
+development both through organizing exsinting knowledge and through
+generating new principled hypotheses.
 
 \textbf{Keywords:}
-word learning, cogniive development, computational modeling
+word learning, cognitive development, computational modeling
 \end{abstract}
 
 \section{Introduction}\label{introduction}
@@ -94,7 +95,7 @@ discriminated) sounds such as ``bin'' and ``din'' to different objects
 
 Several factors can explain this finding. For example it is possible
 that the task of meaning learning increases cognitive demands on
-children (compared to a simple perceptual descrimination). In
+children (compared to a simple perceptual discrimination). In
 particular, it requires paying attention to both the sounds and the
 corresponding objects, which may hinder precise encoding in memory of
 some phonetic details (Hofer \& Levy, 2017; Stager \& Werker, 1997).
@@ -106,9 +107,9 @@ Waxman, 2010).
 Regardless of the exact explanation, it is generally accepted that by
 around 17 m.o, children succeed in the same task (Werker, Fennell,
 Corcoran, \& Stager, 2002). What could be the mechanism of development?
-Early acccounts assumed--whether implcitly or explicitly-- that children
+Early accounts assumed--whether implicitly or explicitly-- that children
 encode words in a binary way: they either fail or succeed in encoding
-the relevant phonetic details (simulataneousely with the meanings). This
+the relevant phonetic details (simultaneously with the meanings). This
 account suggested a discontinuous/stage-like pattern of development
 whereby younger children fail to encode the contrastive phonetic detail,
 whereas older children succeed.
@@ -124,42 +125,41 @@ the task is more challenging and when similarity between words increases
 (Pajak, Creel, \& Levy, 2016; White, Yee, Blumstein, \& Morgan, 2013).
 
 These evidence point towards another scenario, where the representations
-are encoded in a probablistic (rather than binary) way, and where
-development is continuous, rather than stage-like (Hofer \& Levy, 2017;
-Pajak et al., 2016; Swingley, 2007; Yoshida et al., 2009). On this
-account, correct represetations are learned early in development, but
-these representations are encoded with higher uncertainty in youger
-children, leading to apparent failure in relatively demanding tasks.
-Development is a continuous process whereby the intinial noisy
-representations become more precise. Crucially, more precise
-representation are still imperfect, as low accuracy learning can be
-obtained even with adults when the sounds are subtle enough, e.g.,
-non-native sounds (Pajak et al., 2016).
+are encoded in a probabilistic (rather than binary) way, and where
+development is continuous, rather than stage-like (Pajak et al., 2016;
+Swingley, 2007; Yoshida et al., 2009). On this account, correct
+representations are learned early in development, but these
+representations are encoded with higher uncertainty in younger children,
+leading to apparent failure in relatively demanding tasks. Development
+is a continuous process whereby the initial noisy representations become
+more precise. Crucially, more precise representation are still
+imperfect: Even with adults show low accuracy learning when the sounds
+are subtle enough, e.g., non-native sounds (Pajak et al., 2016).
 
 We provide an intuitive illustration of how such an account explains
 patterns of learning and development in Figure \ref{fig:illus}. We
 observe low accuracy in word learning when the perceptual distance
 between the labels is small relative to the uncertainty/tolerance with
-wich these labels are encoded. For example, in Stager and Werker's
-orginal experiment, children are supposed to associate lable 1 (``bih'')
-and label 2 (``dih'') with object 1 and object 2, respectively. Though
-children could learn that the label ``bih'' is a better match to object
-1 than ``dih'', they could still judge the sound ``dih'' as a plausible
-instance of the lable ``bih'', thanks to the relatively large tolerance
-of the encoding.
+which these labels are encoded. For example, in Stager and Werker's
+original experiment, children are supposed to associate label 1
+(``bih'') and label 2 (``dih'') with object 1 and object 2,
+respectively. Though children could learn that the label ``bih'' is a
+better match to object 1 than ``dih'', they could still judge the sound
+``dih'' as a plausible instance of the label ``bih'', thanks to the
+relatively large tolerance of the encoding.
 
 Accuracy in word learning increases when the perceived distance between
 the labels is large relative to the tolerance of their encoding. This
 improvement can occur in the same developmental stage if the perceptual
 distance between labels is enhanced through using different-sounding
 labels (e.g., ``lif'' vs. ``neem'' instead of ``bih'' and ``dih'') or
-through using contextual cues (Rost \& McMurray, 2009; Thiessen, 2007).
+through using additional cues (Rost \& McMurray, 2009; Thiessen, 2007).
 Besides, accuracy can improve across development through the refinement
-of the encoding, i.e., if the uncertainy of the encoding decreases.
+of the encoding.
 
 Building on this intuition, the current work proposes a precise
-probabilsitc model, which we use to both account for previous
-experimental findings, and to make new predicitions that have not been
+probabilistic model, which we use to both account for previous
+experimental findings, and to make new predictions that have not been
 tested before. Using new data collected from both preschool children and
 adults, we show that the model can explain various patterns of learning
 both within the same age and across development.
@@ -171,7 +171,7 @@ both within the same age and across development.
 
 }
 
-\caption{\label{fig:illus} An illustration of the probabilsitic account of similar word learning using simulated data. Words are category distributions over the perceptual space, encoded with different degrees of uncertainty. Accuracy experesses the extent to which a given sound instance indicates a unique underlying category. The values vary between 0.5 (total overlap between the distributions) and 1 (no overalp). Accuracy is low when the perceptual distance between labels is small relative to the category variance. Accuracy increases when the perceptual distance is enhanced (through disambiguation), or when the variance decreases (e.g., through development).}\label{fig:illus}
+\caption{\label{fig:illus} An illustration of the probabilistic/continuous account using simulated data. Two words are represented as distributions over the perceptual space. Here accuracy expresses the extent to which a given sound instance indicates the word on the left (red bar), as opposed to the word on the right (green bar). The values vary between 0.5 (total overlap between the distributions) and 1 (no overlap). Accuracy is low when the perceptual distance between labels is small relative to the variance. Accuracy increases when the perceptual distance is enhanced (through disambiguation), or when the variance decreases (e.g., through development).}\label{fig:illus}
 \end{figure}
 \end{CodeChunk}
 
@@ -181,8 +181,8 @@ both within the same age and across development.
 
 We model the word learning task introduced by Stager \& Werker (1997),
 and a testing method similar to the one used by Yoshida et al. (2009).
-In this task, particiants are first exposed to the association between
-pairs of nonesense words (e.g., ``lif''/``neem'') and pairs of objects.
+In this task, participants are first exposed to the association between
+pairs of nonsense words (e.g., ``lif''/``neem'') and pairs of objects.
 After this exposure phase, participants perform a series of
 two-alternative forced choices. In each testing trial, one of the two
 sounds is uttered (e.g., ``lif'') and participants choose the
@@ -200,21 +200,21 @@ is shown in Figure \ref{fig:task}.
 \end{figure}
 \end{CodeChunk}
 
-\subsection{Probabilistic strcuture}\label{probabilistic-strcuture}
+\subsection{Probabilistic structure}\label{probabilistic-structure}
 
 Our model consists of a set of variables describing the general process
 of spoken word recognition in a referential situation. These variables
-are related in a way that refelects the simple generative scenario
+are related in a way that reflects the simple generative scenario
 represented graphically in Figure \ref{fig:model}. When a speaker utters
 a sound in the presence of an object, the observer assumes that the
 object \(o\) activated the concept \(C\) in the speaker's mind. The
 concept prompted the corresponding label \(L\). Finally, the label was
 physically instantiated by the sound \(s\).
 
-A similar probabilsitic structure was used by Lewis \& Frank (2013) to
+A similar probabilistic structure was used by Lewis \& Frank (2013) to
 model concept learning, and by Hofer \& Levy (2017) to model spoken word
 learning. However, the first study assumed that the sounds are heard
-unambiguousely, and the second assumed the concepts are observed
+unambiguously, and the second assumed the concepts are observed
 unambiguously. In our model, we assume there to be ambiguity at the
 level of both the labels and the concepts. For simplicity, we assume
 that the probability of membership of objects and sounds to concepts and
@@ -234,7 +234,7 @@ P(L_i|C_j) =
 
 \subsection{Simulations}\label{simulations}
 
-During the testing phase (Figure \ref{fig:task}), participants are
+During the testing phase (see Figure \ref{fig:task}), participants are
 presented with one target sound \(s_T \in\{s_1, s_2\}\) and with both
 objects \(o_1\) and \(o_2\). In order to make a choice, we need to
 determine which object is more probable under the target sound \(s_T\).
@@ -243,13 +243,13 @@ In other words, we need to compare the probabilities \(P(o_1|s_T)\) and
 summing over all possible concepts and labels:
 \[P(o|s)=\sum_{C,L} P(o, C, L| s) \propto \sum_{C,L} P(o, C, L, s) \]
 The joint probability \(P(o, C, L, s)\) is obtained by factoring the
-Bayesian network in (Figure \ref{fig:model}):
-\[P(o,C,L,s) = P(s|L)P(L|C)P(C|o)P(o) \] which could be tansformed using
-Bayes rule into:
+Bayesian network in Figure \ref{fig:model}:
+\[P(o,C,L,s) = P(s|L)P(L|C)P(C|o)P(o) \] which could be transformed
+using Bayes rule into:
 
 \[P(o,C,L,s) = P(s|L)P(L|C)P(o|C)P(C) \] Finally, assuming that the
 concepts' prior probability is uniformly
-ditributed\footnote{This is a reasonable assumption given the similarity of the concepts used in each naming situation. See the stimuli sub-section in the Experiment below.},
+distributed\footnote{This is a reasonable assumption given the similarity of the concepts used in each naming situation. See the stimuli sub-section in the Experiment below.},
 we obtain the following expression, where all conditional dependencies
 are now well defined:
 
@@ -279,10 +279,10 @@ P(o_T|s_T)= \frac{1 + e^{-(\Delta s^2 + \Delta o^2) /2\sigma^2}}{1 + e^{-(\Delta
 In order to have a more quantitative understanding of the model, we
 simulate the values of the predicted accuracy (Expression 1) as a
 function of the perceptual distance between the sounds \(\Delta s\). We
-used as parameters the two remaning variables, i.e., the visual distance
-between the semantic referents \(\Delta o\) and the standard deviation
-of the dsitributions \(p(s| L)\) and \(p(o | C)\) (which, in this
-simulation, are assumed to have similar values, i.e.,
+used as parameters the two remaining variables, i.e., the visual
+distance between the semantic referents \(\Delta o\) and the standard
+deviation of the distributions \(p(s| L)\) and \(p(o | C)\) (which, in
+this simulation, are assumed to have similar values, i.e.,
 \(\sigma =\sigma_C \approx \sigma_L\)). The simulations are shown in
 Figure \ref{fig:simulation}.
 
@@ -297,7 +297,7 @@ Figure \ref{fig:simulation}.
 \end{figure*}
 \end{CodeChunk}
 
-The simulations explain previousely documented facts, and make new
+The simulations explain some previousely documented facts, and make new
 predictions:
 
 \begin{enumerate}
@@ -306,19 +306,19 @@ predictions:
   For fixed values of \(\Delta o\) and \(\sigma\), the probability of
   accurate responses increases as a function of \(\Delta s\). This
   pattern accounts for the fact that similar sounds are generally more
-  challenging to learn than different sounds for both chidlren (Stager
+  challenging to learn than different sounds for both children (Stager
   \& Werker, 1997) and adults (Pajak et al., 2016).
 \item
   For fixed values of \(\Delta s\) and \(\Delta o\), accuracy increases
   when the representational uncertainty (characterized with \(\sigma\))
-  decreases. This fact may explain development, i.e., youger children
+  decreases. This fact may explain development, i.e., younger children
   have noisier representations (see Swingley, 2007; Yoshida et al.,
   2009), which leads to lower word recognition accuracy, especially for
   similar-sounding words.
 \item
   For fixed values of \(\Delta s\) and \(\sigma\), accuracy increases
   with the visual distance between the semantic referents \(\Delta o\).
-  This is a new predcition that our model makes. Previous work studied
+  This is a new prediction that our model makes. Previous work studied
   the effect of several bottom-up and top-down properties in
   disambiguating similar sounding words (Dautriche, Swingley, \&
   Christophe, 2015; Fennell \& Waxman, 2010; Rost \& McMurray, 2009;
@@ -330,7 +330,7 @@ To sum, we introduced a model that accounts for some qualitative
 learning patterns observed in previous studies, and makes a new
 prediction. In the experiment below, we test whether the model makes
 accurate \emph{quantitative} predictions by fitting it to new
-experimental data collected from preschool chidlren and adults.
+experimental data collected from preschool children and adults.
 
 \section{Experiment}\label{experiment}
 
@@ -338,9 +338,9 @@ In this experiment, we tested participants in the word learning task
 introduced above (Figure \ref{fig:task}). We explored all three
 parameters of the model. In particular, both the sound similarity
 (\(\Delta s\)) and object similarity (\(\Delta o\)) were varied
-simulataneousely in a within-subject design. Besides, two age groups
+simultaneously in a within-subject design. Besides, two age groups
 (preschool children and adults) were tested on the same task to explore
-whether development can be characteized with the uncertainty parameter,
+whether development can be characterized with the uncertainty parameter,
 \(\sigma\), in the probabilsitic representations.
 
 \subsection{Methods}\label{methods}
@@ -356,14 +356,15 @@ pre-registration\footnote{https://osf.io/jrh38/}). We also collected a
 sample of N=20 adults on Amazon Mechanical Turk (this is a pilot, I will
 plan for 60 participants). N=2 adult participants were excluded because
 of low scores on the catch trials (see pre-registration). (I still need
-to write the code that derives these numbers directly from the data).
+to write the code that derives these numbers automatically from the
+data).
 
 \subsubsection{Stimuli and similarity
 rating}\label{stimuli-and-similarity-rating}
 
 The sound stimuli were generated using the MBROLA Speech Synthesizer
 (Dutoit, Pagel, Pierret, Bataille, \& Van der Vrecken, 1996). We
-generated three kinds of non-sense word pairs which varied in their
+generated three kinds of nonsense word pairs which varied in their
 degree of similarity to English speakers: 1) ``different'':
 ``lif''/``neem'' and ``zem''/``doof'', 2) ``intermediate'':
 ``aka''/``ama'' and ``ada''/``aba'', and 3) ``similar'' non-English
@@ -374,13 +375,13 @@ As for the objects, we used the Dynamic Stimuli javascript
 library\footnote{https://github.com/erindb/stimuli} which allowed us to
 generate objects in four different categories: ``tree'', ``bird'',
 ``bug'', and ``fish''. These categories are supposed to be naturally
-occuring kinds that might be seen on an alien planet. In each category,
+occurring kinds that might be seen on an alien planet. In each category,
 we generated ``different'', ``intermediate'' and ``similar'' pairs by
-manipuating a continuous property controling features of the category's
-shape (e.g, body strech or head fatness).
+manipulating a continuous property controlling features of the
+category's shape (e.g, body stretch or head fatness).
 
 In a separate survey, \(N=20\) participants recruited on Amazon
-Mechanical Turk evaluated the similarity of each sound and objcet pair
+Mechanical Turk evaluated the similarity of each sound and object pair
 on a 7-point scale. We processed the resulting data so that it can be
 used in the model. We normalized the values with respect to the most
 distant level, and we scaled them within the range {[}0,1{]}. Processed
@@ -405,17 +406,18 @@ Each age group saw only two of the three levels of similarity described
 in the previous sub-section: ``different'' vs. ``intermediate'' for
 preschoolers, and ``intermediate'' vs. ``similar'' for adults. We made
 this choice because, on the one hand, adults were at ceiling with
-``different'' sounds, and on the other hand, children were at chance
-with the ``similar'' sounds. That said, this difference in the level of
-similairty is accounted for in the model through using the appropriate
-perceptual distance for each age group (Figure \ref{fig:stim})
+``different'' sounds/objects, and on the other hand, children were at
+chance with the ``similar'' sounds/objects. That said, this difference
+in the level of similarity is accounted for in the model through using
+the appropriate perceptual distance used in each age group (Figure
+\ref{fig:stim}).
 
 The experiment consisted of four conditions which involved, each, one
 pair of sounds-objects associations. These conditions were constructed
 by crossing the sound's degree of similarity with the object's degree of
 similarity leading to a 2x2 factorial design in each age group. Besides
 the 4 conditions, we also tested participants on a fifth catch condition
-which was similar in its stucture to the other ones, but was used only
+which was similar in its structure to the other ones, but was used only
 to select participants who were able to follow the instructions and show
 minimal learning.
 
@@ -452,9 +454,9 @@ the tablet's screen simultaneously with the corresponding sound. The
 second sound-object association followed on the other side of the screen
 after 500ms. For both objects, visual stimuli were present for the
 duration of the sound clip (∼800ms). In the testing trials, children saw
-both objects simultaneousely and heard only one sound. They completed
-the trial by selecting which of the two objects corresponded to the
-sound. They responded by touching one of the pictures on the tablet.
+both objects simultaneously and heard only one sound. They completed the
+trial by selecting which of the two objects corresponded to the sound.
+They responded by touching one of the pictures on the tablet.
 
 The object-sound pairings were randomized across participants, as was
 the order of the conditions (except for the catch condition which was
@@ -462,8 +464,8 @@ always placed in the middle of the testing sequence). We also randomized
 the on-screen position (left vs.~right) of the two pictures on each
 testing trial.
 
-The procedure adults were identical except to that of preschool
-children, except that preschoolers were accompagnied by an experimenter
+The procedure in the adult experiment was identical to that of preschool
+children, except that preschoolers were accompanied by an experimenter
 and used a tablet, whereas adults used their local computers to complete
 the experiment online.
 
@@ -471,10 +473,10 @@ the experiment online.
 
 We fit the probability function (equation 2) to the participants'
 responses in each age group. The values of \(\Delta s\) and \(\Delta o\)
-were set based on data from the similarity judgment task (described in
-the stimuli sub-section). We used two models: \textbf{model 1} fit only
-one parameter (\(\sigma = \sigma_C =\sigma_L\)), and \textbf{model 2}
-fit two parameters (\(\sigma_C \neq \sigma_L\)). The values of the
+were set based on data from the similarity judgment task (Figure
+\ref{fig:stim}). We used two models: \textbf{model 1} fit only one
+parameter (\(\sigma = \sigma_C =\sigma_L\)), and \textbf{model 2} fit
+two parameters (\(\sigma_C \neq \sigma_L\)). The values of the
 parameters were derived using weighted least-squares estimates.
 
 \subsection{Results}\label{results}
@@ -482,9 +484,9 @@ parameters were derived using weighted least-squares estimates.
 We first analyzed the experimental results shown in Figure
 (\ref{fig:data_all}, left), using a mixed-effects logistic regression
 with sound and object distances as fixed effects, and with a maximal
-random effects strcuture (Barr, Levy, Scheepers, \& Tily, 2013). Results
+random effects structure (Barr, Levy, Scheepers, \& Tily, 2013). Results
 are shown in Table 1. We found a main effect of sound distance on the
-accuray of learning in both children and adults, thus replicating
+accuracy of learning in both children and adults, thus replicating
 previous findings. We also found a main effect of object distance, thus
 confirming the new prediction of our model.
 
@@ -505,44 +507,53 @@ confirming the new prediction of our model.
 \end{table}
 
 Figures (\ref{fig:data_all}, middle and right graphs) show the
-predictions of the models. Both model 1 and model 2 fit reseanaby well
+predictions of the models. Both model 1 and model 2 fit reasonably well
 the experimental data in both children and adults. In particular, they
-both correcly predict the relative recognition accuacy accross
+both correctly predict the relative recognition accuracy across
 conditions: the pair of words that differ on both the object and sound
 levels were the easiest to learn, followed by the pairs of words that
 differ on only one level, then the pair of words that are similar on
-both levels. Note, however, that both model predict a
+both levels. Note, however, that both models predict a slight
+interaction between sounds and objects, but such an interaction was not
+significant in the the experimental data (Table 1).
 
 For Model 1, the fitted uncertainty parameter was \(\sigma =\) 0.63
 {[}0.53, 0.73{]}\footnote{95 \% Confidence intervals.} for preschoolers,
-and \(\sigma =\) 0.16 {[}0.12, 0.19{]} for adults. The model explained
-the majority of the variance (\(R^2=\) 0.94). For model 2, children had
-a label-specific uncertainty of \(\sigma_S =\) 0.9 {[}0.68, 1.11{]}, and
-a concept-specific uncertainty of \(\sigma_C =\) 0.29 {[}0.1, 0.49{]}.
-Adults had a sound specific noise of \(\sigma_S =\) 0.16 {[}0.05,
-0.28{]}, and a concept-specific noise of \(\sigma_C =\) 0.14 {[}0.05,
-0.23{]}. The model explained almost all the variance (\(R^2=\) 0.96).
-Interestingly, despite the fact that Model 1 used only one degree of
-freedom, it captures the data variance almost as well as Model 2 (which
-used two degrees of freedom).
+and \(\sigma =\) 0.16 {[}0.12, 0.19{]} for adults. As predicted, the
+uncertainty parameter was larger for children than it was for adults.
+The model explained the majority of the variance (\(R^2=\) 0.94). For
+model 2, children had a label-specific uncertainty of \(\sigma_S =\) 0.9
+{[}0.68, 1.11{]}, and a concept-specific uncertainty of \(\sigma_C =\)
+0.29 {[}0.1, 0.49{]}. Adults had a label-specific noise of
+\(\sigma_S =\) 0.16 {[}0.05, 0.28{]}, and a concept-specific noise of
+\(\sigma_C =\) 0.14 {[}0.05, 0.23{]}. The model explained almost all the
+variance (\(R^2=\) 0.96). Interestingly, despite the fact that Model 1
+used only one degree of freedom, it captures the data variance almost as
+well as Model 2 (which used two degrees of freedom).
 
 \section{General Discussion}\label{general-discussion}
 
-\ldots{}To account for this phenomenon, we proposed a model where words
-and their semantic referents are both encoded in a probabilistic
-fashion. A pair of words may be encoded simultaneousely, but successful
-recognition depends both on the perceptual distance between the words
-and on the degree of uncertainty of their encoding. These predictions
-explained learning patterns both within and across developmental stages,
-respectively.
+Since the seminal work of Stager \& Werker (1997) showing a discrepancy
+between children's speech perception abilities and their word learning
+skills, researchers have debated about the source of such a discrepancy.
+In this work, we were more interested in the development of this
+phenomenon, regardless of its exact origin. Building on some previous
+findings and discussions (Swingley, 2007; Yoshida et al., 2009), we
+proposed a model which assumes that subtle perceptual features are
+correctly encoded during word meaning learning, but that the precision
+of this encoding vary across development. We compared the predictions to
+new data which we collected from preschool children and adults. We found
+that the probabilistic model captured not only the patterns of
+development, but also various learning patterns within the same age
+group.
 
-Besides accounting for previous findings, our model made a new
-prediction: learning similar words is not only modulated by to
+The model made a new prediction which we tested experimentally for the
+first time: learning similar words is not only modulated by to
 similarity of their phonological forms, but also by the visual
 similarity of their semantic referents. More generally, since visual
 similarity is an early organizing feature in the semantic domain (e.g.,
-Wojcik \& Saffran, 2013), our finding suggest that children may
-prioritize the acqusition of words that are quite distant in the
+Wojcik \& Saffran, 2013), our finding suggests that children may
+prioritize the acquisition of words that are quite distant in the
 semantic space. This suggestion is supported by recent findings based on
 the investigation of early vocabulary growth (Engelthaler \& Hills,
 2017; Sizemore, Karuza, Giusti, \& Bassett, 2018). That said, further
@@ -550,24 +561,14 @@ work is needed to explore the effect on word learning of other semantic
 dimensions that could be encoded by children (e.g.,
 conceptual/functional features).
 
-Our model can be seen as an ideal observer (Anderson, 1990) in the sense
-that it provides a precise charaterization of the task, and shows how
-information can used optimally to perform this task. In our case, the
-input is categorized with uncertainty, thus the model performs an
-optimal probabilistic (Bayesian) inference, combining cues from both the
-sound and the semantic referents. Crucially, we assume the degree of
-this uncertainty to vary across development. Thus, although children and
-adults appear to behave differently, they are both near-optimal with
-resprect to their own encoding's uncertainty. Note that our model is
-agnostic as to the precise source of this uncertainty: part of it maybe
-due to ambiguous phonological boundaries ({\textbf{???}}), and another
-part could be due to various task demands ({\textbf{???}}).
-
-To conclude, this study proposed a model of novel word is compatible
-with the hypothesis according to which development is not so much about
-a qualitative cognitive change as much as it is about the quantitative
-refinement of similar skills acrss the lifespan (Pajak et al., 2016;
-Swingley, 2007; Yoshida et al., 2009).
+To conclude, this paper proposes a computational model for the
+probabilistic/continuous account, and the findings do endorse this
+account as a valid framework for the study of similar word learning and
+the mechanism of its development. More generally, together with previous
+modeling efforts (e.g., Apfelbaum \& McMurray, 2011; Hofer \& Levy,
+2017), our work highlight the crucial role computation models can play
+in theory building through both a compact organization of existing
+knowledge and through generating new principled hypothesis.
 
 \vspace{1em}
 
@@ -584,9 +585,10 @@ Foundation, NSF \#1528526, and NSF \#1659585.
 \setlength{\parindent}{-0.1in} \setlength{\leftskip}{0.125in} \noindent
 
 \hypertarget{refs}{}
-\hypertarget{ref-anderson1990}{}
-Anderson, J. R. (1990). \emph{The adaptive character of thought}.
-Hillsdale, NJ: Erlbaum.
+\hypertarget{ref-apfelbaum2011}{}
+Apfelbaum, K., \& McMurray, B. (2011). Using variability to guide
+dimensional weighting: Associative mechanisms in early word learning.
+\emph{Cognitive Science}, \emph{35}(6).
 
 \hypertarget{ref-barr2013}{}
 Barr, D., Levy, R., Scheepers, C., \& Tily, H. (2013). Random effects
@@ -631,7 +633,7 @@ learning? \emph{Journal of Experimental Psychology: Learning, Memory,
 and Cognition}, \emph{42}(9).
 
 \hypertarget{ref-rost2009}{}
-Rost, G. C., \& McMurray, B. (2009). Speaker variability augments
+Rost, G., \& McMurray, B. (2009). Speaker variability augments
 phonological processing in early word learning. \emph{Developmental
 Science}, \emph{12}.
 

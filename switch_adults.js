@@ -206,22 +206,21 @@ var sound_similar =[
 var sound_different=[
     
     //["aba_ada", "ada_aba", "aba", "ada"],
-    ["asa_asha", "asha_asa", "asa", "asha"],
+    ["aba_ada", "ada_aba", "aba", "ada"],
     ["aka_ama", "ama_aka", "aka", "ama"]
 ]
 
 var sound_similar_rand = shuffleArray(sound_similar)
 var sound_different_rand = shuffleArray(sound_different) 
 
-var sound_training = ["aba_ada", "ada_aba", "aba", "ada"]
+var sound_training = ["asa_asha", "asha_asa", "asa", "asha"]
 
-var sound_catch =  ["aba_ada", "ada_aba", "aba", "ada"]
+var sound_catch =  ["asa_asha", "asha_asa", "asa", "asha"]
 
 var sound_cluster1 = [
     [sound_similar[0], 'similar'],
     [sound_different[0], 'different']
 ]
-
 
 
 var sound_cluster2 = [

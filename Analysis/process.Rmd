@@ -17,6 +17,8 @@ library(ggplot2)
 library(langcog)
 library(ggthemes)
 library(lme4)
+library(nlstools)
+library(MuMIn)
 library(purrr)
 theme_set(theme_few())
 ```
@@ -99,30 +101,32 @@ d_sim_summary <- d_sim %>%
          upper = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   select(-sd, -n, -se) 
 
-d_sim_transform <-  d_sim_summary %>%
-  mutate(normalized =ifelse(condition=='sound_real', mean/0.926, mean)) %>% #Here I only normalize sounds, objects are already normalized
-  filter(distance != "iden") %>%
+d_sim_process <- d_sim_summary %>%
+  bind_rows(data.frame(condition="obj_real", distance="1", mean= 1, lower=1,upper=1)) %>%
   mutate(stimuli = ifelse(condition =='obj_real','objects','sounds')) %>%
-  mutate(normalized_all = ifelse(distance=="0.6", 1, normalized))%>% # Here I create a ligne for "different", which were not explicitly asked from participants because it was used as a prototype, thus dist=1
+  filter(distance != "iden",
+         distance != "0.6") %>%
   mutate(labels = ifelse(distance=='0.1','similar', 
                          ifelse(distance=='0.3','intermediate', 
                                 ifelse(distance=='sim','similar',
-                                       ifelse(distance=='med','intermediate', 'different')))))
-                                               
- 
+                                       ifelse(distance=='med','intermediate', 'different'))))) %>%
+  select(-condition, -distance)
+  
+d_sim_process$labels <- factor(d_sim_process$labels, levels = c("similar","intermediate","different"))
 
-d_sim_transform$labels <- factor(d_sim_transform$labels, levels = c("similar","intermediate","different"))
-#sum_child$sound_dist <- factor(sum_child$sound_dist, levels = c("similar", "different"))
+feather::write_feather(d_sim_process, "../saved_data/d_sim_process.feather")  
+
+#d_sim_transform <-  d_sim_summary %>%
+#  mutate(normalized =ifelse(stimuli=='sounds', mean/0.926, mean))  #Here I only normalize sounds, objects are already normalized
 
 
-feather::write_feather(d_sim_transform, "../saved_data/d_sim_transform.feather")  
-
-ggplot(d_sim_transform, 
-      aes(x = labels, y = normalized_all, group = factor(stimuli), col=factor(stimuli))) +
-  geom_point(size=2)+
+ggplot(d_sim_process, 
+      aes(x = labels, y = mean, group = factor(stimuli), col=factor(stimuli))) +
+  #geom_point(size=2)+
   geom_line()+
-  #geom_pointrange(aes(ymin = lower, ymax = upper), 
-     #            position = position_dodge(width = .1)) + 
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                 position = position_dodge(width = .1),
+                 size=0.2) + 
   scale_colour_discrete(name="Stimuli")+
   theme_few()+
 theme(legend.title = element_text(size=11),
@@ -230,6 +234,20 @@ data_ad <- d_adult_good %>%
   mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
          c_dist=ifelse(concept_dist=="similar", -1, 1)) 
 
+#Combine both  
+data_both_ch <- data_ch %>%
+  select(ID, c_dist, s_dist, item_object, item_sound, iscorrect) %>%
+  mutate(age = -1)
+
+data_both_ad <- data_ad %>%
+  select(ID, c_dist, s_dist, concept, sound,iscorrect) %>%
+  rename(item_object = concept,
+         item_sound = sound) %>%
+  mutate(age = 1)
+
+data_both <- data_both_ch %>%
+  bind_rows(data_both_ad)
+  
 #Maximal random structure
 model_ch <- glmer(iscorrect ~ s_dist * c_dist + 
                  (s_dist * c_dist  | ID) + 
@@ -244,6 +262,30 @@ model_ad <- glmer(iscorrect ~ s_dist * c_dist +
                  (s_dist | concept), 
                data = data_ad, family = binomial(),
                glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+model_both <- glmer(iscorrect ~ s_dist * c_dist * age+ 
+                 (s_dist * c_dist  | ID) + 
+                 (c_dist | item_object) + 
+                 (s_dist | item_sound) +
+                 (s_dist * c_dist | age), 
+               data = data_both, family = binomial(),
+               glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+
+stargazer(model_ch, model_ad, 
+          column.labels = c("Children","Adults"),
+          model.numbers=FALSE,
+          intercept.bottom = FALSE,
+          covariate.labels=c("(Intercept)","Sound ","Object","Sound x Object"),
+          no.space=TRUE,
+          single.row=TRUE,
+          star.cutoffs =c(0.05, 0.01, 0.001),
+          digits=2,
+          omit.stat = "all",
+          table.layout ="-c-!t-n",
+          header=FALSE,
+          #notes=c("[0.*]","[0.**]"),
+          title="Estimates of predictor coefficients (and their standard errors) by age group in the regression model")
 
 ```
 
@@ -320,18 +362,26 @@ model1_val <- as.data.frame(confint2(fit_children)) %>%
                      group = "adults"))
 
 
-model2_val <- add_rownames(as.data.frame(confint2(fit_children_2)), "param") %>%
+model2_val <- tibble::rownames_to_column(as.data.frame(confint2(fit_children_2)), "param") %>%
   mutate(val= ifelse(param=='Vr_s',Vr_s_ch, Vr_o_ch),
          model=2, 
          group = "children") %>%
-  bind_rows(add_rownames(as.data.frame(confint2(fit_adults_2)), "param") %>%
+  bind_rows(tibble::rownames_to_column(as.data.frame(confint2(fit_adults_2)), "param") %>%
               mutate(val= ifelse(param=='Vr_s',Vr_s_ad, Vr_o_ad),
                      model=2, 
                      group = "adults"))
 
+#Model comparison
+
+model_comparison <- tibble::rownames_to_column(AIC(fit_adults, fit_adults_2), 'model') %>%
+  bind_rows(tibble::rownames_to_column(AIC(fit_children, fit_children_2), 'model'))
+  
 
 feather::write_feather(model1_val, "../saved_data/values_mod1.feather")       
-feather::write_feather(model2_val, "../saved_data/values_mod2.feather")  
+feather::write_feather(model2_val, "../saved_data/values_mod2.feather")
+
+feather::write_feather(model_comparison, "../saved_data/model_comparison.feather")
+
 
 model2_val <- c(confint(fit_children_2), Vr_s_ch, Vr_o_ch, model="2", group = "children") %>%
   bind_rows(c(confint(fit_adults_2), Vr_s_ad, Vr_o_ad, model="2", group = "adults")) 

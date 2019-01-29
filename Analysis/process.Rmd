@@ -23,9 +23,15 @@ library(purrr)
 theme_set(theme_few())
 ```
 
+Sample size:
+The following are the analysese done with adult pilot data.
+We plan to collect data from 60 participants on Amazaon MTurk. 
+
 Adult data. 
 
 ```{r}
+
+#The following is a test with adult pilot data
 
 d_adult <- read_delim("adult_pilot_3.txt", delim = " ")  %>%
   filter(type == "Test") %>%

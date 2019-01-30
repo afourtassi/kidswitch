@@ -37,6 +37,8 @@ d_adult <- read_delim("adult_pilot_3.txt", delim = " ")  %>%
   filter(type == "Test") %>%
   mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
 
+#Here I will  filter out particiapants whose first language is arabic or hindi
+
 d_adult_score <- d_adult %>%
   group_by(ID, sound_dist, concept_dist) %>%
   dplyr::summarise(mean = mean(iscorrect))

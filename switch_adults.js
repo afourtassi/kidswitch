@@ -877,6 +877,7 @@ var experiment = {
     age:[],
     gender:[],
     native:[],
+    second:[],
     problem:[],
     ifproblem:[],
     comment:[]
@@ -967,7 +968,7 @@ var experiment = {
             experiment.brief.gender.push(document.getElementById("gender").value);
             experiment.brief.native.push(document.getElementById("native").value);
                 
-            experiment.brief.native.push(document.getElementById("second").value);
+            experiment.brief.second.push(document.getElementById("second").value);
             experiment.brief.problem.push(document.getElementById("problem").value);
             experiment.brief.ifproblem.push(document.getElementById("ifproblem").value);
                 

@@ -32,12 +32,12 @@ Adult data.
 ```{r}
 
 #The following is a test with adult pilot data
-
-d_adult <- read_delim("adult_pilot_3.txt", delim = " ")  %>%
-  filter(type == "Test") %>%
+d_adult <- read_delim("adults_final.txt", delim = " ")  %>%
+#d_adult <- read_delim("adult_pilot_3.txt", delim = " ")  %>%
+  filter(type == "Test", #Here I will  filter out particiapants whose first language is arabic or hindi
+         other != "yes") %>%
   mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
 
-#Here I will  filter out particiapants whose first language is arabic or hindi
 
 d_adult_score <- d_adult %>%
   group_by(ID, sound_dist, concept_dist) %>%
@@ -219,7 +219,7 @@ plot_adult <- ggplot(sum_adult,
 theme(legend.title = element_text(size=11),
       legend.text=element_text(size=11),
       axis.text = element_text(size = 11)
-      ) #+ facet_grid(. ~ block)+
+      ) #+ facet_grid(. ~ block)
 
 #theme(plot.title = element_text(size = 12, face = "bold"),
 #    legend.title=element_text(size=10), 
@@ -344,7 +344,7 @@ combine_cues_2 <- function(s, o, Vr_s, Vr_o) {
 
 fit_adults <- nls(mean ~ combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='adults'), start=list(Vr=0.1), lower=c(0), algorithm="port")
 
-fit_adults_2 <- nls(mean ~ combine_cues_2(s_dist, c_dist, Vr_s, Vr_o), data=subset(data_fit, group=='adults'), start=list(Vr_s=0.1, Vr_o=0.04), lower=c(0,0), algorithm="port")
+fit_adults_2 <- nls(mean ~ combine_cues_2(s_dist, c_dist, Vr_s, Vr_o), data=subset(data_fit, group=='adults'), start=list(Vr_s=0.1, Vr_o=0.1), lower=c(0,0), algorithm="port")
 
 Vr_ad <- coef(fit_adults)
 Vr_s_ad <- coef(fit_adults_2)[1]
@@ -473,14 +473,18 @@ ggplot(simulation_data, aes(x=x, y=y, col=sigma)) +
 
 model_data_plot$group <- factor(model_data_plot$group, levels = c("children", "adults"))
 
-ggplot(model_data_plot, 
-#ggplot(subset(model_data_plot, group=='children'),
-      aes(x = sound_dist, y = value, group = factor(concept_dist), col = factor(concept_dist))) +
+ggplot(subset(model_data_plot, key == "human"), 
+      aes(x = sound_dist, y = value, 
+          group = factor(concept_dist), 
+          col = factor(concept_dist)
+          )) +
   #geom_point()+
   geom_pointrange(aes(ymin = ci.lower, ymax = ci.upper), 
                  position = position_dodge(width = .1),
                  size=0.2) + 
   geom_line() + 
+  geom_line(data=subset(model_data_plot, key == "prediction_2"), linetype=2, size=0.5, col='black')+
+  geom_point(data=subset(model_data_plot, key == "prediction_2"), size=1, col='black')+
   geom_hline(yintercept = 0.50, linetype="dashed") +
   xlab("Auditory similary") +ylab("Accuracy")+
   scale_colour_discrete(name="Visual similarity")+
@@ -488,7 +492,7 @@ ggplot(model_data_plot,
 theme(legend.title = element_text(size=11),
       legend.text=element_text(size=11),
       axis.text = element_text(size = 11)
-      ) + facet_grid(group~key, scales="free_y") +
+      ) + facet_grid(.~group) +
   theme(aspect.ratio = 0.7)
 
 

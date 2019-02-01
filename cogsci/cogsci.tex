@@ -125,14 +125,14 @@ of development whereby younger children fail to encode the contrastive
 phonetic detail, whereas older children succeed.
 
 Subsequent findings have suggested otherwise. On the one hand,
-14-month-olds---who typically fail in the original tas---succeed when an
-easier testing method is used, even under the same learning conditions
-(Yoshida, Fennell, Swingley, \& Werker, 2009). They also succeed when
-uncertainty is mitigated via disambiguating cues (e.g., Thiessen, 2007).
-On the other hand, adults show patterns of learning similar to those
-shown by 14-month-olds when the task is more challenging and when
-similarity between words increases (Pajak, Creel, \& Levy, 2016; White,
-Yee, Blumstein, \& Morgan, 2013).
+14-month-olds---who typically fail in the original task---succeed when
+an easier testing method is used, even under the same learning
+conditions (Yoshida, Fennell, Swingley, \& Werker, 2009). They also
+succeed when uncertainty is mitigated via disambiguating cues (e.g.,
+Thiessen, 2007). On the other hand, adults show patterns of learning
+similar to those shown by 14-month-olds when the task is more
+challenging and when similarity between words increases (Pajak, Creel,
+\& Levy, 2016; White, Yee, Blumstein, \& Morgan, 2013).
 
 This pattern of evidence points towards another scenario, where the
 representations are encoded in a probabilistic (rather than binary) way,
@@ -210,7 +210,7 @@ simplicity, is captured by a normal distribution:
 
 \[ p(o | C) \sim  \mathcal{N}(\mu_C, \sigma^2_C) \]
 \[ p(s| L) \sim  \mathcal{N}(\mu_L, \sigma^2_L) \] Finally, we assume
-there to be one-to-one mappings between concepts and labels, and that
+there to be one-to-one mappings between concepts and labels and that
 observers have successfully learned these mappings during the exposure
 phase: \[
 P(L_i|C_j) = 
@@ -267,10 +267,11 @@ is uttered (e.g., ``lif'') and participants choose the corresponding
 object from the two alternatives. An overview of the task is shown in
 Figure \ref{fig:task}.
 
-We used Equation 1 to obtain the exact analytical expression for the
-probability of accurate responses \(p(o_T | s)\) (target object \(o_T\)
-given a sound \(s\)) in the simple case of two-alternative forced choice
-in the testing phase of our experimental task:
+We used Equation 1 and the probability distributions defined above to
+obtain the exact analytical expression for the probability of accurate
+responses \(p(o_T | s)\) (target object \(o_T\) given a sound \(s\)) in
+the simple case of two-alternative forced choice in the testing phase of
+our experimental task:
 
 \begin{equation}
 P(o_T|s)= \frac{1 + e^{-(\Delta s^2/2\sigma_L^2+ \Delta o^2/2\sigma_C^2)}}{1 + e^{-(\Delta s^2/2\sigma_L^2+ \Delta o^2/2\sigma_C^2)}+ e^{-\Delta s^2 /2\sigma_L^2} + e^{-\Delta o^2 /2\sigma_C^2 }}
@@ -432,7 +433,7 @@ predictions.
 
 }
 
-\caption{\label{fig:data_all}Accuracy of novel word recognition as as a function of the sound distance, the object distance, and the age group (preschool children vs. Adults). We show both experimental results (solid lines) and model predictions (dashed lines). Error bars represent 95\% confidence intervals.}\label{fig:all_data}
+\caption{\label{fig:data_all}Accuracy of novel word recognition as as a function of the sound distance, the object distance, and the age group (preschool children vs. adults). We show both experimental results (solid lines) and model predictions (dashed lines). Error bars represent 95\% confidence intervals.}\label{fig:all_data}
 \end{figure*}
 \end{CodeChunk}
 
@@ -529,7 +530,7 @@ developmental changes in word-object mappings can indeed be
 characterized as a continuous refinement (i.e., uncertainty reduction)
 in qualitatively similar representations across the life span.
 
-The model made a new prediction to which which we tested experimentally:
+The model made a new prediction to which we tested experimentally:
 Learning similar words is not only modulated by the similarity of their
 phonological forms, but also by the visual similarity of their semantic
 referents. More generally, since visual similarity is an early
@@ -560,10 +561,10 @@ operating over similar representations across development, suggesting
 developmental continuity. We used a case from word learning as an
 example, but the same idea might apply to other aspects of cognitive
 development that are typically thought of as stage-like (e.g.,
-acquisition of a theory of mind). Computational models such as the one
-proposed here can help us investigate the extent to which such
-discontinuities emerge due to genuine qualitative changes, and the
-extent to which they reflect the granularity of the researchers' own
+acquisition of a theory of mind). Computational models, such as the one
+proposed here, can help us investigate the extent to which such
+discontinuities emerge due to genuine qualitative changes and the extent
+to which they reflect the granularity of the researchers' own
 measurement tools.
 
 \section{References}\label{references}

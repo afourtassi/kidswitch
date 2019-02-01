@@ -102,8 +102,8 @@ cognitively-demanding task which may mask learning, or to the use of
 statistical thresholding (in particular, p-value \textless{} 0.05) which
 can create a spurious dichotomy between success and failure in observing
 a given behavior. In such cases, positing discontinuous stages is
-unnecessary. Instead, a continuous model--involving similar
-representations across the lifespan--may provide a simpler and more
+unnecessary. Instead, a continuous model---involving similar
+representations across the lifespan---may provide a simpler and more
 transparent account of development.
 
 We use a case study from word learning literature. Stager \& Werker
@@ -111,11 +111,10 @@ We use a case study from word learning literature. Stager \& Werker
 sounds does not automatically translate into word learning skills.
 Indeed, though infants around 14-month old can distinguish similar sound
 pairs such as ``dih'' and ``bih'', they appear to fail in mapping this
-pair to two different objects. Subsequent research has focused on
+pair to two different objects. Follow-up studies has focused on
 proposing possible explanations for this observed gap between speech
 perception and word learning (e.g., Fennell \& Waxman, 2010; Hofer \&
-Levy, 2017; Rost \& McMurray, 2009; Stager \& Werker, 1997). In this
-work we focus, rather, on the mechanism of development.
+Levy, 2017; Rost \& McMurray, 2009; Stager \& Werker, 1997).
 
 By around 17 m.o, children succeed in the same task (Werker, Fennell,
 Corcoran, \& Stager, 2002). How does development proceed? Early accounts
@@ -126,7 +125,7 @@ of development whereby younger children fail to encode the contrastive
 phonetic detail, whereas older children succeed.
 
 Subsequent findings have suggested otherwise. On the one hand,
-14-month-olds--who typically fail in the original task--succeed when an
+14-month-olds---who typically fail in the original tas---succeed when an
 easier testing method is used, even under the same learning conditions
 (Yoshida, Fennell, Swingley, \& Werker, 2009). They also succeed when
 uncertainty is mitigated via disambiguating cues (e.g., Thiessen, 2007).
@@ -197,7 +196,7 @@ physically instantiated by the sound \(s\).
 \begin{SCfigure}
 \centering
 \includegraphics[width=1.5in]{figs/model.png}
-\caption{Graphical representation of our model. Circles indicate random variables (shading indicates observed variables). The squares indicates fixed model parameters.}
+\caption{Graphical representation of our model. Circles indicate random variables (shading indicates observed variables). The squares indicate fixed model parameters.}
 \label{fig:model}
 \end{SCfigure}
 
@@ -207,7 +206,7 @@ learning. However, the first study assumed that the sounds are heard
 unambiguously, and the second assumed the concepts are observed
 unambiguously. In our model, we assume that both labels and concepts are
 observed with a certain amount of perceptual noise, which we assume, for
-simplicity, that it is captured by a normal distribution:
+simplicity, is captured by a normal distribution:
 
 \[ p(o | C) \sim  \mathcal{N}(\mu_C, \sigma^2_C) \]
 \[ p(s| L) \sim  \mathcal{N}(\mu_L, \sigma^2_L) \] Finally, we assume
@@ -224,19 +223,18 @@ P(L_i|C_j) =
 \subsection{Inference}\label{inference}
 
 The learner hears a sound \(s\) and has to decide which object \(o\)
-provides an optimal match to this sound. To this end, the learner has to
-compute the probability \(P(o|s)\) for all possible objects. This
-probability can be computed by summing over all possible concepts and
-labels:
+provides an optimal match to this sound. To this end, they must compute
+the probability \(P(o|s)\) for all possible objects. This probability
+can be computed by summing over all possible concepts and labels:
 \[P(o|s)=\sum_{C,L} P(o, C, L| s) \propto \sum_{C,L} P(o, C, L, s) \]
 The joint probability \(P(o, C, L, s)\) is obtained by factoring the
 Bayesian network in Figure \ref{fig:model}:
-\[P(o,C,L,s) = P(s|L)P(L|C)P(C|o)P(o) \] which could be transformed
-using Bayes rule into:
+\[P(o,C,L,s) = P(s|L)P(L|C)P(C|o)P(o) \] which can be transformed using
+Bayes rule into:
 
 \[P(o,C,L,s) = P(s|L)P(L|C)P(o|C)P(C) \] Finally, assuming that the
 concepts' prior probability is uniformly
-distributed\footnote{This is a reasonable assumption given the similarity of the concepts used in each naming situation. See the stimuli sub-section in Experiment.},
+distributed\footnote{This is a reasonable assumption in our particular case given the similarity of the concepts used in each naming situation in our experiment.},
 we obtain the following expression, where all conditional dependencies
 are now well defined:
 
@@ -259,9 +257,9 @@ predictions}\label{task-and-model-predictions}
 \end{CodeChunk}
 
 We use the model to predict performance in the word learning task
-introduced by Stager \& Werker (1997), and a testing method similar to
-the one used by Yoshida et al. (2009). In this task, participants are
-first exposed to the association between pairs of nonsense words (e.g.,
+introduced by Stager \& Werker (1997), with a two-alternative forced
+choice as in Yoshida et al. (2009). In this task, participants are first
+exposed to the association between pairs of nonsense words (e.g.,
 ``lif''/``neem'') and pairs of objects. The word-object associations are
 introduced sequentially. After this exposure phase, participants perform
 a series of test trials. In each of these trials, one of the two sounds
@@ -269,10 +267,10 @@ is uttered (e.g., ``lif'') and participants choose the corresponding
 object from the two alternatives. An overview of the task is shown in
 Figure \ref{fig:task}.
 
-We use the general Equation 1 to derive the exact analytical expression
-for the probability of accurate responses \(p(o_T | s)\) (target object
-\(o_T\) given a sound \(s\)) in the simple case of two-alternative
-forced choice in the testing phase of our experimental task:
+We used Equation 1 to obtain the exact analytical expression for the
+probability of accurate responses \(p(o_T | s)\) (target object \(o_T\)
+given a sound \(s\)) in the simple case of two-alternative forced choice
+in the testing phase of our experimental task:
 
 \begin{equation}
 P(o_T|s)= \frac{1 + e^{-(\Delta s^2/2\sigma_L^2+ \Delta o^2/2\sigma_C^2)}}{1 + e^{-(\Delta s^2/2\sigma_L^2+ \Delta o^2/2\sigma_C^2)}+ e^{-\Delta s^2 /2\sigma_L^2} + e^{-\Delta o^2 /2\sigma_C^2 }}
@@ -336,7 +334,7 @@ similarity (\(\Delta s\)) and object similarity (\(\Delta o\)) were
 varied simultaneously in a within-subject design. Two age groups
 (preschool children and adults) were tested on the same task to explore
 whether development can be characterized with the uncertainty
-parameters, \(\sigma_C\) and \(\sigma_L\). The Experiment, sample size,
+parameters, \(\sigma_C\) and \(\sigma_L\). The experiment, sample size,
 exclusion criteria and the model's main predictions were pre-registered.
 
 \subsection{Methods}\label{methods}
@@ -344,15 +342,15 @@ exclusion criteria and the model's main predictions were pre-registered.
 \subsubsection{Participants}\label{participants}
 
 We planned to recruit a sample of N=60 children ages 4-5 years from the
-Bing Nursery School on Stanford University's campus. So far, we have
-collected data from n=47 children. An additional n=28 children
-participated but were removed from analyses because they were not above
-chance on the catch trials. We also planned to recruit a sample of N=60
-adults on Amazon Mechanical Turk. This study used sata from n=50 adult
-participants. An additional n=10 participants were tested but excluded
-because of low scores on the catch trials (n=9 ) or because they were
-familiar with the non-English sound stimuli we used in the adult
-experiment (n=1).
+Bing Nursery School on Stanford University's campus. Here we report data
+from n=47 children. An additional n=28 children participated but were
+removed from analyses because they were not above chance on the catch
+trials due to the challenging nature of our procedure (see below). We
+also planned to recruit a sample of N=60 adults on Amazon Mechanical
+Turk. Data from n=10 participants were excluded due to low scores on the
+catch trials (n=9 ) or because they were familiar with the non-English
+sound stimuli we used in the adult experiment (n=1), yielding a final
+sample of n=50.
 
 \subsubsection{Stimuli and similarity
 rating}\label{stimuli-and-similarity-rating}
@@ -378,7 +376,7 @@ category's shape (e.g, body stretch or head fatness).
 In a separate survey, \(N=20\) participants recruited on Amazon
 Mechanical Turk evaluated the similarity of each sound and object pair
 on a 7-point scale. We scaled responses within the range {[}0,1{]}. Data
-are shown in Figure \ref{fig:stim}, for each stimuli group. This data
+are shown in Figure \ref{fig:stim}, for each stimulus group. These data
 will be used in the models as the perceptual distance of sound pairs
 (\(\Delta s\)) and object pairs (\(\Delta o\)).
 
@@ -387,7 +385,7 @@ will be used in the models as the perceptual distance of sound pairs
 Each age group saw only two of the three levels of similarity described
 in the previous sub-section: ``different'' vs. ``intermediate'' for
 preschoolers, and ``intermediate'' vs. ``similar'' for adults. We made
-this choice in the light of pilot studies showing that adults were at
+this choice in light of pilot studies showing that adults were at
 ceiling with ``different'' sounds/objects, and children were at chance
 with the ``similar'' sounds/objects. That said, this difference in the
 level of similarity is accounted for in the model through using the
@@ -401,11 +399,12 @@ appropriate perceptual distance used in each age group (Figure
 
 }
 
-\caption{\label{fig:stim}Distances for both sound and object pairs from an adult norming study. Error bars represent 95\% confidence intervals.}\label{fig:stim}
+\caption{\label{fig:stim}Distances for both sound and object pairs from an adult norming study. Data represent Likert values normalized to [0,1] interval. Error bars represent 95\% confidence intervals.}\label{fig:stim}
 \end{figure}
 \end{CodeChunk}
 
-The experiment was a 2x2 within-subjects factorial design with four
+To maximize our ability to measure subtle stimulus effects, the
+experiment was a 2x2 within-subjects factorial design with four
 conditions: high/low sound similarity crossed with high/low visual
 object similarity. Besides the 4 conditions, we also tested participants
 on a fifth catch condition which was similar in its structure to the
@@ -420,7 +419,11 @@ Participants were tested in a sequence of five conditions: the four
 experimental conditions plus the catch condition. In each condition,
 participants saw a first block of four exposure trials followed by four
 testing trials, and a second block of two exposure trials (for memory
-refreshment) followed by an additional four testing trials.
+refreshment) followed by an additional four testing trials. The length
+of this procedure was demanding, especially for children, but we adopted
+a fully within-subjects design based on pilot testing that indicated
+that precision of measurement was critical for testing our experimental
+predictions.
 
 \begin{CodeChunk}
 \begin{figure*}[h]
@@ -429,7 +432,7 @@ refreshment) followed by an additional four testing trials.
 
 }
 
-\caption{\label{fig:data_all}Accuracy of novel word recognition as as a function of the sound distance, the object distance, and the age group (preschool children vs. Adults). We show both experimental results (top) and model predictions (bottom). Error bars represent 95\% confidence intervals.}\label{fig:all_data}
+\caption{\label{fig:data_all}Accuracy of novel word recognition as as a function of the sound distance, the object distance, and the age group (preschool children vs. Adults). We show both experimental results (solid lines) and model predictions (dashed lines). Error bars represent 95\% confidence intervals.}\label{fig:all_data}
 \end{figure*}
 \end{CodeChunk}
 
@@ -454,27 +457,28 @@ results using a mixed-effects logistic regression with sound distance,
 object distance and age group as fixed effects, and with a maximal
 random effects structure (allowing us to take into account the full
 nested structure of our data) (Barr, Levy, Scheepers, \& Tily, 2013). We
-found main effects for all the fixed effects in the regression, i.e.,
-the sound distance (\(\beta =\) 0.44, \(p\) \textless{}
-0.001)--replicating previous findings, the object distance (\(\beta =\)
-0.5, \(p\) \textless{} 0.001)--confirming the new prediction of our
-model, and age group (\(\beta =\) 0.43, \(p\) \textless{}
-0.001)--showing that performance improves with age. Besides, we found
-two-way interactions between sound distance and age (\(\beta =\) 0.17,
-\(p\) \textless{}0.05) and between object distance and age (\(\beta =\)
-0.18, \(p\) \textless{}0.05).
+found main effects for all the fixed effects in the regression. For the
+sound distance, we obtained \(\beta =\) 0.44 (\(p\) \textless{} 0.001),
+replicating previous findings. For object distance, we found \(\beta =\)
+0.5 (\(p\) \textless{} 0.001), and this finding confirms the new
+prediction of our model. Finally, for the age group, we obtained
+\(\beta =\) 0.43 (\(p\) \textless{} 0.001), showing that performance
+improves with age. In addition, we found two-way interactions between
+sound distance and age (\(\beta =\) 0.17, \(p\) \textless{}0.05) and
+between object distance and age (\(\beta =\) 0.18, \(p\)
+\textless{}0.05).
 
-Second, we fit our model (using Equation 2) to the participants'
-responses in each age group. The values of \(\Delta s\) and \(\Delta o\)
-were set based on data from the similarity judgment task (Figure
-\ref{fig:stim}). Thus, the model has two degrees of freedom for each
-group, i.e., \(\sigma_C\) and \(\sigma_L\). Figure \ref{fig:data_all}
-(bottom) shows the predictions. The model captures the qualitative
-patterns in both age groups: starting from a low accuracy recognition
-when both the sound and object distances are small, the model correctly
-predicts an increase in accuracy when either the sound distance or the
-object distance increases. Besides, accuracy is correctly predicted to
-be maximal when both the sound and object distances are high.
+We next fit our model (using Equation 2) to the participants' responses
+in each age group. The values of \(\Delta s\) and \(\Delta o\) were set
+based on data from the similarity judgment task (Figure \ref{fig:stim}).
+Thus, the model has two degrees of freedom for each group, i.e.,
+\(\sigma_C\) and \(\sigma_L\). Figure \ref{fig:data_all} (bottom) shows
+the predictions. The model captures the qualitative patterns in both age
+groups: starting from a low accuracy recognition when both the sound and
+object distances are small, the model correctly predicts an increase in
+accuracy when either the sound distance or the object distance
+increases. Further, accuracy is correctly predicted to be maximal when
+both the sound and object distances are high.
 
 The values of the parameters were as follows. Children had a
 label-specific uncertainty of \(\sigma_S =\) 0.9 {[}0.68,
@@ -484,12 +488,13 @@ and a concept-specific uncertainty of \(\sigma_C =\) 0.29 {[}0.1,
 {[}-0.02, 0.3{]}, and a concept-specific uncertainty of \(\sigma_C =\)
 0.19 {[}0.04, 0.34{]}. As predicted, the uncertainty parameters were
 larger for children than they were for adults, showing that the
-probabilsitic representations becomes more refined (that is, \(\sigma\)
-becomes smaller) across development.
+probabilistic representations becomes more refined (that is, \(\sigma\)
+becomes smaller) across development. The developmental effect was more
+important for the label-specific uncertainty.
 
 The models explained the majority of the variance in the participants'
 mean responses (\(R^2=\) 0.86, for the combined adult and children's
-data). To investigate whether the model's predictive power is due to
+data). To investigate whether the model's predictive power was due to
 overfitting, we fit a simplified version with only one degree of freedom
 (i.e., a single variance common to both sounds and objects). This
 single-variance model explained as much variance in the mean responses
@@ -501,10 +506,9 @@ An unexpected outcome was that adult participants deviated slightly from
 the model's numbers: While the model predicted accuracy to be more
 sensitive to object distance when sound distance is higher (and
 vice-versa), adult participants showed the opposite pattern. This
-deviation is interesting as it suggests that participants are more
-likely to pay attention and integrate additional sources of information
-when ambiguity is higher.
-\footnote{It is unclear whether the same pattern is found in children as the difference between accuracy scores is generally small compared to the uncertainty of the measurements.}
+deviation is an interesting starting point for future work as it may
+suggest that participants are more likely to pay attention to and
+integrate additional sources of information when ambiguity is higher.
 
 \section{General Discussion}\label{general-discussion}
 
@@ -512,9 +516,10 @@ This paper explored the idea that some seemingly stage-like patterns in
 cognitive development can be characterized in a continuous fashion. We
 used as a case study the seminal work of Stager \& Werker (1997) showing
 a discrepancy between children's speech perception abilities and their
-word learning skills. While most previous work debated the source of
-this discrepancy, here we were more interested in how it reflects
-developmental change.
+word learning skills. While much of the previous investigation of this
+finding has been interested in the source of this discrepancy, here we
+have explored how it could arise from continuous developmental change in
+perceptual uncertainty.
 
 Building on some previous discussions (e.g., Swingley, 2007; Yoshida et
 al., 2009), we proposed a model where perceptual stimuli are encoded
@@ -524,35 +529,36 @@ developmental changes in word-object mappings can indeed be
 characterized as a continuous refinement (i.e., uncertainty reduction)
 in qualitatively similar representations across the life span.
 
-The model made a new prediction to which we provided the first
-experimental test: Learning similar words is not only modulated by the
-similarity of their phonological forms, but also by the visual
-similarity of their semantic referents. More generally, since visual
-similarity is an early organizing feature in the semantic domain (e.g.,
-Wojcik \& Saffran, 2013), our finding suggests that children may
-prioritize the acquisition of words that are quite distant in the
-semantic space. This suggestion is supported by recent findings based on
-the investigation of early vocabulary growth (Engelthaler \& Hills,
-2017; Sizemore, Karuza, Giusti, \& Bassett, 2018).
+The model made a new prediction to which which we tested experimentally:
+Learning similar words is not only modulated by the similarity of their
+phonological forms, but also by the visual similarity of their semantic
+referents. More generally, since visual similarity is an early
+organizing feature in the semantic domain (e.g., Wojcik \& Saffran,
+2013), our finding suggests that children may prioritize the acquisition
+of words that are quite distant in the semantic space. This suggestion
+is supported by recent findings based on the investigation of early
+vocabulary growth (Engelthaler \& Hills, 2017; Sizemore, Karuza, Giusti,
+\& Bassett, 2018).
 
 One limitation of this work is that the model was fit to data from
 children at a relatively older age (4-5 years old) than what is
-typically studied in the literature (around 14 month-old). Nonetheless,
-this choice was related to two measurement difficulties. First, model
-fitting requires several, reliably-measured data points. In our case,
-data collection involved presenting participants with several trials
-across four conditions in a between-subject design. It would have been
-challenging to obtain these measures with infants. Second, the study of
-infants requires using specific testing methods. This fact would have
-made the quantitative study of development challenging. Indeed, it is
+typically studied in the literature (14-18 month-old). We selected this
+age group based on two measurement issues. First, model fitting requires
+several, reliably-measured data points. In our case, data collection
+involved presenting participants with several trials across four
+conditions in a between-subject design. It would have been challenging
+to obtain these measures with infants. Second, experiments with infants
+on this topic have often used habituation methods (but cf. Yoshida et
+al., 2009), which require additional linking assumptions. Indeed, it is
 not clear how data from these methods would directly compare to data
 collected using more typical methods in older children and adults.
 
 In sum, this paper proposes a model that accounts for the development of
-an important aspect of word learning. The findings show that data can be
-explained based on a continuous process operating over similar
-representations across development. We used a case from word learning as
-an example, but the same idea might apply to other aspects of cognitive
+an important aspect of word learning. Our account suggests that the
+developmental data can be explained based on a continuous process
+operating over similar representations across development, suggesting
+developmental continuity. We used a case from word learning as an
+example, but the same idea might apply to other aspects of cognitive
 development that are typically thought of as stage-like (e.g.,
 acquisition of a theory of mind). Computational models such as the one
 proposed here can help us investigate the extent to which such

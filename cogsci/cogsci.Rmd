@@ -10,9 +10,9 @@ header-includes:
    - \usepackage[rightcaption]{sidecap}
 
 author-information: > 
-    \author{{\large \bf Abdellah Fourtassi} \\ \texttt{afourtas@stanford.edu} \\ Department of Psychology \\ Stanford University
-    \And {\large \bf Sophie Regan} \\ \texttt{sregan20@stanford.edu} \\ Department of Psychology \\ Stanford University
-    \And {\large \bf Michael C. Frank} \\ \texttt{mcfrank@stanford.edu} \\ Department of Psychology \\ Stanford University}
+
+    \author{{\large \bf Anonymous CogSci submission} \\  \\ \\ }
+   
 
 abstract:
 
@@ -146,7 +146,7 @@ illus_plot <- ggplot(illustration, aes(x=x, y=y, col=rep)) +
 
 ```
 
-```{r illus, fig.env = "figure", fig.pos = "H", fig.align='center', fig.width=3.5, fig.height=2.5, fig.cap = "\\label{fig:illus} An illustration of the probabilistic/continuous account using simulated data. A word is represented with a distribution over the perceptual space (indicated in red or green). When the uncertainty of the representation is large relative to the distance between the stimuli (top panel), an instance of the red category (indicated with a star) could also be a plausible instance of the green category, hence the low recognition accuracy score. The accuracy increases when the stimuli are less similar (left panel), or when the representation are more precise (right panel)."}
+```{r illus, fig.env = "figure", fig.pos = "H", fig.align='center', fig.width=3.5, fig.height=2.5, fig.cap = "\\label{fig:illus} An illustration of the probabilistic/continuous account using simulated data. A word is represented with a distribution over the perceptual space (indicated in red or blue). When the uncertainty of the representation is large relative to the distance between the stimuli (top panel), an instance of the red category (indicated with a star) could also be a plausible instance of the green category, hence the low recognition accuracy score. The accuracy increases when the stimuli are less similar (left panel), or when the representation are more precise (right panel)."}
 
 img <- png::readPNG("figs/illustration.png")
 grid::grid.raster(img)
@@ -589,7 +589,8 @@ The model made a new prediction to which we tested experimentally: Learning simi
 
 <!--That said, further work is needed to explore the effect on word learning of other semantic dimensions that could be encoded by children (e.g., conceptual/functional features). -->
 
-One limitation of this work is that the model was fit to data from children at a relatively older age (4-5 years old) than what is typically studied in the literature (14-18 month-old). We selected this age group based on two measurement issues. First, model fitting requires several, reliably-measured data points. In our case, data collection involved presenting participants with several trials across four conditions in a between-subject design. It would have been challenging to obtain these measures with infants. Second, experiments with infants on this topic have often used habituation methods [but cf. @yoshida2009], which require additional linking assumptions. Indeed, it is not clear how data from these methods would directly compare to data collected using more typical methods in older children and adults.
+One limitation of this work is that the model was fit to data from children at a relatively older age (4-5 years old) than what is typically studied in the literature (14-18 month-old). We selected this older age group to optimize the number and precision of the experimental measures (both are crucial to model fitting). Data collection involved presenting participants with several trials across four conditions in a between-subject design. It would have been challenging to obtain such measures with infants. <!--Second, experiments with infants on this topic have often used habituation methods [but cf. @yoshida2009], which require additional linking assumptions. Indeed, it is not clear how data from these methods would directly compare to data collected using more typical methods in older children and adults.
+-->
 <!--While an important conclusion of this paper is that the same process may apply to different developmental stages, it would be interesting to experimentally verify the generality of this conclusion in the context of early language acquisition. A challenge to this next step would be to construct a computational framework which would compare performance across heterogeneous testing methods (e.g., looking time vs. forced-choice). -->
 
 In sum, this paper proposes a model that accounts for the development of an important aspect of word learning. Our account suggests that the developmental data can be explained based on a continuous process operating over similar representations across development, suggesting developmental continuity. We used a case from word learning as an example, but the same idea might apply to other aspects of cognitive development that are typically thought of as stage-like (e.g., acquisition of a theory of mind). Computational models, such as the one proposed here, can help us investigate the extent to which such discontinuities emerge due to genuine qualitative changes and the extent to which they reflect the granularity of the researchers' own measurement tools.
@@ -632,14 +633,15 @@ One could imagine two learning scenarios. On the first one, children’s learnin
 
 A second goal of this work is to investigate how the learning mechanism develops over the life span. According to one hypothesis, adults use qualitatively distinct learning mechanisms than children, due, for example, to maturational factors. To illustrate, in the experimental setting used in Stager and Werker (1997), children’s difficulty with learning similar sounding words–despite their ability to perceptually differentiate them–might be attributed to their inferior working memory, hindering their ability to attend simultaneously to the sound contrast and the meanings.  A second hypothesis proposes that learners use fundamentally similar mechanisms across the life span, and that the difference might be one of degree, not kind. For example, though they have vastly greater working memory capacity, adults show patterns of word processing and learning which parallel results obtained with children in Stager and Werker’s study (White et al. 2013; Pajak et al. 2016). Here we explore  -->
 
-<!--
-\vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering All data and code for these analyses are available at\ \url{https://github.com/afourtassi/networks}}} \vspace{1em}
 
+\vspace{1em} \fbox{\parbox[b][][c]{7.3cm}{\centering All data and code will be available online}} \vspace{1em}
+
+<!--
 # Acknowledgements
 
 This work was supported by a post-doctoral grant from the Fyssen Foundation, NSF #1528526, and NSF #1659585.
-
 -->
+
 # References 
 
 ```{r}

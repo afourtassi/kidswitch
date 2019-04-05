@@ -25,7 +25,7 @@ theme_set(theme_few())
 
 Sample size:
 The following are the analysese done with adult pilot data.
-We plan to collect data from 60 participants on Amazaon MTurk. 
+We plan to collect data from 100 participants on Amazaon MTurk. 
 
 Adult data. 
 
@@ -52,16 +52,16 @@ d_adult_excl <- d_adult_score %>%
   
 d_adult_good <- d_adult %>%
   left_join(d_adult_excl) %>%
-  filter(score >0.7) %>%
+  filter(score ==1) %>%
   filter(sound_dist != 'catch')
 
-feather::write_feather(d_adult_good, "../saved_data/data_adult.feather")
+#feather::write_feather(d_adult_good, "../saved_data/data_adult.feather")
 ```
 
 Children data
 
 ```{r}
-d_child <- read_delim("data_summer_all.txt", delim = " ") %>%
+d_child <- read_delim("kids_all.txt", delim = " ") %>%
   filter(type == "Test") %>%
   filter(age != 6) %>%
   filter(code != 'test',
@@ -85,7 +85,7 @@ d_child_good <- d_child %>%
   filter(score > 0.5) %>%
   filter(sound_dist != 'catch')
 
-feather::write_feather(d_child_good, "../saved_data/data_child.feather")
+#feather::write_feather(d_child_good, "../saved_data/data_child.feather")
   
 ```
 
@@ -148,20 +148,8 @@ theme(legend.title = element_text(size=11),
 
 ```
 
-Summary
-
+Summary children
 ```{r}
-
-sum_adult <- d_adult_good %>%
-  group_by(sound_dist, concept_dist) %>%
-  dplyr::summarise(mean = mean(iscorrect),
-                   sd = sd(iscorrect),
-                   n = n()) %>%
-  mutate(se = sd / sqrt(n),
-         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
-         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
-  select(-sd, -n, -se) 
-
 sum_child <- d_child_good %>%
   group_by(sound_dist, concept_dist) %>%
   dplyr::summarise(mean = mean(iscorrect),
@@ -172,12 +160,10 @@ sum_child <- d_child_good %>%
          upper = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   select(-sd, -n, -se) 
 
-
-
 ```
 
-Plots
-```{r fig.width=3, fig.height=1.7}
+Plot children
+```{r fig.width=5, fig.height=4}
 
 sum_child$concept_dist <- factor(sum_child$concept_dist, levels = c("similar", "different"))
 sum_child$sound_dist <- factor(sum_child$sound_dist, levels = c("similar", "different"))
@@ -199,6 +185,26 @@ theme(legend.title = element_text(size=11),
 
 plot_child
 
+```
+Summary adults
+
+```{r}
+
+sum_adult <- d_adult_good %>%
+  group_by(sound_dist, concept_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect),
+                   sd = sd(iscorrect),
+                   n = n()) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  select(-sd, -n, -se) 
+
+```
+
+
+```{r}
+
 sum_adult$concept_dist <- factor(sum_adult$concept_dist, levels = c("similar", "different"))
 sum_adult$sound_dist <- factor(sum_adult$sound_dist, levels = c("similar", "different"))
 
@@ -219,7 +225,7 @@ plot_adult <- ggplot(sum_adult,
 theme(legend.title = element_text(size=11),
       legend.text=element_text(size=11),
       axis.text = element_text(size = 11)
-      ) #+ facet_grid(. ~ block)
+      ) #+ facet_grid(. ~ concept)
 
 #theme(plot.title = element_text(size = 12, face = "bold"),
 #    legend.title=element_text(size=10), 

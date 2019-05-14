@@ -1,0 +1,511 @@
+---
+title             : "Continuous developmental change can explain discontinuities in word learning"
+shorttitle        : "Continuous Development of Word Learning"
+#numbersections: true
+
+author: 
+  - name          : "Abdellah Fourtassi"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "afourtas@stanford.edu"
+    
+  - name          : "Sophie Regan"
+    affiliation   : "1"
+    email         : "sregan20@stanford.edu"
+    
+    
+  - name          : "Michael C. Frank"
+    affiliation   : "1"
+    email         : "mcfrank@stanford.edu"
+
+affiliation:
+  - id            : "1"
+    institution   : "Department of Psychology, Stanford University"
+    
+
+author_note: |
+
+  Abdellah Fourtassi
+  
+  Department of Psychology
+  
+  Stanford University
+  
+  50 Serra Mall
+  
+  Jordan Hall, Building 420
+  
+  Stanford, CA 94301
+
+
+abstract: |
+
+ "Cognitive development is often characterized in term of discontinuities, but these discontinuities can sometimes be apparent rather than actual and can arise from continuous developmental change. To explore this idea, we use as a case study the finding by Stager and Werker (1997) that children's early ability to distinguish similar sounds does not automatically translate into word learning skills. Early explanations proposed that children may not be able to encode subtle phonetic contrasts when learning novel word meanings, thus suggesting a discontinuous/stage-like pattern of development. However, later work has revealed (e.g., through using simpler testing methods) that children do encode such contrasts, thus favoring a continuous pattern of development. Here we propose a probabilistic model describing how development may proceed in a continuous fashion across the lifespan.  The model accounts for previously documented facts and provides new predictions.  We collected data from preschool children and adults, and we showed that the model can explain various patterns of learning both within the same age and across development. The findings suggest that major aspects of cognitive development that are typically thought of as discontinuities, may emerge from simpler, continuous mechanisms."
+
+  
+keywords          : "word learning, cognitive development, computational modeling"
+
+header-includes:
+   - \usepackage{tipa}
+   - \usepackage[sortcites=false,sorting=none]{biblatex}
+   
+
+bibliography      : ["references.bib"]
+
+figsintext        : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : yes
+
+lang              : "english"
+class             : "man"
+output            : papaja::apa6_pdf 
+
+citation_package: biblatex
+
+---
+
+
+```{r}
+knitr::opts_chunk$set(echo=F, warning=F, cache=F, message=F, sanitize = T)
+```
+
+
+```{r load_packages, include = FALSE}
+library(papaja)
+library(png)
+library(grid)
+library(ggplot2)
+library(ggthemes)
+library(xtable)
+options(xtable.comment = FALSE)
+library(purrr)
+library(readr)
+library(ggplot2)
+library(langcog)
+library(boot)
+#library(lazyeval)
+library(dplyr)
+library(tidyr)
+library(wordbankr)
+library(directlabels)
+#library(scales)
+library(stringr)
+library(lmtest)
+library(rwebppl)
+library(jsonlite)
+library(nlme)
+library(feather)
+library(broom)
+library(HDInterval)
+library(BBmisc)
+library(stargazer)
+library(lme4)
+```
+
+#Introduction
+
+Cognitive development is sometimes characterized in terms of a succession of discontinuous stages [@piaget1954]. Although intuitively appealing, stage theories can be challenging to integrate with theories of learning, which typically posit that knowledge and skills improve incrementally with experience. Indeed, one of the central challenges of cognitive development has been to explain transitions between stages which appear to be qualitatively different [@carey2009].
+
+Nevertheless, at least in some cases, development may only appear to be stage-like. This appearance can be due, for example, to the use of a cognitively-demanding task which may mask learning, or to the use of statistical thresholding (in particular, p-value < 0.05) which can create a spurious dichotomy between success and failure in observing a given behavior. In such cases, positing discontinuous stages is unnecessary. Instead, a continuous model---involving similar representations across the lifespan---may provide a simpler and more transparent account of development.
+
+We use a case study from word learning literature. @stager1997 first showed that children's early ability to distinguish similar sounds does not automatically translate into word learning skills. Indeed, though infants around 14-month old can distinguish similar sound pairs such as "dih" and "bih", they appear to fail in mapping this pair to two different objects. 
+
+<!--Follow-up studies has focused on proposing possible explanations for this observed gap between speech perception and word learning [e.g., @fennell2010; @stager1997; @hofer2017; @rost2009]. -->
+
+By around 17 m.o, children succeed in the same task [@werker2002]. How does development proceed? The answer to this question depends on the nature of the chidlren's word encoding in the task. Early accounts assumed that children encode words in a rather binary way: they either fail or succeed in attending to the relevant phonetic details (simultaneously with the meanings). In the orginal paper, @stager1997 noted that "Infants of 14 months fail to detect the same phonetic detail that they can easily detect in a simple syllable discrimination task". They argued that the high cogntive demands of the task make children experience a limitation in the amount of phonetic details they can access. In a similar vein, Pater et al. (2004) argued that "when a contrast is first acquired, it is not stable and can be lost under processing demands". This binary account suggested a discontinuous/stage-like pattern of development whereby younger children fail to encode the contrastive phonetic detail, whereas older children succeed. 
+
+Subsequent findings have investigated the implications of this hypothesis in both infants and adults. First, if the demands of the task totally empede the encoding of subtle phonetic contrasts, then infants should fail in learning the mappings between the sounds and the objects, regardless of how this learning is probed. However, 14-month-olds succeed in this task under the same *learning* conditions as in @stager1997, but when an easier *testing* method is used [@yoshida2009]. Second, if the minsmatch between sound distrimination and word learning is only related to limited cognitive resources in infancy, then adults --- who have greater attentianal and working memory capacity --- should always succeed in mapping pairs of sounds they can discriminate to different objects.  Nonetheless, even adults show patterns learning that mirror those shown by 14-month-olds [@white2013; @pajak2016].
+
+This new set of evidence points towards another scenario, where the representations are encoded in a probabilistic (rather than binary) way, and where development is continuous, rather than stage-like [see also @swingley2007]. On this account, correct representations are learned early in development, but these representations are encoded with higher uncertainty in younger children, leading to *apparent* failure in relatively demanding tasks. Development is a continuous process whereby the initial noisy representations become more precise. Crucially, in a probabilsitic account, more precise representation do not mean they perfect, thus accounting for the fact that even adults show low accuracy learning when the sounds are subtle, e.g., non-native [@pajak2016].
+
+We provide an intuitive illustration of how such an account explains patterns of learning and development in Figure \@ref(fig:illus). We observe low accuracy in word learning when the perceptual distance between the labels is small relative to the uncertainty with which these labels are encoded. For example, in Stager and Werker's original experiment, children are supposed to associate label 1 ("bih") and label 2 ("dih") with object 1 and object 2, respectively.  Though infants could learn that the label "bih" is a better match to object 1 than "dih", they could still judge the sound "dih" as a plausible instance of the label "bih", thanks to the relatively large uncertainty of the encoding, and this confusion leads to "failure" in the recognition task. According to this account, accuracy in word learning improves if we increase either the perceptual distinctiveness of the stimuli (e.g., through using different-sounding labels), or the precision of the encoding itself (e.g., across development). 
+
+Building on this intuition, the current work proposes a probabilistic model, which we use to both account for previous experimental findings, and to make new predictions that have not been tested before. Using new data collected from both preschool children and adults, we show that the model can explain various patterns of learning both within the same age and across development. 
+
+```{r illus, fig.cap = "An illustration of the probabilistic/continuous account using simulated data. A word is represented with a distribution over the perceptual space (indicated in red or blue). When the uncertainty of the representation is large relative to the distance between the stimuli (top panel), an instance of the red category (indicated with a star) could also be a plausible instance of the green category, hence the low recognition accuracy score. The accuracy increases when the stimuli are less similar (left panel), or when the representation are more precise (right panel).", fig.align = "center", out.width = "300px"}
+knitr::include_graphics("figs/illustration.png")
+```
+
+# Model 
+
+<!--In previous studies, only the similarity of the sounds was varied across conditions (e.g., "bin"/"din" vs. "lif"/"neem"). In our task, we also vary the visual similarity of the objects, which allows us to explore the effect of additional probabilistic cues on novel word learning and recognition. An overview of the task is presented in Figure XX. -->
+
+## Probabilistic structure
+
+Our model consists of a set of variables describing the general process of spoken word recognition in a referential situation. These variables are related in a way that reflects the simple generative scenario represented graphically in Figure \@ref(fig:model). When a speaker utters a sound in the presence of an object, the observer assumes that the object $o$ activated the concept $C$ in the speaker's mind. The concept prompted the corresponding label $L$. Finally, the label was physically instantiated by the sound $s$. 
+
+```{r model, fig.cap = "Graphical representation of our model. Circles indicate random variables (shading indicates observed variables). The squares indicate fixed model parameters.", fig.align = "center", out.width = "300px"}
+knitr::include_graphics("figs/model.png")
+```
+
+
+A similar probabilistic structure was used by @lewis2013 to model concept learning, and by @hofer2017 to model spoken word learning. However, the first study assumed that the sounds are heard unambiguously, and the second assumed the concepts are observed unambiguously. In our model, we assume that both labels and concepts are observed with a certain amount of perceptual noise, which we assume, for simplicity, is captured by a normal distribution:
+
+$$ p(o | C) \sim  \mathcal{N}(\mu_C, \sigma^2_C) $$
+
+$$ p(s| L) \sim  \mathcal{N}(\mu_L, \sigma^2_L) $$
+
+Finally, we assume there to be one-to-one mappings between concepts and labels and that observers have successfully learned these mappings during the exposure phase:
+$$
+P(L_i|C_j) = 
+\begin{cases}
+  1 & \text{if  }  i=j \\  
+  0  & \text{otherwise  }
+\end{cases}
+$$
+
+## Inference
+
+The learner hears a sound $s$ and has to decide which object $o$ provides an optimal match to this sound. To this end, they must compute the probability $P(o|s)$ for all possible objects. This probability can be computed by summing over all possible concepts and labels:
+$$P(o|s)=\sum_{C,L} P(o, C, L| s) \propto \sum_{C,L} P(o, C, L, s) $$
+
+The joint probability $P(o, C, L, s)$ is obtained by factoring the Bayesian network in Figure \@ref(fig:model):
+$$P(o,C,L,s) = P(s|L)P(L|C)P(C|o)P(o) $$
+
+which can be transformed using Bayes rule into:
+
+$$P(o,C,L,s) = P(s|L)P(L|C)P(o|C)P(C) $$
+
+Finally, assuming that the concepts' prior probability is uniformly distributed\footnote{This is a reasonable assumption in our particular case given the similarity of the concepts used in each naming situation in our experiment.}, we obtain the following expression, where all conditional dependencies are now well defined:
+
+\begin{equation}
+P(o|s) = \frac{\sum_{C,L} P(s|L)P(o|C)P(L|C)}{\sum_{o} \sum_{C,L} P(s|L)P(o|C)P(L|C)}
+\end{equation}
+
+
+## Task and model predictions 
+
+```{r task, fig.env = "figure", fig.pos = "t", fig.align='center', fig.width=4, fig.height=3, fig.cap = "An overview of the task used in this study."}
+
+knitr::include_graphics("figs/task.png")
+
+```
+
+We use the model to predict performance in the word learning task introduced by @stager1997, with a two-alternative forced choice as in @yoshida2009. In this task, participants are first exposed to the association between pairs of nonsense words (e.g., "lif"/"neem") and pairs of objects. The word-object associations are introduced sequentially. After this exposure phase, participants perform a series of test trials. In each of these trials, one of the two sounds is uttered (e.g., “lif”) and participants choose the corresponding object from the two alternatives. An overview of the task is shown in Figure \@ref(fig:task).
+
+We used Equation 1 and the probability distributions defined above to obtain the exact analytical expression for the probability of accurate responses $p(o_T | s)$ (target object $o_T$ given a sound $s$) in the simple case of two-alternative forced choice in the testing phase of our experimental task: 
+
+\begin{equation}
+P(o_T|s)= \frac{1 + e^{-(\Delta s^2/2\sigma_L^2+ \Delta o^2/2\sigma_C^2)}}{1 + e^{-(\Delta s^2/2\sigma_L^2+ \Delta o^2/2\sigma_C^2)}+ e^{-\Delta s^2 /2\sigma_L^2} + e^{-\Delta o^2 /2\sigma_C^2 }}
+\end{equation}
+
+Figure \ref{fig:simulation} show simulations of the predicted accuracy (Expression 2) as a function of the distinctiveness parameters ($\Delta s$ and $\Delta o$) and the precision parameters, i.e., the variances of the distributions $p(s| L)$ and $p(o | C)$. To understand the qualitative behavior of the model, we assumed for simplicity that the precision parameter has similar values in both distributions, i.e., $\sigma =\sigma_C \approx \sigma_L$ (but we will allow those parameters to vary independently in the rest of the paper).
+
+```{r, echo=FALSE}
+pdf.options(encoding='CP1250')
+```
+
+```{r }
+
+#Import data from saved
+simulations <- feather::read_feather("../saved_data/simulations.feather") %>%
+  mutate(obj = ifelse(object_distance == "0.25", "\u0394o = 0.25",
+                      ifelse(object_distance == "0.5","\u0394o = 0.5",
+                             "\u0394o = 1")))
+
+
+plot_simulation <- ggplot(simulations, aes(x=x, y=y, col=sigma)) + 
+  geom_line() + 
+  theme_few()+
+  theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 8),
+      aspect.ratio = 0.7
+      )+
+  #plot.margin=grid::unit(c(0,0,0,0), "mm")
+  ylim(c(0.4,1))+
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab(expression(Delta*"s")) + ylab(expression("P("*o['T']*"| s)")) +
+  facet_grid(.~obj) +
+  #facet_grid(.~object_distance) +
+  scale_color_discrete(name = expression(sigma))
+  
+```
+
+```{r simulation, fig.cap = "The predicted probability of accurate responses in the testing phase as a function of stimuli distinctiveness $\\Delta s$ and $\\Delta o$ and representation precision $\\sigma$ (For clarity, we assume here that $\\sigma$=$\\sigma_C$=$\\sigma_L$). Dashed line represents chance."}
+plot_simulation
+
+```
+
+The simulations explain some previously documented facts, and make new predictions:
+
+1) For fixed values of $\Delta o$ and  $\sigma$, the probability of accurate responses increases as a function of $\Delta s$. This pattern accounts for the fact that similar sounds are generally more challenging to learn than different sounds for both children [@stager1997] and adults [@pajak2016]. 
+
+2) For fixed values of $\Delta s$ and $\Delta o$, accuracy increases when the representational uncertainty (characterized with $\sigma$) decreases. This fact may explain development, i.e., younger children have noisier representations [see @swingley2007; @yoshida2009], which leads to lower word recognition accuracy, especially for similar-sounding words.
+
+3) For fixed values of $\Delta s$ and $\sigma$, accuracy increases with the visual distance between the semantic referents $\Delta o$. This is a new prediction that our model makes. Previous work studied the effect of several bottom-up and top-down properties in disambiguating similar sounding words [e.g., @fennell2010; @rost2009; @thiessen2007], but to our knowledge no previous study in the literature tested the effect of the visual distance between the semantic referents.
+
+# Experiment
+
+In this experiment, we tested participants in the word learning task introduced above (Figure \@ref(fig:task)). More precisely, we explored the predictions related to both distinctiveness and precision. Sound similarity ($\Delta s$) and object similarity ($\Delta o$) were varied simultaneously in a within-subject design. Two age groups (preschool children and adults) were tested on the same task to explore whether development can be characterized with the uncertainty parameters, $\sigma_C$ and $\sigma_L$. The experiment, sample size, exclusion criteria and the model's main predictions were pre-registered.
+
+
+
+```{r}
+#Sample size
+
+#Children:
+
+d_child <- read_delim("../Analysis/kids_all.txt", delim = " ") %>%
+  filter(type == "Test") %>%
+  filter(age != 6) %>%
+  filter(code != 'test',
+         !is.na(code)) %>%
+  filter(grepl('soph', code)) %>%
+  mutate(iscorrect=ifelse(answer==correct, 1, 0))
+
+d_child_score <- d_child %>%
+  group_by(ID, sound_dist, concept_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect))
+
+#Catch
+d_child_excl <- d_child_score %>%
+  filter(sound_dist == 'catch') %>%
+  ungroup() %>%
+  select(ID, mean) %>%
+  dplyr::rename(score = mean)
+
+d_child_good <- d_child %>%
+  left_join(d_child_excl) %>%
+  filter(score > 0.5) %>%
+  filter(sound_dist != 'catch')
+
+N_all_ch <- d_child %>% distinct(ID) %>% nrow()
+N_good_ch <- d_child_good %>% distinct(ID) %>% nrow()
+
+
+#Adults
+
+d_adult <- read_delim("../Analysis/adults_100.txt", delim = " ")  %>%
+  filter(type == "Test") %>%
+  mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
+
+d_adult_lang <- d_adult %>% #Here I will  filter out particiapants whose first language is arabic or hindi
+  filter(other == "yes") %>% distinct(ID) %>% nrow()
+
+d_adult_score <- d_adult %>%
+  group_by(ID, sound_dist, concept_dist) %>%
+  dplyr::summarise(mean = mean(iscorrect))
+
+d_adult_excl <- d_adult_score %>%
+  filter(sound_dist == 'catch') %>%
+  ungroup() %>%
+  select(ID, mean) %>%
+  dplyr::rename(score = mean)
+  #select(ID, score)
+  
+d_adult_good <- d_adult %>%
+  left_join(d_adult_excl) %>%
+  filter(other != "yes") %>%
+  filter(score >0.7) %>%
+  filter(sound_dist != 'catch')
+
+N_all_ad <- d_adult %>% distinct(ID) %>% nrow()
+N_good_ad <- d_adult_good %>% distinct(ID) %>% nrow()
+
+```
+
+## Methods
+
+### Participants
+We planned to recruit a sample of N=60 children ages 4-5 years from the Bing Nursery School on Stanford University’s campus. Here we report data from n=`r N_good_ch` children. An additional n=`r N_all_ch-N_good_ch` children participated but were removed from analyses because they were not above chance on the catch trials due to the challenging nature of our procedure (see below). We also planned to recruit a sample of N=60 adults on Amazon Mechanical Turk. Data from n=`r N_all_ad-N_good_ad` participants were excluded due to low scores on the catch trials (n=`r N_all_ad-N_good_ad-d_adult_lang` ) or because they were familiar with the non-English sound stimuli we used in the adult experiment (n=`r d_adult_lang`), yielding a final sample of n=`r N_good_ad`.
+
+### Stimuli and similarity rating
+The sound stimuli were generated using the MBROLA Speech Synthesizer [@dutoit1996]. We generated three kinds of nonsense word pairs which varied in their degree of similarity to English speakers: 1) "different": "lif"/"neem" and "zem"/"doof", 2) "intermediate": "aka"/"ama" and "ada"/"aba", and 3) "similar" non-English minimal pairs: "ada"/"a\textipa{d\super h}a" (in hindi) and "a\textipa{Q}a"/"a\textipa{\textcrh}a" (in arabic). 
+
+As for the objects, we used the Dynamic Stimuli javascript library\footnote{https://github.com/erindb/stimuli} which allowed us to generate objects in four different categories: "tree", "bird", "bug", and "fish". These categories are supposed to be naturally occurring kinds that might be seen on an alien planet. In each category, we generated "different", "intermediate" and "similar" pairs by manipulating a continuous property controlling features of the category's shape (e.g, body stretch or head fatness).  
+
+In a separate survey, $N=20$ participants recruited on Amazon Mechanical Turk evaluated the similarity of each sound and object pair on a 7-point scale. We scaled responses within the range [0,1]. Data are shown in Figure \@ref(fig:stim), for each stimulus group. These data will be used in the models as the perceptual distance of sound pairs ($\Delta s$) and object pairs ($\Delta o$). 
+
+```{r}
+sim_transform <- feather::read_feather("../saved_data/d_sim_process.feather")
+
+sim_plot <- ggplot(sim_transform, 
+      aes(x = labels, y = mean, group = factor(stimuli), col=factor(stimuli))) +
+  #geom_point(size=2)+
+  geom_line()+
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                 position = position_dodge(width = .1),
+                 size=0.2) + 
+  scale_colour_discrete(name="Stimuli")+
+  theme_few()+
+theme(legend.title = element_text(size=7.5),
+      legend.text=element_text(size=7.5),
+      axis.text = element_text(size = 7.5),
+      strip.text = element_text(size = 7.5),
+      axis.title = element_text(size = 7.5),
+      aspect.ratio = 0.7
+      ) +
+  ylim(c(0,1.1)) +
+  xlab("Stimuli group")+ ylab("Perceptual distance (experimental)") 
+
+```
+
+```{r }
+
+#Import data from saved
+data_human_model <- feather::read_feather("../saved_data/data_human_model.feather") #%>%
+  #mutate(Model = ifelse(key == "prediction", "Single Variance", "Double Variance"))
+                       
+
+data_human_model$group <- factor(data_human_model$group, levels = c("children", "adults"))
+#data_human_model$Model <- factor(data_human_model$Model, levels = c("Single Variance", "Double Variance"))
+
+plot_data <- ggplot(data_human_model, 
+      aes(x = sound_dist, y = human, group = factor(concept_dist), col = factor(concept_dist))) +
+  geom_point()+
+  geom_pointrange(aes(ymin = lower, ymax = upper), 
+                 position = position_dodge(width = .1),
+                 size=0.2) + 
+  geom_line() + 
+  geom_line(aes(x=sound_dist, y=value), 
+            position = position_dodge(width = .2),
+            linetype=2,
+            size=0.5)+
+  geom_point(aes(x=sound_dist, y=value),
+             position = position_dodge(width = .2),
+             size=1.5, alpha=0.5)+
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("Auditory similary") +ylab("Accuracy")+
+  #scale_colour_discrete(name="Visual similarity")+
+  theme_few()+
+  ggthemes::scale_color_ptol(name="Visual similarity")+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      #) + facet_grid(group~source, scales="free_y") +
+      ) + facet_grid(key~group) +
+  theme(aspect.ratio = 0.7)+
+  ylim(c(0.45,1))
+  
+plot_data
+```
+###Design 
+
+Each age group saw only two of the three levels of similarity described in the previous sub-section: "different" vs. "intermediate" for preschoolers, and "intermediate" vs. "similar" for adults. We made this choice in light of pilot studies showing that adults were at ceiling with "different" sounds/objects, and children were at chance with the "similar" sounds/objects. That said, this difference in the level of similarity is accounted for in the model through using the appropriate perceptual distance used in each age group (Figure \@ref(fig:stim)). 
+
+
+```{r stim, fig.env = "figure", fig.pos = "h", fig.align='center', fig.width=3.5, fig.height=2.5, fig.cap = "Distances for both sound and object pairs from an adult norming study. Data represent Likert values normalized to [0,1] interval. Error bars represent 95\\% confidence intervals."}
+
+sim_plot
+
+```
+
+
+To maximize our ability to measure subtle stimulus effects, the experiment was a 2x2 within-subjects factorial design with four conditions: high/low sound similarity crossed with high/low visual object similarity. Besides the 4 conditions, we also tested participants on a fifth catch condition which was similar in its structure to the other ones, but was used only to select participants who were able to follow the instructions and show minimal learning. 
+
+
+
+
+### Procedure
+
+
+Preschoolers were tested at the nursery school using a tablet, whereas adults used their own computers to complete the same experiment online. Participants were tested in a sequence of five conditions: the four experimental conditions plus the catch condition. In each condition, participants saw a first block of four exposure trials followed by four testing trials, and a second block of two exposure trials (for memory refreshment) followed by an additional four testing trials. The length of this procedure was demanding, especially for children, but we adopted a fully within-subjects design based on pilot testing that indicated that precision of measurement was critical for testing our experimental predictions.
+
+In the exposure trials, participants saw two objects associated with their corresponding sounds. We presented the first object on the left side of the tablet's screen simultaneously with the corresponding sound. The second sound-object association followed on the other side of the screen after 500ms. For both objects, visual stimuli were present for the duration of the sound clip (about 800ms).  In the testing trials, participants saw both objects simultaneously and heard only one sound. They completed the trial by selecting which of the two objects corresponded to the sound. The object-sound pairings were randomized across participants, as was the order of the conditions (except for the catch condition which was always placed in the middle of the testing sequence). We also randomized the on-screen position (left vs. right) of the two pictures on each testing trial. 
+
+## Results
+
+```{r, results='asis'}
+
+model_coef <- feather::read_feather("../saved_data/model_regression.feather")
+
+p_val <- function(val) {
+  if(val < 0.001) 
+    {'< 0.001'} 
+  else if(val < 0.01)
+    {'<0.01'} 
+  else if(val < 0.05)
+    {'<0.05'} 
+  else {paste('=', round(val,2))}
+}
+
+s_coef <- round(model_coef$Estimate[which(model_coef$effect=="s_dist")],2)
+s_p = model_coef$'Pr(>|z|)'[which(model_coef$effect=="s_dist")]
+
+c_coef <- round(model_coef$Estimate[which(model_coef$effect=="c_dist")],2)
+c_p = model_coef$'Pr(>|z|)'[which(model_coef$effect=="c_dist")]
+
+age_coef <- round(model_coef$Estimate[which(model_coef$effect=="age")],2)
+age_p = model_coef$'Pr(>|z|)'[which(model_coef$effect=="age")]
+
+c_s_coef <- round(model_coef$Estimate[which(model_coef$effect=="s_dist:c_dist")],2)
+c_s_p = model_coef$'Pr(>|z|)'[which(model_coef$effect=="s_dist:c_dist")]
+
+s_age_coef <- round(model_coef$Estimate[which(model_coef$effect=="s_dist:age")],2)
+s_age_p = model_coef$'Pr(>|z|)'[which(model_coef$effect=="s_dist:age")]
+
+c_age_coef <- round(model_coef$Estimate[which(model_coef$effect=="c_dist:age")],2)
+c_age_p = model_coef$'Pr(>|z|)'[which(model_coef$effect=="c_dist:age")]
+
+```
+
+```{r allData, fig.env = "figure", fig.pos = "h", fig.align='center', fig.cap = "Accuracy of novel word recognition as as a function of the sound distance, the object distance, and the age group (preschool children vs. adults). We show both experimental results (solid lines) and model predictions (dashed lines). Error bars represent 95\\% confidence intervals."}
+
+plot_data
+```
+
+Experimental results are shown in Figure \@ref(fig:allData) (solid lines). We first analyzed the results using a mixed-effects logistic regression with sound distance, object distance and age group as fixed effects, and with a maximal random effects structure (allowing us to take into account the full nested structure of our data) [@barr2013]. We found main effects for all the fixed effects in the regression. For the sound distance, we obtained $\beta =$ `r s_coef` ($p$ `r p_val(s_p)`), replicating previous findings. For object distance, we found $\beta =$ `r c_coef`  ($p$ `r p_val(c_p)`), and this finding confirms the new prediction of our model. Finally, for the age group, we obtained  $\beta =$ `r age_coef` ($p$ `r p_val(age_p)`), showing that performance improves with age. In addition, we found two-way interactions between sound distance and age ($\beta =$ `r s_age_coef`, $p$ `r p_val(s_age_p)`) and between object distance and age ($\beta =$ `r c_age_coef`, $p$ `r p_val(c_age_p)`). 
+
+```{r}
+
+data_correlations <- feather::read_feather("../saved_data/data_correlations.feather")
+
+R2_model1 <-  round(cor(data_correlations$human, data_correlations$prediction)^2, 2)
+R2_model2 <-  round(cor(data_correlations$human, data_correlations$prediction_2)^2, 2)
+
+mod1_val <- feather::read_feather("../saved_data/values_mod1.feather") %>%
+  rename(lower =`2.5 %`,
+         upper = `97.5 %`)
+  
+mod2_val <- feather::read_feather("../saved_data/values_mod2.feather") %>%
+  rename(lower =`2.5 %`,
+         upper = `97.5 %`)
+
+
+```
+
+We next fit our model (using Equation 2) to the participants' responses in each age group.  The values of $\Delta s$ and $\Delta o$ were set based on data from the similarity judgment task (Figure \@ref(fig:stim)). Thus, the model has two degrees of freedom for each group, i.e., $\sigma_C$ and $\sigma_L$.  Figure \@ref(fig:allData) (dashed lines) shows the predictions. The model captures the qualitative patterns in both age groups: starting from a low accuracy recognition when both the sound and object distances are small, the model correctly predicts an increase in accuracy when either the sound distance or the object distance increases. Further, accuracy is correctly predicted to be maximal when both the sound and object distances are high.  
+
+The values of the parameters were as follows. Children had a label-specific uncertainty of $\sigma_S =$ `r round(mod2_val$val[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="children" & mod2_val$param=="Vr_s")],2)`]\footnote{All uncertainty intervals in this paper represent 95\% Confidence Intervals.}, and a concept-specific uncertainty of $\sigma_C =$ `r round(mod2_val$val[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="children" & mod2_val$param=="Vr_o")],2)`]. Adults had a label-specific uncertainty of $\sigma_S =$ `r round(mod2_val$val[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="adults" & mod2_val$param=="Vr_s")],2)`], and a concept-specific uncertainty of $\sigma_C =$ `r round(mod2_val$val[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)` [`r round(mod2_val$lower[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)`, `r round(mod2_val$upper[which(mod2_val$group=="adults" & mod2_val$param=="Vr_o")],2)`].  As predicted, the uncertainty parameters were larger for children than they were for adults, showing that the probabilistic representations becomes more refined (that is, $\sigma$ becomes smaller) across development. The developmental effect was more important for the label-specific uncertainty.
+
+The models explained the majority of the variance in the participants' mean responses ($R^2=$ `r R2_model2`, for the combined adult and children's data). To investigate whether the model's predictive power was due to overfitting, we fit a simplified version with only one degree of freedom (i.e., a single variance common to both sounds and objects). This single-variance model explained as much variance in the mean responses ($R^2=$ `r R2_model1`). It also captured the main qualitative patterns (graph not shown), suggesting that the explanatory power of the model is largely due to its structure, rather than its degrees of freedom.
+
+An unexpected outcome was that adult participants deviated slightly from the model's numbers: While the model predicted  accuracy to be more sensitive to object distance when sound distance is higher (and vice-versa), adult participants showed the opposite pattern. This deviation is an interesting starting point for future work as it may suggest that participants are more likely to pay attention to and integrate additional sources of information when ambiguity is higher.
+
+
+# General Discussion
+
+This paper explored the idea that some seemingly stage-like patterns in cognitive development can be characterized in a continuous fashion. We used as a case study the seminal work of @stager1997 showing a discrepancy between children's speech perception abilities and their word learning skills. While much of the previous investigation of this finding has been interested in the source of this discrepancy, here we have explored how it could arise from continuous developmental change in perceptual uncertainty.
+
+Building on some previous discussions [e.g., @swingley2007; @yoshida2009], we proposed a model where perceptual stimuli are encoded probabilistically.  We tested the model's predictions against data collected from preschool children and adults and we showed that developmental changes in word-object mappings can indeed be characterized as a continuous refinement (i.e., uncertainty reduction) in qualitatively similar representations across the life span.
+
+The model made a new prediction to which we tested experimentally: Learning similar words is not only modulated by the similarity of their phonological forms, but also by the visual similarity of their semantic referents. More generally, since visual similarity is an early organizing feature in the semantic domain [e.g.,@wojcik2013], our finding suggests that children may prioritize the acquisition of words that are quite distant in the semantic space.  This suggestion is supported by recent findings based on the investigation of early vocabulary growth [@engelthaler2017; @sizemore2018]. 
+
+One limitation of this work is that the model was fit to data from children at a relatively older age (4-5 years old) than what is typically studied in the literature (14-18 month-old). We selected this older age group to optimize the number and precision of the experimental measures (both are crucial to model fitting). Data collection involved presenting participants with several trials across four conditions in a between-subject design. It would have been challenging to obtain such measures with infants.
+
+In sum, this paper proposes a model that accounts for the development of an important aspect of word learning. Our account suggests that the developmental data can be explained based on a continuous process operating over similar representations across development, suggesting developmental continuity. We used a case from word learning as an example, but the same idea might apply to other aspects of cognitive development that are typically thought of as stage-like (e.g., acquisition of a theory of mind). Computational models, such as the one proposed here, can help us investigate the extent to which such discontinuities emerge due to genuine qualitative changes and the extent to which they reflect the granularity of the researchers' own measurement tools.
+
+
+\vspace{1em} \fbox{\parbox[b][][c]{14cm}{\centering All data and code for these analyses are available at\ \url{https://github.com/afourtassi/networks}}} \vspace{1em}
+
+
+
+# Acknowledgements
+This work was supported by a post-doctoral grant from the Fyssen Foundation, NSF #1528526, and NSF #1659585.
+
+
+# Disclosure statement
+None of the authors have any financial interest or a conflict of interest regarding this work and this submission.
+
+
+# References
+```{r create_r-references}
+r_refs(file = "references.bib")
+```
+
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}

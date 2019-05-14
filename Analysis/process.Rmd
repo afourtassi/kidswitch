@@ -32,8 +32,8 @@ Adult data.
 ```{r}
 
 #The following is a test with adult pilot data
-d_adult <- read_delim("adults_final.txt", delim = " ")  %>%
-#d_adult <- read_delim("adult_pilot_3.txt", delim = " ")  %>%
+#d_adult <- read_delim("adults_final.txt", delim = " ")  %>%
+d_adult <- read_delim("adults_100.txt", delim = " ")  %>%
   filter(type == "Test", #Here I will  filter out particiapants whose first language is arabic or hindi
          other != "yes") %>%
   mutate(iscorrect=ifelse(answer==correct, 1, 0)) 
@@ -52,10 +52,10 @@ d_adult_excl <- d_adult_score %>%
   
 d_adult_good <- d_adult %>%
   left_join(d_adult_excl) %>%
-  filter(score ==1) %>%
+  filter(score == 1) %>%
   filter(sound_dist != 'catch')
 
-#feather::write_feather(d_adult_good, "../saved_data/data_adult.feather")
+feather::write_feather(d_adult_good, "../saved_data/data_adult.feather")
 ```
 
 Children data
@@ -85,7 +85,7 @@ d_child_good <- d_child %>%
   filter(score > 0.5) %>%
   filter(sound_dist != 'catch')
 
-#feather::write_feather(d_child_good, "../saved_data/data_child.feather")
+feather::write_feather(d_child_good, "../saved_data/data_child.feather")
   
 ```
 
@@ -163,7 +163,7 @@ sum_child <- d_child_good %>%
 ```
 
 Plot children
-```{r fig.width=5, fig.height=4}
+```{r}
 
 sum_child$concept_dist <- factor(sum_child$concept_dist, levels = c("similar", "different"))
 sum_child$sound_dist <- factor(sum_child$sound_dist, levels = c("similar", "different"))
@@ -181,7 +181,7 @@ plot_child <- ggplot(sum_child,
 theme(legend.title = element_text(size=11),
       legend.text=element_text(size=11),
       axis.text = element_text(size = 11)
-      ) #+ facet_grid(.~block) 
+      )# + facet_grid(.~block) 
 
 plot_child
 
@@ -225,7 +225,7 @@ plot_adult <- ggplot(sum_adult,
 theme(legend.title = element_text(size=11),
       legend.text=element_text(size=11),
       axis.text = element_text(size = 11)
-      ) #+ facet_grid(. ~ concept)
+      ) #+ facet_grid(. ~ block)
 
 #theme(plot.title = element_text(size = 12, face = "bold"),
 #    legend.title=element_text(size=10), 
@@ -234,8 +234,7 @@ plot_adult
 
 ```
 
-
-Models
+Regression Model
 ```{r}
 
 
@@ -248,7 +247,7 @@ data_ad <- d_adult_good %>%
   mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
          c_dist=ifelse(concept_dist=="similar", -1, 1)) 
 
-#Combine both  
+#Add a centerd variable for age group and combine both data 
 data_both_ch <- data_ch %>%
   select(ID, c_dist, s_dist, item_object, item_sound, iscorrect) %>%
   mutate(age = -1)
@@ -307,24 +306,42 @@ Use values of perceptual distance from the similarity judgement task
 
 ```{r}
 #Process the data to prepare for the fit
+
+#Extract distance values
+dist_sim_c <- round(d_sim_process$mean[which(d_sim_process$condition=='obj_real' & d_sim_process$labels=='similar')],2)
+dist_inter_c <- round(d_sim_process$mean[which(d_sim_process$condition=='obj_real' & d_sim_process$labels=='intermediate')],2)
+dist_diff_c <- round(d_sim_process$mean[which(d_sim_process$condition=='obj_real' & d_sim_process$labels=='different')],2)
+
+dist_sim_s <- d_sim_process$mean[which(d_sim_process$condition=='sound_real' & d_sim_process$labels=='similar')]
+dist_inter_s <- d_sim_process$mean[which(d_sim_process$condition=='sound_real' & d_sim_process$labels=='intermediate')]
+dist_diff_s <- d_sim_process$mean[which(d_sim_process$condition=='sound_real' & d_sim_process$labels=='different')]
+
+#Here normalize the sound with respect to the most distant pair
+
+dist_sim_s <- round(dist_sim_s/dist_diff_s,2)
+dist_inter_s <- round(dist_inter_s/dist_diff_s,2)
+dist_diff_s <- round(dist_diff_s/dist_diff_s,2)
+
+#For adults: use the similar vs. intermediate pairs
 data_fit_adult <- sum_adult %>%
   rename(lower  = lower.ci,
          upper = upper.ci) %>%
   mutate(group = 'adults',
-         s_dist = ifelse(sound_dist =='different',  0.66, 0.23),
-         c_dist = ifelse(concept_dist =='different', 0.40, 0.19)) 
+         s_dist = ifelse(sound_dist =='different',  dist_inter_s, dist_sim_s),
+         c_dist = ifelse(concept_dist =='different', dist_inter_c, dist_sim_c)) 
 
+#For children: use the intermediate vs. different pairs 
 data_fit_child <- sum_child %>% 
    mutate(group = 'children',
-         s_dist = ifelse(sound_dist =='different',  1, 0.66),
-         c_dist = ifelse(concept_dist =='different', 1, 0.40)) 
+         s_dist = ifelse(sound_dist =='different',  dist_diff_s, dist_inter_s),
+         c_dist = ifelse(concept_dist =='different', dist_diff_c, dist_inter_c)) 
 
 data_fit <- data_fit_adult %>%
   bind_rows(data_fit_child)
 ```
 
 
-Now I need to predict accuracy as a function of sound and meaning similarity 
+Now I need to predict the mean accuracy as a function of sound and meaning similarity 
 ```{r}
 
 #This the analytical solution of the posterior + luce rule
@@ -333,6 +350,17 @@ combine_cues <- function(s, o, Vr) {
   o1 = 0
   no_acc <- exp(-(s1-s)^2/(2*(Vr)^2)) + exp(-(o1-o)^2/(2*(Vr)^2))
   acc <- 1 + exp(-((s1-s)^2+(o1-o)^2)/(2*(Vr)^2)) 
+  acc_norm <- acc/(acc+no_acc)
+  
+  return(acc_norm)
+}
+
+no_combine_cues <- function(s, o, Vr) {
+  s1 = 0
+  o1 = 0
+ 
+   no_acc <- exp(-(s1-s)^2/(2*(Vr)^2)) 
+  acc <- 1 
   acc_norm <- acc/(acc+no_acc)
   
   return(acc_norm)
@@ -350,9 +378,12 @@ combine_cues_2 <- function(s, o, Vr_s, Vr_o) {
 
 fit_adults <- nls(mean ~ combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='adults'), start=list(Vr=0.1), lower=c(0), algorithm="port")
 
+fit_adults_no <- nls(mean ~ no_combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='adults'), start=list(Vr=0.5), lower=c(0), algorithm="port")
+
 fit_adults_2 <- nls(mean ~ combine_cues_2(s_dist, c_dist, Vr_s, Vr_o), data=subset(data_fit, group=='adults'), start=list(Vr_s=0.1, Vr_o=0.1), lower=c(0,0), algorithm="port")
 
 Vr_ad <- coef(fit_adults)
+Vr_ad_no <- coef(fit_adults_no)
 Vr_s_ad <- coef(fit_adults_2)[1]
 Vr_o_ad <- coef(fit_adults_2)[2]
 
@@ -360,9 +391,12 @@ Vr_o_ad <- coef(fit_adults_2)[2]
 
 fit_children <- nls(mean ~ combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='children'), start=list(Vr=0.5), lower=c(0), algorithm="port")
 
+fit_children_no <- nls(mean ~ no_combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='children'), start=list(Vr=0.5), lower=c(0), algorithm="port")
+
 fit_children_2 <- nls(mean ~ combine_cues_2(s_dist, c_dist, Vr_s, Vr_o), data=subset(data_fit, group=='children'), start=list(Vr_s=0.5, Vr_o=0.3), lower=c(0,0), algorithm="port")
 
 Vr_ch <- coef(fit_children)
+Vr_ch_no <- coef(fit_children_no)
 Vr_s_ch <- coef(fit_children_2)[1]
 Vr_o_ch <- coef(fit_children_2)[2]
 
@@ -375,6 +409,14 @@ model1_val <- as.data.frame(confint2(fit_children)) %>%
                      model=1, 
                      group = "adults"))
 
+model_no_val <- as.data.frame(confint2(fit_children_no)) %>%
+  mutate(val= Vr_ch_no, 
+         model=1, 
+         group = "children") %>%
+  bind_rows(as.data.frame(confint2(fit_adults)) %>%
+              mutate(val= Vr_ad_no, 
+                     model=1, 
+                     group = "adults"))
 
 model2_val <- tibble::rownames_to_column(as.data.frame(confint2(fit_children_2)), "param") %>%
   mutate(val= ifelse(param=='Vr_s',Vr_s_ch, Vr_o_ch),
@@ -387,15 +429,16 @@ model2_val <- tibble::rownames_to_column(as.data.frame(confint2(fit_children_2))
 
 #Model comparison
 
-model_comparison <- tibble::rownames_to_column(AIC(fit_adults, fit_adults_2), 'model') %>%
-  bind_rows(tibble::rownames_to_column(AIC(fit_children, fit_children_2), 'model'))
+#model_comparison <- tibble::rownames_to_column(AIC(fit_adults, fit_adults_2), 'model') %>%
+#  bind_rows(tibble::rownames_to_column(AIC(fit_children, fit_children_2), 'model'))
   
 
-feather::write_feather(model1_val, "../saved_data/values_mod1.feather")       
+feather::write_feather(model1_val, "../saved_data/values_mod1.feather")  
+feather::write_feather(model_no_val, "../saved_data/values_mod_no.feather") 
+
 feather::write_feather(model2_val, "../saved_data/values_mod2.feather")
 
-feather::write_feather(model_comparison, "../saved_data/model_comparison.feather")
-
+#feather::write_feather(model_comparison, "../saved_data/model_comparison.feather")
 
 model2_val <- c(confint(fit_children_2), Vr_s_ch, Vr_o_ch, model="2", group = "children") %>%
   bind_rows(c(confint(fit_adults_2), Vr_s_ad, Vr_o_ad, model="2", group = "adults")) 
@@ -406,6 +449,10 @@ model_data <- data_fit %>%
                              combine_cues(s_dist, c_dist, Vr_ad),
                              combine_cues(s_dist, c_dist, Vr_ch)
                              )) %>%
+  mutate(prediction_no = ifelse(group=='adults', 
+                             no_combine_cues(s_dist, c_dist, Vr_ad_no),
+                             no_combine_cues(s_dist, c_dist, Vr_ch_no)
+                             )) %>%
   mutate(prediction_2 = ifelse(group=='adults', 
                              combine_cues_2(s_dist, c_dist, Vr_s_ad, Vr_o_ad),
                              combine_cues_2(s_dist, c_dist, Vr_s_ch, Vr_o_ch)
@@ -414,14 +461,72 @@ model_data <- data_fit %>%
 
 
 feather::write_feather(model_data, "../saved_data/data_correlations.feather")
+R2_model1 <-  round(cor(model_data$human, model_data$prediction)^2, 2)
+R2_model_no <-  round(cor(model_data$human, model_data$prediction_no)^2, 2)
+R2_model2 <-  round(cor(model_data$human, model_data$prediction_2)^2, 2)
 
 
 model_data_plot <-  model_data %>%
-  gather(key, value, human, prediction, prediction_2) %>%
-  mutate(ci.upper = ifelse(key=='human', upper, value),
-         ci.lower = ifelse(key=='human', lower, value))
+  gather(key, value, prediction, prediction_no, prediction_2) #%>%
+  #mutate(ci.upper = ifelse(key=='human', upper, value),
+  #       ci.lower = ifelse(key=='human', lower, value))
   
+
 feather::write_feather(model_data_plot, "../saved_data/data_human_model.feather")
+
+```
+
+
+```{r}
+
+
+model_data_plot$group <- factor(model_data_plot$group, levels = c("children", "adults"))
+
+ggplot(subset(model_data_plot, key == "human"), 
+      aes(x = sound_dist, y = value, 
+          group = factor(concept_dist), 
+          col = factor(concept_dist)
+          )) +
+  #geom_point()+
+  geom_pointrange(aes(ymin = ci.lower, ymax = ci.upper), 
+                 position = position_dodge(width = .1),
+                 size=0.2) + 
+  geom_line() + 
+  geom_line(data=subset(model_data_plot, key == "prediction"), linetype=2, size=0.5, col='black')+
+  geom_point(data=subset(model_data_plot, key == "prediction"), size=1, col='black')+
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("Auditory similary") +ylab("Accuracy")+
+  scale_colour_discrete(name="Visual similarity")+
+  theme_few()+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      ) + facet_grid(.~group) +
+  theme(aspect.ratio = 0.7)
+
+
+ggplot(subset(model_data_plot, key == "human"), 
+      aes(x = sound_dist, y = value, 
+          group = factor(concept_dist), 
+          col = factor(concept_dist)
+          )) +
+  #geom_point()+
+  geom_pointrange(aes(ymin = ci.lower, ymax = ci.upper), 
+                 position = position_dodge(width = .1),
+                 size=0.2) + 
+  geom_line() + 
+  geom_line(data=subset(model_data_plot, key == "prediction_2"), linetype=2, size=0.5, col='black')+
+  geom_point(data=subset(model_data_plot, key == "prediction_2"), size=1, col='black')+
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  xlab("Auditory similary") +ylab("Accuracy")+
+  scale_colour_discrete(name="Visual similarity")+
+  theme_few()+
+theme(legend.title = element_text(size=11),
+      legend.text=element_text(size=11),
+      axis.text = element_text(size = 11)
+      ) + facet_grid(.~group) +
+  theme(aspect.ratio = 0.7)
+
 
 ```
 
@@ -468,61 +573,32 @@ ggplot(simulation_data, aes(x=x, y=y, col=sigma)) +
   facet_grid(.~object_distance) 
 
 
-
-
 ```
 
 
 
-```{r}
-
-
-model_data_plot$group <- factor(model_data_plot$group, levels = c("children", "adults"))
-
-ggplot(subset(model_data_plot, key == "human"), 
-      aes(x = sound_dist, y = value, 
-          group = factor(concept_dist), 
-          col = factor(concept_dist)
-          )) +
-  #geom_point()+
-  geom_pointrange(aes(ymin = ci.lower, ymax = ci.upper), 
-                 position = position_dodge(width = .1),
-                 size=0.2) + 
-  geom_line() + 
-  geom_line(data=subset(model_data_plot, key == "prediction_2"), linetype=2, size=0.5, col='black')+
-  geom_point(data=subset(model_data_plot, key == "prediction_2"), size=1, col='black')+
-  geom_hline(yintercept = 0.50, linetype="dashed") +
-  xlab("Auditory similary") +ylab("Accuracy")+
-  scale_colour_discrete(name="Visual similarity")+
-  theme_few()+
-theme(legend.title = element_text(size=11),
-      legend.text=element_text(size=11),
-      axis.text = element_text(size = 11)
-      ) + facet_grid(.~group) +
-  theme(aspect.ratio = 0.7)
-
-
-```
 
 plots 
 ```{r}
+
+x <- 0
 
 Gdist <- function(s0, Vr, x){
   
   return((1/sqrt(2*pi*Vr))*exp(-(s0-x)^2/(2*Vr)))
 } 
 
-s = seq(-1,2.5,0.01)
+s = seq(-1.5,4,0.01)
 y = Gdist(0,1,x)
 
-illustration <- data.frame(x=s, y=Gdist(s0=0, Vr=0.5, s), rep = "1", case = "low accuracy", type='Disambiguation') %>%
-  bind_rows(data.frame(x=s, y=Gdist(s0=0.5, Vr=0.5, s), rep = "2", case = "low accuracy", type='Disambiguation')) %>%
-  bind_rows(data.frame(x=s, y=Gdist(s0=0, Vr=0.5, s), rep = "1", case = "high accuracy", type='Disambiguation')) %>%
-  bind_rows(data.frame(x=s, y=Gdist(s0=1.1, Vr=0.5, s), rep = "2", case = "high accuracy", type='Disambiguation')) %>%
-  bind_rows(data.frame(x=s, y=Gdist(s0=0, Vr=0.5, s), rep = "1", case = "low accuracy", type='Development')) %>%
-  bind_rows(data.frame(x=s, y=Gdist(s0=0.5, Vr=0.5, s), rep = "2", case = "low accuracy", type='Development')) %>%
+illustration <- data.frame(x=s, y=Gdist(s0=0, Vr=1, s), rep = "1", case = "low accuracy", type='Disambiguation') %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=2, Vr=1, s), rep = "2", case = "low accuracy", type='Disambiguation')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.5, s), rep = "1", case = "high accuracy", type='Disambiguation')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=2, Vr=0.5, s), rep = "2", case = "high accuracy", type='Disambiguation')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.5, s), rep = "1", case = "low accuracy", type='Development')) %>%
+  bind_rows(data.frame(x=s, y=Gdist(s0=1, Vr=0.5, s), rep = "2", case = "low accuracy", type='Development')) %>%
   bind_rows(data.frame(x=s, y=Gdist(s0=0, Vr=0.1, s), rep = "1", case = "high accuracy", type='Development')) %>%
-  bind_rows(data.frame(x=s, y=Gdist(s0=0.5, Vr=0.1, s), rep = "2", case = "high accuracy", type='Development'))
+  bind_rows(data.frame(x=s, y=Gdist(s0=2, Vr=0.1, s), rep = "2", case = "high accuracy", type='Development'))
 
 illustration$case <- factor(illustration$case, levels = c("low accuracy", "high accuracy"))
 illustration$type <- factor(illustration$type, levels = c("Disambiguation", "Development"))
@@ -532,7 +608,7 @@ probs <- subset(subset(illustration, x==0)) %>%
   mutate(prob = round(y/sum(y),2)) %>%
   filter(rep=='1')
   
-ggplot(illustration, aes(x=x, y=y, linetype=rep)) + 
+ggplot(illustration, aes(x=x, y=y, col=rep)) + 
   geom_line() + 
   theme_few()+
   theme(legend.title = element_text(size=11),
@@ -541,25 +617,65 @@ ggplot(illustration, aes(x=x, y=y, linetype=rep)) +
       strip.text = element_text(size = 11),
       aspect.ratio = 0.5
       )+
-  #xlim(c(-1,1))+
-  #ylim(c(0,1))+
-  #geom_vline(xintercept = 0.0, color="red") +
-  #geom_segment(aes(x = 0, y = 0, xend = 0, yend = y, colour = rep),
-  #             position=position_dodge(width = .2), 
-   #            data = subset(illustration, x==0))+
-  
-  geom_col(aes(x = x, y = y, fill = rep),
-               position=position_dodge(), 
-               width=0.2,
-               data = subset(illustration, x==0))+
-  geom_text(aes(label=paste("Acc=", prob, sep="")),
-            x=2, y=1, size=4, 
-            fontface = "bold",
-            data=probs)+
+  #geom_col(aes(x = x, y = y, fill = rep),
+  #             position=position_dodge(), 
+  #             width=0.2,
+  #             data = subset(illustration, x==0))+
+  #geom_text(aes(label=paste("Acc=", prob, sep="")),
+  #          x=2, y=1, size=4, 
+  #          fontface = "bold",
+  #          data=probs)+
   xlab("Perceptual space") + ylab("Prob") +
   facet_grid(type~case) +
   theme(legend.position="none")
+  #xlim(c(-1,3))
 
+
+```
+
+Regression 
+
+```{r}
+data_ch <- d_child_good %>%
+  mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
+         c_dist=ifelse(concept_dist=="similar", -1, 1)) %>%
+  rename(accuracy = iscorrect)
+
+data_ad <- d_adult_good %>%
+  mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
+         c_dist=ifelse(concept_dist=="similar", -1, 1)) %>%
+  rename(accuracy = iscorrect)
+
+
+#Combine both  
+data_both_ch <- data_ch %>%
+  select(ID, c_dist, s_dist, item_object, item_sound, accuracy) %>%
+  mutate(age = -1)
+
+data_both_ad <- data_ad %>%
+  select(ID, c_dist, s_dist, concept, sound, accuracy) %>%
+  rename(item_object = concept,
+         item_sound = sound) %>%
+  mutate(age = 1) %>%
+  mutate(ID2 = sub("+$", "_ad", ID)) %>%
+  select(-ID) %>%
+  rename(ID=ID2)
+
+data_both <- data_both_ch %>%
+  bind_rows(data_both_ad)
+  
+
+model_both <- glmer(accuracy ~ s_dist * c_dist * age+ 
+                 (s_dist * c_dist  | ID) + 
+                 (c_dist | item_object) + 
+                 (s_dist | item_sound) +
+                 (s_dist * c_dist | age), 
+               data = data_both, family = binomial(),
+               glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)))
+
+model_coef <- tibble::rownames_to_column(as.data.frame(coef(summary(model_both))), "effect")
+
+feather::write_feather(model_coef, "../saved_data/model_regression.feather")
 
 ```
 

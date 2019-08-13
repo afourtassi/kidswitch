@@ -12,7 +12,7 @@ header-includes:
 author-information: > 
 
     \author{{\large \bf Abdellah Fourtassi} \\ \texttt{afourtas@stanford.edu} \\ Department of Psychology \\ Stanford University
-    \And {\large \bf Sophie Regan} \\ \texttt{sregan20@stanford.edu} \\ Department of Psychology \\ University of Illinois
+    \And {\large \bf Sophie Regan} \\ \texttt{sregan20@stanford.edu} \\ Department of Psychology \\ Stanford University
     \And {\large \bf Michael C. Frank} \\ \texttt{mcfrank@stanford.edu} \\ Department of Psychology \\ Stanford University}
    
 
@@ -385,8 +385,6 @@ theme(legend.title = element_text(size=11),
   
 ```
 
-
-
 ### Procedure
 
 
@@ -397,7 +395,7 @@ The experiment began with two simple examples (not included in the analysis), an
 Preschoolers were tested at the nursery school using a tablet, whereas adults used their own computers to complete the same experiment online. Participants were tested in a sequence of five conditions: the four experimental conditions plus the catch condition. In each condition, participants saw a first block of four exposure trials followed by four testing trials, and a second block of two exposure trials (for memory refreshment) followed by an additional four testing trials. The length of this procedure was demanding, especially for children, but we adopted a fully within-subjects design based on pilot testing that indicated that precision of measurement was critical for testing our experimental predictions.
 
 
-```{r all_data, fig.env = "figure*", fig.pos = "h", fig.align = "center", fig.width=8, fig.height=4, fig.cap = "\\label{fig:data_all}Accuracy of novel word recognition as as a function of the sound distance, the object distance, and the age group (preschool children vs. adults). We show both the models' predictions (dashed lines) and the experimental results (solid lines). Error bars represent 95\\% confidence intervals."}
+```{r all_data, fig.env = "figure*", fig.pos = "h", fig.align = "center", fig.width=8, fig.height=4, fig.cap = "\\label{fig:data_all}Accuracy of novel word recognition as a function of the sound distance, the object distance, and the age group (preschool children vs. adults). We show both the models' predictions (dashed lines) and the experimental results (solid lines). The single-variance model uses one joint fitting parameter for both sound and meaning variances. The double-variance model uses two separate fittings parameters for the sound and the meaning variances. Error bars represent 95\\% confidence intervals."}
 plot_data
 #img <- png::readPNG("figs/data_all.png")
 #grid::grid.raster(img)

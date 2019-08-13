@@ -61,7 +61,7 @@ feather::write_feather(d_adult_good, "../saved_data/data_adult.feather")
 Children data
 
 ```{r}
-d_child <- read_delim("kids_all.txt", delim = " ") %>%
+d_child <- read_delim("kids_all_final.txt", delim = " ") %>%
   filter(type == "Test") %>%
   filter(age != 6) %>%
   filter(code != 'test',

@@ -23,7 +23,7 @@
 }{}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Continuous developmental change can explain discontinuities in word learning},
+            pdftitle={Continuous developmental change explains discontinuities in word learning},
             pdfauthor={Abdellah Fourtassi, Sophie Regan, \& Michael C. Frank},
             pdfkeywords={word learning, cognitive development, computational modeling},
             pdfborder={0 0 0},
@@ -69,7 +69,7 @@
 \def\footnote{\protect\rmarkdownfootnote}
 
 
-  \title{Continuous developmental change can explain discontinuities in word
+  \title{Continuous developmental change explains discontinuities in word
 learning}
     \author{Abdellah Fourtassi\textsuperscript{1}, Sophie Regan\textsuperscript{1},
 \& Michael C. Frank\textsuperscript{1}}
@@ -132,15 +132,18 @@ sounds does not automatically translate into word learning skills. Early
 explanations proposed that children may not be able to encode subtle
 phonetic contrasts when learning novel word meanings, thus suggesting a
 discontinuous/stage-like pattern of development. However, later work has
-revealed (e.g., through using simpler testing methods) that children do
-encode such contrasts, thus favoring a continuous pattern of
+revealed (e.g., through using more precise testing methods) that
+children do encode such contrasts, thus favoring a continuous pattern of
 development. Here we propose a probabilistic model describing how
-development may proceed in a continuous fashion across the lifespan. The
-model accounts for previously documented facts and provides new
-predictions. We collected data from preschool children and adults, and
-we showed that the model can explain various patterns of learning both
-within the same age and across development. The findings suggest that
-major aspects of cognitive development that are typically thought of as
+development may proceed in a continuous fashion across the lifespan. It
+characterizes developmental change as improvement in the precision of
+perceptual encoding. Our model explained previous findings in the
+literature and provided a new prediction --- the referents' visual
+similarity modulates word leanring accuracy. The models' predictions
+were corroborated by human data we collected from both preschool
+children and adults. The braoder impact of this work is to show that
+computational models, such as ours, can help us explore the extent to
+which episodes of cogntive development that are typically thought of as
 discontinuities may emerge from simpler, continuous mechanisms.''
 
 
@@ -167,21 +170,22 @@ discontinuities may emerge from simpler, continuous mechanisms.''
 
 Cognitive development is sometimes characterized in terms of a
 succession of discontinuous stages (Piaget, 1954). Although intuitively
-appealing, stage theories can be challenging to integrate with theories
-of learning, which typically posit that knowledge and skills improve
-incrementally with experience. Indeed, one of the central challenges of
-cognitive development has been to explain transitions between stages
-which appear to be qualitatively different (Carey, 2009).
+appealing, this sort of stage theories can be challenging to integrate
+with theories of learning, which typically posit that knowledge and
+skills improve incrementally with experience. Indeed, one of the central
+challenges of cognitive development has been to explain transitions
+between stages which appear to be qualitatively different (Carey, 2009).
 
 Nevertheless, at least in some cases, development may only appear to be
-stage-like. This appearance can be due, for example, to the use of a
-cognitively-demanding task which may mask learning, or to the use of
-statistical thresholding (in particular, p-value \textless{} 0.05) which
-can create a spurious dichotomy between success and failure in observing
-a given behavior. In such cases, positing discontinuous stages is
-unnecessary. Instead, a continuous model---involving similar
-representations across the lifespan---may provide a simpler and more
-transparent account of development.
+stage-like. Some discontinuities may be related to how we measure a
+specific skill --- some tasks may not allow us to detect successful
+learning. Other discontinuities may emerge due to statistical
+thresholding (e.g., p-value \textless{} 0.05) which can create a
+spurious dichotomy between success and failure in observing a given
+behavior. In such cases, positing discontinuous stages is unnecessary.
+Instead, a continuous model --- involving similar representations across
+the lifespan --- may provide a simpler and more transparent account of
+development.
 
 We use a case study from word learning literature. Stager and Werker
 (1997) first showed that children's early ability to distinguish similar
@@ -201,9 +205,9 @@ should thus result in a greater looking time compared to the latter
 Though infants around 14-month old can distinguish perceptually similar
 sound pairs such as \enquote{dih} and \enquote{bih}, they appear to fail
 in mapping this pair to two different objects in the switch task. This
-failure has initially been taken as evidence that 14-month olds do not
-encode subtle sounds during meaning learning (Pater, Stager, \& Werker,
-2004; Stager \& Werker, 1997). This interpretation suggested a
+failure was initially taken as evidence that 14-month olds do not encode
+subtle sounds during meaning learning (Pater, Stager, \& Werker, 2004;
+Stager \& Werker, 1997). This interpretation suggested a
 discontinuous/stage-like pattern of development whereby younger children
 fail to encode the contrastive phonetic detail, whereas older children,
 around 17 months, typically do (Werker, Fennell, Corcoran, \& Stager,
@@ -220,7 +224,7 @@ comparing the looking times in \enquote{same} and \enquote{switch}
 trials, they tested infants using a two-alternative choice task
 comparing fixations to target and distractor objects (Fernald, Perfors,
 \& Marchman, 2006; Golinkoff, Hirsh-Pasek, Cauley, \& Gordon, 1987).
-Using this simpler and finer-grained task, the researcher found evidence
+Using this easier and more precise task, the researcher found evidence
 for learning even in 14-month olds.
 
 Another challenge to the discontinuous account of development came from
@@ -228,70 +232,97 @@ adult studies. If the mismatch between sound discrimination and word
 learning is only a stage in early infancy, then this mismatch should
 disappear by adulthood. Nonetheless, even adults show patterns of
 learning that mirror those shown by 14-month-olds when the sound
-contrasts more challenging (Pajak, Creel, \& Levy, 2016; White, Yee,
+contrasts are more challenging (Pajak, Creel, \& Levy, 2016; White, Yee,
 Blumstein, \& Morgan, 2013).
 
 Some researchers (Pajak et al., 2016; Swingley, 2007; Yoshida et al.,
-2009) proposed that the phonological form may not be encoded in a binary
+2009) proposed that word knowledge may not be encoded in a binary
 fashion, i.e., it is not the case that children either succeed or fail
 in encoding minimal contrast when learning the meanings. Rather, they
-may be encoding the phonological form of words in a probabilistic
-fashion. According to this view, development does not so much involve a
+may be encoding this knowledge in a graded fashion (ses also munakata,
+2001). According to this view, development does not so much involve a
 qualitative shift (i.e., a sudden emergence of an ability that did not
 exist before) as much as it consists in the continuous refinement of
-initially noisy representations.
+initially noisy knowledge.
 
-In a probabilistic account, a word can be represented as a probability
-distribution over sound instances organized in a similarity space. The
-probability is highest at the most typical sound instance. It decreases
-as the instance becomes less typical. The precision of the
-representation can be characterized by how much it tolerates slightly
-atypical pronunciations. This tolerance is captured formally by the
-variance of the probability distribution: larger variance indicates
+Many different computational formalisms can represent graded knowledge.
+Here we use probabilistic models, a formalism that allows both easy
+examination of internal representations and quantification of the
+robustness of these representations. Word knowledge can be characterized
+with a probability distribution over sound instances organized in a
+similarity space. The probability is highest at the most typical sound
+instance. It decreases as the instance becomes less typical. The
+precision of word knowledge can be characterized by whether it tolerates
+slightly atypical pronunciations. This tolerance is captured formally by
+the variance of the probability distribution: larger variance indicates
 higher tolerance and lower precision, whereas smaller variance indicates
-lower tolerance and higher precision.
+lower tolerance and higher precision (for an illustration, see Figure
+\ref{fig:illus} top and right panels).
 
-This framework can explain several findings. In Stager and Werker's
-original experiment, children are supposed to associate one label
-\enquote{bih} with object 1 and a second label \enquote{dih} with object
-2. Though infants could learn that the label \enquote{bih} is a better
-match to object 1 than \enquote{dih}, they could still judge the sound
-\enquote{dih} as a plausible instance of the label \enquote{bih}, thanks
-to the relatively large variance of the early encoding, and this
-confusion leads to \enquote{failure} in the recognition task (Figure
-\ref{fig:illus}, top). Though learning is small and is easily disrupted
-by the Switch task, it can still be detected when less demanding methods
-are used (Yoshida et al., 2009).
+This general framework --- in which the precision of word knowledge is
+characterize with the variance of a probability distribution --- can
+already provide an intuitive way of thinking about several findings. In
+particular, unlike the binary view, the probabilistic view allows for
+the possibility that knowldege can be successful while still being
+noisy. This new understanding can provide an account for the fact that
+children show evidence of learning in some testing condition (Yoshida et
+al., 2009), but not in others (Stager \& Werker, 1997).
 
-The learning accuracy increases (and is detected even by demanding tests
-such as the Switch) for more distinct word-forms (e.g., \enquote{lif}
-vs. \enquote{neem}) where the perceptual distance is large relative to
-the variance (Figure \ref{fig:illus}, left). Distinctiveness can be
-enhanced even for minimally different sounds when other cues highlight
-their difference (Dautriche, Swingley, \& Christophe, 2015; Rost \&
-McMurray, 2009, 2010; Thiessen, 2007; Yeung \& Werker, 2009).
+In a word-pair learning paradigm, children are supposed to associate one
+label, e.g, \enquote{bih}, with object 1 and a second label, e.g.,
+\enquote{dih}, with object 2. Infants may succeed in learning both
+associations. Nevertheless, the precision with which the words are
+encoded can still be large, causing their probability distributions to
+overalp (Figure \ref{fig:illus}, top). The way this knowledge is tested
+can lead to divering results.
+
+Failure in the Switch task (Stager \& Werker, 1997) can be exlained as
+follows. Children are understood to succeed if they reject the wrong
+pairing (e.g., \enquote{bih} with object 2). However, the overlap means
+that children could think of \enquote{bih} as plausible misprononciation
+of \enquote{dih}. They may require a stronger sound mismatch to
+confidently reject the possibility that the wrong label is just an
+acceptable deviation from the tyical pronouciation. In contrast, success
+in the two-alternative choice task (Yoshida et al., 2009) occurs
+precisely becasue children do not have to reject a wrong pairing.
+Instead, the setting allows them to just choose which objects is a
+better match to a given label, thus revealing whether they have a
+prefernce, albeit samll, for the correct pairing.
+
+In addition to explaining behavior in different tasks, the probabilsitic
+understanding also accounts for different behaviors in the same task. In
+particular, when the labels are quite distinct in the pereptual space
+(\enquote{lif} vs. \enquote{neem}), the distributions do not overlap as
+much as in the case of similar-sounding words (Figure \ref{fig:illus},
+left). This fact means that the learners will have a stronger preference
+fot the correct label-object pairings and less tolerance for the wrong
+ones. That said, perceptual distinctiveness can be enhanced even for
+minimally different sounds when other cues highlight their difference
+(Dautriche, Swingley, \& Christophe, 2015; Rost \& McMurray, 2009, 2010;
+Thiessen, 2007; Yeung \& Werker, 2009).
 
 Finally, development can be understood as an increase in the precision
-(i.e., a decrease in the variance) of the probabilistic representations
-(Figure \ref{fig:illus}, right). Such an increase in precision renders
-minimally different sounds less confusing. Importantly, a more precise
-representation still has a non-zero variance --- Learning difficulties
-can still be induced with challenging stimuli or in cognitively
-demanding situations as was demonstrate in adults studies (Pajak et al.,
-2016; White et al., 2013).
+(i.e., a decrease in the variance) of the probabilistic representations,
+leading to a lower overlap between the similar-sounding words (Figure
+\ref{fig:illus}, right). Importantly, a more precise representation
+still has a non-zero variance --- Learning difficulties can still be
+induced with challenging stimuli or in cognitively demanding situations
+as was demonstrate in adults studies (Pajak et al., 2016; White et al.,
+2013).
 
 \subsection{This study}\label{this-study}
 
 The probabilistic account has been put forward to explain patterns of
 learning and development at the qualitative level. However, it is
 crucial to have a precise computational instantiation of this account
-which would allow us to \emph{quantify} its explanatory power. We could
-find one previous work that attempted to provide such a computational
-instantiation (Hofer and Levy, 2017). However, this previous work was
-designed with the goal of reproducing the results of a specific study
-(Pajak et al., 2016) which focused on explaining the mismatch between
-speech perception and word learning in adults rather than on exploring
-the mechanism of development.
+which would help us 1) test this theoretical hypothesis more directly
+and 2) identify the particular parameters that are the locus of
+developmental change. One previous study attempted to provide such a
+computational instantiation (Hofer \& Levy, 2017). However, this
+previous work was designed with the goal of reproducing the results of a
+specific study (Pajak et al., 2016) which focused on explaining the
+mismatch between speech perception and word learning in adults rather
+than on exploring the mechanism of development.
 
 The present work proposes a model of word-pair learning based on the
 probabilistic account. We tested the ability of this model to both
@@ -299,9 +330,9 @@ probabilistic account. We tested the ability of this model to both
 and adults (e.g., the fact that similar words are harder to learn than
 different words) and to \emph{predict} new learning patterns that have
 not been tested before (i.e., the effect of the referents' similarity on
-word learning). Crucially, we explored the extent to which development
-can be understood as a continuous refinement in similar representations
-across the lifespan.
+word learning). The broader impact of this work is to explore the extent
+to which development can be understood as a continuous refinement in
+similar representations across the lifespan.
 
 The paper is organized as follows. First, we introduce the model and we
 explain how it allows us to characterize behavior in a word learning

@@ -413,7 +413,7 @@ model_no_val <- as.data.frame(confint2(fit_children_no)) %>%
   mutate(val= Vr_ch_no, 
          model=1, 
          group = "children") %>%
-  bind_rows(as.data.frame(confint2(fit_adults)) %>%
+  bind_rows(as.data.frame(confint2(fit_adults_no)) %>%
               mutate(val= Vr_ad_no, 
                      model=1, 
                      group = "adults"))

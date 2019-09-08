@@ -1,0 +1,42 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{tab:models}Characteristics and performance of the models used in this study.}
+\centering
+\begin{tabular}[t]{>{\bfseries}llrrllll}
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{2}{c}{Children} & \multicolumn{2}{c}{Adults} \\
+\cmidrule(l{2pt}r{2pt}){5-6} \cmidrule(l{2pt}r{2pt}){7-8}
+Model & Structure & Param. & R\textsuperscript{2} & $\sigma$\textsubscript{L} & $\sigma$\textsubscript{C} & $\sigma$\textsubscript{L} & $\sigma$\textsubscript{C}\\
+\midrule
+model 1 & $\sigma$\textsubscript{L} only & 1 & 0.27 & 1 & -- & 0.37 & --\\
+model 2 & $\sigma$\textsubscript{L} = $\sigma$\textsubscript{C} & 1 & 0.95 & 0.6 & 0.6 & 0.15 & 0.15\\
+model 3 & $\sigma$\textsubscript{L} $\neq$ $\sigma$\textsubscript{C} & 2 & 1.00 & 0.83 & 0.31 & 0.12 & 0.17\\
+\bottomrule
+\end{tabular}
+\end{table*}
+\efloatseparator
+ 
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[ht]
+\centering
+\begin{tabular}{rlllll}
+  \hline
+ & Predictor & Estimate & Std.Error & z.value & p.value \\
+  \hline
+1 & (Intercept) & 1.06 & 0.21 & 5.02 & $<$0.01 \\
+  2 & sound\_dist & 0.68 & 0.14 & 4.72 & $<$0.01 \\
+  3 & object\_dist & 0.6 & 0.15 & 3.96 & $<$0.01 \\
+  4 & age & 0.59 & 0.16 & 3.64 & $<$0.01 \\
+  5 & sound\_dist*object\_dist & 0.36 & 0.14 & 2.56 & 0.01 \\
+  6 & sound\_dist*age & 0.37 & 0.13 & 2.83 & $<$0.01 \\
+  7 & object\_dist*age & 0.25 & 0.13 & 1.91 & 0.06 \\
+  8 & sound\_dist*object\_dist*age & 0.19 & 0.13 & 1.45 & 0.15 \\
+   \hline
+\end{tabular}
+\caption{Predictor estimates with standard errors and significance information for a logistic mixed-effects model predicting the accuracy of word learning.}
+\end{table*}
+\efloatseparator
+ 

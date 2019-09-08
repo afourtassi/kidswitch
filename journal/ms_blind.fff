@@ -1,0 +1,73 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics[width=300px]{figs/illustration}
+
+}
+
+\caption{An illustration of the probabilistic/continuous account using simulated data. A word is represented with a distribution over the perceptual space (indicated in red or blue). When the uncertainty of the representation is large relative to the distance between the stimuli (top panel), an instance of the red category (indicated with a star) could also be a plausible instance of the green category, hence the low recognition accuracy score. The accuracy is higher when the stimuli are less similar (left panel), or when the representation are more precise (right panel).}\label{fig:illus}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics[width=150px]{figs/model}
+
+}
+
+\caption{Graphical representation of our model. Circles indicate random variables (shading indicates observed variables). The squares indicate fixed model parameters.}\label{fig:model}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[t]
+
+{\centering \includegraphics[width=3.75in]{figs/task}
+
+}
+
+\caption{An overview of the task used in this study.}\label{fig:task}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[htbp]
+\centering
+\includegraphics{ms_blind_files/figure-latex/simulation-1.pdf}
+\caption{\label{fig:simulation}The predicted probability of accurate
+responses in the testing phase as a function of stimuli distinctiveness
+\(\Delta s\) and \(\Delta o\) and representation precision \(\sigma\)
+(For simplicity, we use model 2, which assumes that
+\(\sigma\)=\(\sigma_C\)=\(\sigma_L\)). Dashed line represents chance.}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[h]
+
+{\centering \includegraphics{ms_blind_files/figure-latex/stim-1}
+
+}
+
+\caption{Distances for both sound and object pairs from an adult norming study. Data represent Likert values normalized to [0,1] interval. Error bars represent 95\% confidence intervals.}\label{fig:stim}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[h]
+
+{\centering \includegraphics{ms_blind_files/figure-latex/allData-1}
+
+}
+
+\caption{Accuracy of word recognition as a function of the sound distance, the object distance, and the age group (preschool children vs. adults). We show both the models' predictions (dashed lines) and the experimental results (solid lines, same across the three panels). Error bars represent 95\% confidence intervals.}\label{fig:allData}
+\end{figure*}
+\efloatseparator
+ 

@@ -26,8 +26,11 @@ affiliation:
 
 author_note: |
 
-
-  None of the authors have any financial interest or a conflict of interest regarding this work and this submission.
+  'The experiment, sample size, exclusion criteria, and the model’s main predictions were preregistered at https://osf.io/942gv/'
+  
+  'All data and analytic code are available at https://github.com/afourtassi/kidswitch' 
+  
+  'None of the authors have any financial interest or a conflict of interest regarding this work and this submission.'
 
 abstract: |
 
@@ -42,8 +45,8 @@ header-includes:
 
 bibliography      : ["references.bib"]
 
-figsintext        : no
-figurelist        : yes
+figsintext        : yes
+figurelist        : no
 tablelist         : no
 footnotelist      : no
 lineno            : no
@@ -293,7 +296,7 @@ The simulations explain two experimental results from previous studies and make 
 
 # Experiment
 
-In this experiment, we tested participants in the word learning task introduced above (Figure \@ref(fig:task)). More precisely, we explored the predictions related to both distinctiveness and precision. Sound similarity ($\Delta s$) and object similarity ($\Delta o$) were varied simultaneously in a within-subject design. Two age groups (preschool children and adults) were tested on the same task^[This four-condition within-subject design is relatively novel for preschoolers, but we followed the tablet paradigm [e.g., @frank2016] which allowed us to gather a relatively large number of trials from each child.] to explore whether development can be characterized with the uncertainty parameters, $\sigma_C$ and $\sigma_L$. The experiment, sample size, exclusion criteria, and the model's main predictions were pre-registered.\footnote{Due to the double-blind review, the link to the osf repository is only provided in the full version addressed to the editor.}
+In this experiment, we tested participants in the word learning task introduced above (Figure \@ref(fig:task)). More precisely, we explored the predictions related to both distinctiveness and precision. Sound similarity ($\Delta s$) and object similarity ($\Delta o$) were varied simultaneously in a within-subject design. Two age groups (preschool children and adults) were tested on the same task^[This four-condition within-subject design is relatively novel for preschoolers, but the tablet paradigm [@frank2016] allowed us to gather a relatively large number of trials from each child.] to explore whether development can be characterized with the uncertainty parameters, $\sigma_C$ and $\sigma_L$. The experiment, sample size, exclusion criteria, and the model's main predictions were pre-registered.\footnote{https://osf.io/942gv/}
 
 ```{r}
 #Sample size
@@ -363,7 +366,7 @@ N_good_ad <- d_adult_good %>% distinct(ID) %>% nrow()
 
 ### Participants
 
-We report data from $N=$ `r N_good_ch` children ages 4-5 years from a nursery school. An additional $N=$ `r N_all_ch-N_good_ch` children participated but were removed from analyses (using preregistered exclusion criteria) because they were not above chance on the catch trials due to the challenging nature of our procedure (see below). We also report data from $N=$ `r N_good_ad` adult participants tested on Amazon Mechanical Turk. An additional $N=$ `r N_all_ad-N_good_ad` were tested but removed from analyses (again, using preregistered exclusion criteria) because they had low scores on the catch trials or because they were familiar with the non-English sound stimuli we used in the adult experiment.
+We report data from $N=$ `r N_good_ch` children ages 4-5 years from the Bing Nursery School on Stanford University’s campus. An additional $N=$ `r N_all_ch-N_good_ch` children participated but were removed from analyses (using preregistered exclusion criteria) because they were not above chance on the catch trials due to the challenging nature of our procedure (see below). We also report data from $N=$ `r N_good_ad` adult participants tested on Amazon Mechanical Turk. An additional $N=$ `r N_all_ad-N_good_ad` were tested but removed from analyses (again, using preregistered exclusion criteria) because they had low scores on the catch trials or because they were familiar with the non-English sound stimuli we used in the adult experiment.
 
 ### Stimuli and similarity rating
 The sound stimuli were generated using the MBROLA Speech Synthesizer [@dutoit1996]. We generated three kinds of nonsense word pairs which varied in their degree of perceptual similarity to English speakers: 1) *different* pairs: "lif"/"neem" and "zem"/"doof", 2) *intermediate* pairs: "aka"/"ama" and "ada"/"aba", and 3) *similar* non-English pairs: "ada"/"a\textipa{d\super h}a" (in hindi) and "a\textipa{Q}a"/"a\textipa{\textcrh}a" (in arabic). 
@@ -458,7 +461,7 @@ To maximize our ability to measure subtle stimulus effects, the experiment was a
 
 Preschoolers were tested at the nursery school using a tablet, whereas adults used their own computers to complete the same experiment online. Participants were tested in a random sequence of five conditions: the four experimental conditions plus the catch condition. In each condition, participants saw a first block of four exposure trials followed by four testing trials, and a second block of two exposure trials (for memory refreshment) followed by an additional four testing trials. The length of this procedure was demanding, especially for children, but we adopted a fully within-subjects design based on pilot testing that indicated that precision of measurement was critical for testing our experimental predictions.
 
-In the exposure trials, participants saw two objects associated with their corresponding sounds. We presented the first object on the left side of the tablet's screen simultaneously with the corresponding sound. The second sound-object association followed on the other side of the screen after 500ms. For both objects, visual stimuli were present for the duration of the sound clip (about 800ms).  In the testing trials, participants saw both objects simultaneously and heard only one sound. They completed the trial by selecting which of the two objects corresponded to the sound. The object-sound pairings were randomized across participants, as was the order of the conditions (except for the catch condition which was always placed in the middle of the testing sequence). We also randomized the on-screen position (left vs. right) of the two pictures on each testing trial. 
+In the exposure trials, participants saw two objects associated with their corresponding sounds. We presented the first object on the left side of the tablet's screen simultaneously with the corresponding sound. The second sound-object association followed on the other side of the screen after 500ms. For both objects, visual stimuli were present for the duration of the sound clip (about 800ms).  In the testing trials, participants saw both objects simultaneously and heard only one sound. They completed the trial by selecting which of the two objects corresponded to the sound. The object-sound pairings were randomized across participants, as was the order of the conditions (except for the catch condition which was always placed in the middle of the testing sequence). We also randomized the on-screen position (left vs. right) of the two pictures on each testing trial.\footnote{The experiment can be viewed online at https://tinyurl.com/word-pair-learning-experiment} 
 
 ```{r allData, fig.env = "figure", fig.pos = "h", fig.align='center', fig.cap = "Accuracy of word recognition as a function of the sound distance, the object distance, and the age group (preschool children vs. adults). We show both the models' predictions (dashed lines) and the experimental results (solid lines, same across the three panels). Error bars represent 95\\% confidence intervals."}
 
@@ -660,8 +663,12 @@ One limitation of our models is that they only account for bottom-up, similarity
 To conclude, this paper proposes a model that accounts for the development of an important aspect of word learning. Our account suggests that the developmental data can be explained based on a continuous process operating over similar representations across the lifespan, suggesting developmental continuity. We used a case from word learning as an example, but the same idea might apply to other aspects of cognitive development that are typically thought of as stage-like (e.g., acquisition of a theory of mind). Computational models, such as the one proposed here, can help us investigate the extent to which such discontinuities emerge due to genuine qualitative changes and the extent to which they reflect the granularity of the researchers' own measurement tools.
 
 
-\vspace{1em} \fbox{\parbox[b][][c]{14cm}{\centering All data and code for these analyses are available at [Due to the doube-blind review, the link to the github repository is only provided in the full version addressed to the editor]}} \vspace{1em}
+\vspace{1em} \fbox{\parbox[b][][c]{14cm}{\centering All data and code for these analyses are available at\ \url{https://github.com/afourtassi/kidswitch}}} \vspace{1em}
 
+
+# Appendix
+
+We show in Table 2 the output of the regression model we used to analyze behavioral data in the experiment.
 
 ```{r xtable, results="asis"}
 

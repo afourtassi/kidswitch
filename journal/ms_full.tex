@@ -1,4 +1,4 @@
-\documentclass[english,,man]{apa6}
+\documentclass[english,,man,floatsintext]{apa6}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -100,26 +100,18 @@ learning}
 \newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
 
 
-\DeclareDelayedFloatFlavor{ThreePartTable}{table}
-\DeclareDelayedFloatFlavor{lltable}{table}
-\DeclareDelayedFloatFlavor*{longtable}{table}
-\makeatletter
-\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
-\makeatother
-\usepackage[titles]{tocloft}
-\cftpagenumbersoff{figure}
-\renewcommand{\cftfigpresnum}{\itshape\figurename\enspace}
-\renewcommand{\cftfigaftersnum}{.\space}
-\setlength{\cftfigindent}{0pt}
-\setlength{\cftafterloftitleskip}{0pt}
-\settowidth{\cftfignumwidth}{Figure 10.\qquad}
 \usepackage{tipa}
 \usepackage[sortcites=false,sorting=none]{biblatex}
 
-\authornote{
+\authornote{ `The experiment, sample size, exclusion criteria,
+and the model's main predictions were preregistered at
+\url{https://osf.io/942gv/}'
 
-None of the authors have any financial interest or a conflict of
-interest regarding this work and this submission.
+`All data and analytic code are available at
+\url{https://github.com/afourtassi/kidswitch}'
+
+`None of the authors have any financial interest or a conflict of
+interest regarding this work and this submission.'
 
 Correspondence concerning this article should be addressed to Abdellah
 Fourtassi, Postal address. E-mail:
@@ -552,7 +544,7 @@ uncertainty parameters \(\sigma_L\) and \(\sigma_C\).
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{ms_blind_files/figure-latex/simulation-1.pdf}
+\includegraphics{ms_full_files/figure-latex/simulation-1.pdf}
 \caption{\label{fig:simulation}The predicted probability of accurate
 responses in the testing phase as a function of stimuli distinctiveness
 \(\Delta s\) and \(\Delta o\) and representation precision \(\sigma\)
@@ -598,28 +590,28 @@ similarity (\(\Delta s\)) and object similarity (\(\Delta o\)) were
 varied simultaneously in a within-subject design. Two age groups
 (preschool children and adults) were tested on the same task\footnote{This
   four-condition within-subject design is relatively novel for
-  preschoolers, but we followed the tablet paradigm (e.g., Frank,
-  Sugarman, Horowitz, Lewis, \& Yurovsky, 2016) which allowed us to
-  gather a relatively large number of trials from each child.} to
-explore whether development can be characterized with the uncertainty
-parameters, \(\sigma_C\) and \(\sigma_L\). The experiment, sample size,
-exclusion criteria, and the model's main predictions were
-pre-registered.\footnote{Due to the double-blind review, the link to the osf repository is only provided in the full version addressed to the editor.}
+  preschoolers, but the tablet paradigm (Frank, Sugarman, Horowitz,
+  Lewis, \& Yurovsky, 2016) allowed us to gather a relatively large
+  number of trials from each child.} to explore whether development can
+be characterized with the uncertainty parameters, \(\sigma_C\) and
+\(\sigma_L\). The experiment, sample size, exclusion criteria, and the
+model's main predictions were
+pre-registered.\footnote{https://osf.io/942gv/}
 
 \subsection{Methods}\label{methods}
 
 \subsubsection{Participants}\label{participants}
 
-We report data from \(N=\) 63 children ages 4-5 years from a nursery
-school. An additional \(N=\) 39 children participated but were removed
-from analyses (using preregistered exclusion criteria) because they were
-not above chance on the catch trials due to the challenging nature of
-our procedure (see below). We also report data from \(N=\) 74 adult
-participants tested on Amazon Mechanical Turk. An additional \(N=\) 26
-were tested but removed from analyses (again, using preregistered
-exclusion criteria) because they had low scores on the catch trials or
-because they were familiar with the non-English sound stimuli we used in
-the adult experiment.
+We report data from \(N=\) 63 children ages 4-5 years from the Bing
+Nursery School on Stanford University's campus. An additional \(N=\) 39
+children participated but were removed from analyses (using
+preregistered exclusion criteria) because they were not above chance on
+the catch trials due to the challenging nature of our procedure (see
+below). We also report data from \(N=\) 74 adult participants tested on
+Amazon Mechanical Turk. An additional \(N=\) 26 were tested but removed
+from analyses (again, using preregistered exclusion criteria) because
+they had low scores on the catch trials or because they were familiar
+with the non-English sound stimuli we used in the adult experiment.
 
 \subsubsection{Stimuli and similarity
 rating}\label{stimuli-and-similarity-rating}
@@ -669,7 +661,7 @@ values of \(\Delta s\) and \(\Delta o\) for each age group.
 
 \begin{figure}[h]
 
-{\centering \includegraphics{ms_blind_files/figure-latex/stim-1} 
+{\centering \includegraphics{ms_full_files/figure-latex/stim-1} 
 
 }
 
@@ -711,11 +703,12 @@ corresponded to the sound. The object-sound pairings were randomized
 across participants, as was the order of the conditions (except for the
 catch condition which was always placed in the middle of the testing
 sequence). We also randomized the on-screen position (left vs.~right) of
-the two pictures on each testing trial.
+the two pictures on each testing
+trial.\footnote{The experiment can be viewed online at https://tinyurl.com/word-pair-learning-experiment}
 
 \begin{figure}[h]
 
-{\centering \includegraphics{ms_blind_files/figure-latex/allData-1} 
+{\centering \includegraphics{ms_full_files/figure-latex/allData-1} 
 
 }
 
@@ -931,8 +924,13 @@ measurement tools.
 
 \vspace{1em}
 
-\fbox{\parbox[b][][c]{14cm}{\centering All data and code for these analyses are available at [Due to the doube-blind review, the link to the github repository is only provided in the full version addressed to the editor]}}
+\fbox{\parbox[b][][c]{14cm}{\centering All data and code for these analyses are available at\ \url{https://github.com/afourtassi/kidswitch}}}
 \vspace{1em}
+
+\section{Appendix}\label{appendix}
+
+We show in Table 2 the output of the regression model we used to analyze
+behavioral data in the experiment.
 
 \begin{table}[ht]
 \centering
@@ -1155,12 +1153,6 @@ speech information. \emph{Cognition}, \emph{113}.
 Yoshida, K., Fennell, C., Swingley, D., \& Werker, J. (2009).
 14-month-olds learn similar-sounding words. \emph{Developmental
 Science}, \emph{12}.
-
-\clearpage
-
-\renewcommand{\listfigurename}{Figure captions}
-
-\listoffigures
 
 
 \end{document}

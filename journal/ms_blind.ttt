@@ -2,22 +2,21 @@
 \ifnextchar[{\eatarg}{}
 
 
-\caption{\label{tab:models}Characteristics and performance of the models used in this study.}
+\caption{\label{tab:models}Characteristics and performance of the models used in this study. Value ranges represent 95\% confidence intervals.}
 \centering
+\resizebox{\linewidth}{!}{
 \begin{tabular}[t]{>{\bfseries}llrrllll}
 \toprule
 \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{2}{c}{Children} & \multicolumn{2}{c}{Adults} \\
-\cmidrule(l{2pt}r{2pt}){5-6} \cmidrule(l{2pt}r{2pt}){7-8}
+\cmidrule(l{3pt}r{3pt}){5-6} \cmidrule(l{3pt}r{3pt}){7-8}
 Model & Structure & Param. & R\textsuperscript{2} & $\sigma$\textsubscript{L} & $\sigma$\textsubscript{C} & $\sigma$\textsubscript{L} & $\sigma$\textsubscript{C}\\
 \midrule
-model 1 & $\sigma$\textsubscript{L} only & 1 & 0.27 & 1 & -- & 0.37 & --\\
-model 2 & $\sigma$\textsubscript{L} = $\sigma$\textsubscript{C} & 1 & 0.95 & 0.6 & 0.6 & 0.15 & 0.15\\
-model 3 & $\sigma$\textsubscript{L} $\neq$ $\sigma$\textsubscript{C} & 2 & 1.00 & 0.83 & 0.31 & 0.12 & 0.17\\
+model 1 & $\sigma$\textsubscript{L} only & 1 & 0.27 & 1.01 [0.55, 1.47] & -- & 0.37 [0.01, 0.73] & --\\
+model 2 & $\sigma$\textsubscript{L} = $\sigma$\textsubscript{C} & 1 & 0.96 & 0.6 [0.53, 0.67] & 0.6 [0.53, 0.67] & 0.15 [0.12, 0.17] & 0.15 [0.12, 0.17]\\
+model 3 & $\sigma$\textsubscript{L} $\neq$ $\sigma$\textsubscript{C} & 2 & 1.00 & 0.82 [0.69, 0.95] & 0.33 [0.18, 0.48] & 0.12 [0.12, 0.13] & 0.17 [0.16, 0.18]\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table*}
-\efloatseparator
- 
 \begin{table*}[hbt]
 \ifnextchar[{\eatarg}{}
 [ht]
@@ -38,5 +37,3 @@ model 3 & $\sigma$\textsubscript{L} $\neq$ $\sigma$\textsubscript{C} & 2 & 1.00 
 \end{tabular}
 \caption{Predictor estimates with standard errors and significance information for a logistic mixed-effects model predicting the accuracy of word learning.}
 \end{table*}
-\efloatseparator
- 

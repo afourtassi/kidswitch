@@ -33,7 +33,10 @@
 \newenvironment{CodeChunk}{}{}
 
 % cite package, to clean up citations in the main text. Do not remove.
-\usepackage{cite}
+\usepackage{apacite}
+
+% KM added 1/4/18 to allow control of blind submission
+
 
 \usepackage{color}
 
@@ -86,7 +89,8 @@ discontinuities, may emerge from simpler, continuous mechanisms.
 word learning, cognitive development, computational modeling
 \end{abstract}
 
-\section{Introduction}\label{introduction}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
 Cognitive development is sometimes characterized in terms of a
 succession of discontinuous stages (Piaget, 1954). Although intuitively
@@ -180,9 +184,11 @@ and across development.
 \end{figure}
 \end{CodeChunk}
 
-\section{Model}\label{model}
+\hypertarget{model}{%
+\section{Model}\label{model}}
 
-\subsection{Probabilistic structure}\label{probabilistic-structure}
+\hypertarget{probabilistic-structure}{%
+\subsection{Probabilistic structure}\label{probabilistic-structure}}
 
 Our model consists of a set of variables describing the general process
 of spoken word recognition in a referential situation. These variables
@@ -220,7 +226,8 @@ P(L_i|C_j) =
 \end{cases}
 \]
 
-\subsection{Inference}\label{inference}
+\hypertarget{inference}{%
+\subsection{Inference}\label{inference}}
 
 The learner hears a sound \(s\) and has to decide which object \(o\)
 provides an optimal match to this sound. To this end, they must compute
@@ -242,8 +249,9 @@ are now well defined:
 P(o|s) = \frac{\sum_{C,L} P(s|L)P(o|C)P(L|C)}{\sum_{o} \sum_{C,L} P(s|L)P(o|C)P(L|C)}
 \end{equation}
 
+\hypertarget{task-and-model-predictions}{%
 \subsection{Task and model
-predictions}\label{task-and-model-predictions}
+predictions}\label{task-and-model-predictions}}
 
 \begin{CodeChunk}
 \begin{figure}[t]
@@ -326,7 +334,8 @@ predictions:
   distance between the semantic referents.
 \end{enumerate}
 
-\section{Experiment}\label{experiment}
+\hypertarget{experiment}{%
+\section{Experiment}\label{experiment}}
 
 In this experiment, we tested participants in the word learning task
 introduced above (Figure \ref{fig:task}). More precisely, we explored
@@ -338,9 +347,11 @@ whether development can be characterized with the uncertainty
 parameters, \(\sigma_C\) and \(\sigma_L\). The experiment, sample size,
 exclusion criteria and the model's main predictions were pre-registered.
 
-\subsection{Methods}\label{methods}
+\hypertarget{methods}{%
+\subsection{Methods}\label{methods}}
 
-\subsubsection{Participants}\label{participants}
+\hypertarget{participants}{%
+\subsubsection{Participants}\label{participants}}
 
 We planned to recruit a sample of \(N=60\) children ages 4-5 years from
 the Bing Nursery School on Stanford University's campus. Here we report
@@ -354,8 +365,9 @@ data from participants who did not do well on the catch trials (\(N=\)
 stimuli we used in the adult experiment (\(N=\) 0), yielding a final
 sample of \(N=\) 74.
 
+\hypertarget{stimuli-and-similarity-rating}{%
 \subsubsection{Stimuli and similarity
-rating}\label{stimuli-and-similarity-rating}
+rating}\label{stimuli-and-similarity-rating}}
 
 The sound stimuli were generated using the MBROLA Speech Synthesizer
 (Dutoit, Pagel, Pierret, Bataille, \& Van der Vrecken, 1996). We
@@ -382,7 +394,7 @@ are shown in Figure \ref{fig:stim}, for each stimulus group. These data
 will be used in the models as the perceptual distance of sound pairs
 (\(\Delta s\)) and object pairs (\(\Delta o\)).
 
-\subsubsection{Design}\label{design}
+\#\#\#Design
 
 Each age group saw only two of the three levels of similarity described
 in the previous sub-section: ``different'' vs. ``intermediate'' for
@@ -413,7 +425,8 @@ on a fifth catch condition which was similar in its structure to the
 other ones but was used only to select participants who were able to
 follow the instructions and show minimal learning.
 
-\subsubsection{Procedure}\label{procedure}
+\hypertarget{procedure}{%
+\subsubsection{Procedure}\label{procedure}}
 
 Preschoolers were tested at the nursery school using a tablet, whereas
 adults used their own computers to complete the same experiment online.
@@ -452,18 +465,19 @@ catch condition which was always placed in the middle of the testing
 sequence). We also randomized the on-screen position (left vs.~right) of
 the two pictures on each testing trial.
 
-\subsection{Results}\label{results}
+\hypertarget{results}{%
+\subsection{Results}\label{results}}
 
 We first analyzed the results using a mixed-effects logistic regression
 with sound distance, object distance and age group as fixed effects, and
 with a maximal random effects structure (allowing us to take into
 account the full nested structure of our data) (Barr, Levy, Scheepers,
 \& Tily, 2013). We found main effects for all the fixed effects in the
-regression. For the sound distance, we obtained \(\beta =\) 0.52 (\(p\)
+regression. For the sound distance, we obtained \(\beta =\) 0.68 (\(p\)
 \textless{} 0.001), replicating previous findings. For object distance,
-we found \(\beta =\) 0.83 (\(p\) \textless{} 0.001), and this finding
+we found \(\beta =\) 0.6 (\(p\) \textless{} 0.001), and this finding
 confirms the new prediction of our model. Finally, for the age group, we
-obtained \(\beta =\) 0.76 (\(p\) \textless{} 0.001), showing that
+obtained \(\beta =\) 0.59 (\(p\) \textless{} 0.001), showing that
 performance improves with age.
 
 We next fit our model (using Equation 2) to the participants' responses
@@ -500,7 +514,8 @@ qualitative patterns and remained highly predictive (\(R^2=\) 0.95).
 This result suggests that the explanatory power of the model is largely
 due to its structure, rather than its degrees of freedom.
 
-\section{General Discussion}\label{general-discussion}
+\hypertarget{general-discussion}{%
+\section{General Discussion}\label{general-discussion}}
 
 This paper explored the idea that some seemingly stage-like patterns in
 cognitive development can be characterized in a continuous fashion. We
@@ -557,98 +572,105 @@ measurement tools.
 \fbox{\parbox[b][][c]{7.3cm}{\centering All data and code are available online at\ \url{https://github.com/afourtassi/kidswitch} }}
 \vspace{1em}
 
-\section{References}\label{references}
+\hypertarget{references}{%
+\section{References}\label{references}}
 
-\setlength{\parindent}{-0.1in} \setlength{\leftskip}{0.125in} \noindent
+\setlength{\parindent}{-0.1in} 
+\setlength{\leftskip}{0.125in}
+
+\noindent
 
 \hypertarget{refs}{}
-\hypertarget{ref-barr2013}{}
+\leavevmode\hypertarget{ref-barr2013}{}%
 Barr, D., Levy, R., Scheepers, C., \& Tily, H. (2013). Random effects
 structure for confirmatory hypothesis testing: Keep it maximal.
 \emph{Journal of Memory and Language}, \emph{68}(3).
 
-\hypertarget{ref-carey2009}{}
+\leavevmode\hypertarget{ref-carey2009}{}%
 Carey, S. (2009). \emph{The origin of concepts}. Oxford University
 Press.
 
-\hypertarget{ref-dutoit1996}{}
+\leavevmode\hypertarget{ref-dutoit1996}{}%
 Dutoit, T., Pagel, V., Pierret, N., Bataille, F., \& Van der Vrecken, O.
 (1996). The mbrola project: Towards a set of high quality speech
 synthesizers free of use for non commercial purposes. In
 \emph{Proceedings of ICSLP} (Vol. 3). IEEE.
 
-\hypertarget{ref-engelthaler2017}{}
+\leavevmode\hypertarget{ref-engelthaler2017}{}%
 Engelthaler, T., \& Hills, T. T. (2017). Feature biases in early word
 learning: Network distinctiveness predicts age of acquisition.
 \emph{Cognitive Science}, \emph{41}.
 
-\hypertarget{ref-fennell2010}{}
+\leavevmode\hypertarget{ref-fennell2010}{}%
 Fennell, C., \& Waxman, S. (2010). What paradox? Referential cues allow
 for infant use of phonetic detail in word learning. \emph{Child
 Development}, \emph{81}.
 
-\hypertarget{ref-hofer2017}{}
+\leavevmode\hypertarget{ref-hofer2017}{}%
 Hofer, M., \& Levy, R. (2017). Modeling Sources of Uncertainty in Spoken
 Word Learning. In \emph{Proceedings of the 39th Annual Meeting of the
 Cognitive Science Society}.
 
-\hypertarget{ref-lewis2013}{}
+\leavevmode\hypertarget{ref-lewis2013}{}%
 Lewis, M., \& Frank, M. (2013). An integrated model of concept learning
 and word-concept mapping. In \emph{Proceedings of the annual meeting of
 the cognitive science society} (Vol. 35).
 
-\hypertarget{ref-pajak2016}{}
+\leavevmode\hypertarget{ref-pajak2016}{}%
 Pajak, B., Creel, S., \& Levy, R. (2016). Difficulty in learning
 similar-sounding words: A developmental stage or a general property of
 learning? \emph{Journal of Experimental Psychology: Learning, Memory,
 and Cognition}, \emph{42}(9).
 
-\hypertarget{ref-piaget1954}{}
+\leavevmode\hypertarget{ref-piaget1954}{}%
 Piaget, J. (1954). \emph{The construction of reality in the child}. New
 York, NY, US: Basic Books.
 
-\hypertarget{ref-rost2009}{}
+\leavevmode\hypertarget{ref-rost2009}{}%
 Rost, G., \& McMurray, B. (2009). Speaker variability augments
 phonological processing in early word learning. \emph{Developmental
 Science}, \emph{12}.
 
-\hypertarget{ref-sizemore2018}{}
+\leavevmode\hypertarget{ref-sizemore2018}{}%
 Sizemore, A. E., Karuza, E. A., Giusti, C., \& Bassett, D. S. (2018).
 Knowledge gaps in the early growth of semantic feature networks.
 \emph{Nature Human Behaviour}, \emph{2}(9).
 
-\hypertarget{ref-stager1997}{}
+\leavevmode\hypertarget{ref-stager1997}{}%
 Stager, C., \& Werker, J. (1997). Infants listen for more phonetic
 detail in speech perception than in word-learning tasks. \emph{Nature},
 \emph{388}(6640).
 
-\hypertarget{ref-swingley2007}{}
+\leavevmode\hypertarget{ref-swingley2007}{}%
 Swingley, D. (2007). Lexical exposure and word-form encoding in
 1.5-year-olds. \emph{Developmental Psychology}, \emph{43}(2).
 
-\hypertarget{ref-thiessen2007}{}
+\leavevmode\hypertarget{ref-thiessen2007}{}%
 Thiessen, E. (2007). The effect of distributional information on
 children's use of phonemic contrasts. \emph{Journal of Memory and
 Language}, \emph{56}.
 
-\hypertarget{ref-werker2002}{}
+\leavevmode\hypertarget{ref-werker2002}{}%
 Werker, J., Fennell, C., Corcoran, K., \& Stager, C. (2002). Infants'
 ability to learn phonetically similar words: Effects of age and
 vocabulary size. \emph{Infancy}, \emph{3}.
 
-\hypertarget{ref-white2013}{}
+\leavevmode\hypertarget{ref-white2013}{}%
 White, K., Yee, E., Blumstein, S., \& Morgan, J. (2013). Adults show
 less sensitivity to phonetic detail in unfamiliar words, too.
 \emph{Journal of Memory and Language}, \emph{68}(4).
 
-\hypertarget{ref-wojcik2013}{}
+\leavevmode\hypertarget{ref-wojcik2013}{}%
 Wojcik, E., \& Saffran, J. (2013). The ontogeny of lexical networks:
 Toddlers encode the relationships among referents when learning novel
 words. \emph{Psychological Science}, \emph{24}(10).
 
-\hypertarget{ref-yoshida2009}{}
+\leavevmode\hypertarget{ref-yoshida2009}{}%
 Yoshida, K., Fennell, C., Swingley, D., \& Werker, J. (2009).
 14-month-olds learn similar-sounding words. \emph{Developmental
 Science}, \emph{12}.
+
+\bibliographystyle{apacite}
+
 
 \end{document}

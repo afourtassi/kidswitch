@@ -14,7 +14,7 @@ library(readr)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(langcog)
+#library(langcog)
 library(ggthemes)
 library(lme4)
 library(nlstools)
@@ -147,6 +147,45 @@ theme(legend.title = element_text(size=11),
 
 
 ```
+
+
+Stats here 
+
+```{r}
+
+#Is the most difficult condition is at chance?
+rand_stat <- d_child_good %>%
+  filter(sound_dist == "similar" & concept_dist == "similar")
+
+myVar <- rand_stat$iscorrect
+k <- sum(myVar)
+n <- length(myVar)
+
+myTest <- binom.test(k,n, 0.5)
+
+rand_plus_stat <- d_child_good %>%
+  filter(sound_dist == "similar" & concept_dist == "different")
+
+myVar <- rand_plus_stat$iscorrect
+k <- sum(myVar)
+n <- length(myVar)
+
+myTest <- binom.test(k,n, 0.5)
+
+both <- d_child_good %>%
+  filter(sound_dist == "similar" & (concept_dist == "similar" || concept_dist == "different"))
+
+data_both <- both %>%
+  mutate(s_dist=ifelse(sound_dist=="similar", -1,1),
+         c_dist=ifelse(concept_dist=="similar", -1, 1)) 
+
+model_both <- glmer(iscorrect ~ c_dist + 
+                 (c_dist  | ID), 
+               data = data_both, family = binomial())
+
+```
+
+
 
 Summary children
 ```{r}
@@ -388,7 +427,6 @@ Vr_s_ad <- coef(fit_adults_2)[1]
 Vr_o_ad <- coef(fit_adults_2)[2]
 
 
-
 fit_children <- nls(mean ~ combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='children'), start=list(Vr=0.5), lower=c(0), algorithm="port")
 
 fit_children_no <- nls(mean ~ no_combine_cues(s_dist, c_dist, Vr), data=subset(data_fit, group=='children'), start=list(Vr=0.5), lower=c(0), algorithm="port")
@@ -440,8 +478,8 @@ feather::write_feather(model2_val, "../saved_data/values_mod2.feather")
 
 #feather::write_feather(model_comparison, "../saved_data/model_comparison.feather")
 
-model2_val <- c(confint(fit_children_2), Vr_s_ch, Vr_o_ch, model="2", group = "children") %>%
-  bind_rows(c(confint(fit_adults_2), Vr_s_ad, Vr_o_ad, model="2", group = "adults")) 
+#model2_val <- c(confint(fit_children_2), Vr_s_ch, Vr_o_ch, model="2", group = "children") %>%
+#  bind_rows(c(confint(fit_adults_2), Vr_s_ad, Vr_o_ad, model="2", group = "adults")) 
 
 
 model_data <- data_fit %>%

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.1.4)  21 MAR 2020 16:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.1.4)  21 MAR 2020 16:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1517,7 +1517,7 @@ mf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2019/texmf-dist/fon
 ts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/pu
 blic/tipa/tipa12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/tip
 a/tipa8.pfb>
-Output written on ms_blind.pdf (40 pages, 645765 bytes).
+Output written on ms_blind.pdf (40 pages, 645867 bytes).
 PDF statistics:
  545 PDF objects out of 1000 (max. 8388607)
  467 compressed objects within 5 object streams
